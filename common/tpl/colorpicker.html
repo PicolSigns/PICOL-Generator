@@ -4,6 +4,9 @@
 		<script src="../js/raphael/colorpicker.js"></script>
 		<script src="../js/raphael/colorpicker.colorwheel.js"></script>
 		<script>
+		function generate_with_color(){
+			parent.select_unselect_img("", false, 'icon_selector', 'selected_imgs', false);
+		}
 		Raphael(function () {
 			var out = parent.document.getElementById("output"),
 			vr = parent.document.getElementById("vr"),
@@ -18,7 +21,7 @@
 			
 			// this is where colorpicker created
 			cp = Raphael.colorpicker(40, 20, 200, "#000"),
-			cp2 = Raphael.colorwheel(360, 20, 200, "#000"),
+			cp2 = Raphael.colorwheel(330, 20, 200, "#000"),
 			
 			clr = Raphael.color("#000");
 			vr.innerHTML = clr.r;
@@ -33,7 +36,7 @@
 				cp2.color(this.value);
 				out.style.background = this.value;
 				out.style.color = Raphael.rgb2hsb(this.value).b < .5 ? "#fff" : "#000";
-				parent.select_unselect_img("", false, 'icon_selector', 'selected_imgs', false);
+				generate_with_color();
 			};
 			out.onblur = function(){
 				if(out.value.length == 0){
@@ -49,7 +52,7 @@
 				return function (clr) {
 					var clr_replaced = clr.replace(/^#(.)\1(.)\2(.)\3$/, "#$1$2$3");
 					out.value = clr_replaced;
-					parent.select_unselect_img("", false, 'icon_selector', 'selected_imgs', false);
+					generate_with_color();
 					item.color(clr);
 					out.style.background = clr;
 					out.style.color = Raphael.rgb2hsb(clr).b < .75 ? "#fff" : "#000";
@@ -65,7 +68,6 @@
 			};
 			cp.onchange = onchange(cp2);
 			cp2.onchange = onchange(cp);
-			// that’s it. Too easy
 		});
 		</script>
 	</head>

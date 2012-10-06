@@ -1,5 +1,5 @@
-<span id="guide">Start typing to highlight icons manually ~ press Enter to select them</span>
-<input type="text" id="filter" value="" title="Filter" />
+<p id="guide">Start typing to highlight icons manually ~ press Enter to select them</p>
+<input type="text" id="filter" value="" title="Filter" placeholder="Search" />
 <ul class="selector_menu">
 	<li><a href="javascript: void(0)" onclick="select_all()" title="Select all">Select all</a></li>
 	<li><a href="javascript: void(0)" onclick="unselect_all()" title="Unselect all">Unselect all</a></li>

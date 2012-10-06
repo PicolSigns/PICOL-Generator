@@ -85,6 +85,8 @@ $(function() {
 			}
 			if(slider.currentPage != 3){
 				$(document).unbind("keydown");
+			} else {
+				$("#filter").focus();
 			}
 			if(scripts[slider.currentPage] != "" && scripts[slider.currentPage] != undefined){
 				$.get("common/js/include/" + scripts[slider.currentPage], function(data){}, "script");

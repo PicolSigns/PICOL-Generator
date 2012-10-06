@@ -143,7 +143,16 @@ input:hover, input:focus {
     height: auto;
     padding: 15px 0;
 }
-#guide {
+p#guide {
+	font-style: italic;
+	font-size: 9px;
+	text-align: right;
+	text-transform: none;
+	color: #999;
+	margin-top: -20px;
+	margin-bottom: 10px;
+}
+span#guide {
 	font-style: italic;
 	font-size: 9px;
 	float: right;
@@ -153,12 +162,16 @@ input:hover, input:focus {
 }
 input#filter {
 	float: right;
-	box-shadow: 0 0 12px #666;
-	display: none;
-	padding: 4px;
-	margin-right: 3px;
+	box-shadow: 0 0 6px #bfe4ff inset;
+	border: #999 1px solid;
+	display: inline;
+	margin-top: 2px;
+	padding: 3px 6px;
 	position: relative;
 	z-index: 1;
+}
+input#filter:hover, input#filter:focus, input#filter:active {
+	border: #333 1px solid
 }
 ul.selector_menu {
 	padding: 5px;

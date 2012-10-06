@@ -14,10 +14,12 @@ function unselect_all(){
 }
 $(document).ready(function(){
 	var doneTyping = function() {
+		/*
 		$("#filter").fadeOut(300, function(){
 			$(this).val("");
 			$("#guide").show();
 		});
+		*/
 		$("#icon_selector td.hover").removeClass("hover");
 	}
 	var timer = null,
@@ -28,8 +30,7 @@ $(document).ready(function(){
 	$(document).keydown(function(e) {
 		clearTimeout(timer);
 		if (e.keyCode >= 65 && e.keyCode <= 90) { // Only letters keypress
-			$("#guide").hide();
-			$("#filter").fadeIn(300).focus().autocomplete({
+			$("#filter").focus().autocomplete({
 				source: function (request, response) {
 					var term = $.ui.autocomplete.escapeRegex(request.term)
 					, startsWithMatcher = new RegExp("^" + term, "i")
@@ -61,6 +62,7 @@ $(document).ready(function(){
 			e.preventDefault();
 			doneTyping();
 			select_unselect_img(selected_id, false, "icon_selector", "selected_imgs", true);
+			$("#filter").val("");
 		} else if(e.keyCode == 27){ // Keypress "Esc"
 			doneTyping();
 		}
@@ -68,7 +70,7 @@ $(document).ready(function(){
 			doneTyping();
 		}, 5000);
 	});
-	$("#filter").blur(function(){ clearTimeout(timer); doneTyping(); });
+	//$("#filter").blur(function(){ clearTimeout(timer); doneTyping(); });
 	
 	/*
 	// Generates the table of icons
