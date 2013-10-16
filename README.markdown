@@ -36,12 +36,9 @@ You can get very quickly conversions simply call the "generator.php" file and pa
  * **badge**: `the filename with the ".svg" of the badge to add`
  * **action**: `"show" will show the image on screen, "" (nothing) will force download`
 
-Example: [generator.php?size=500&img=accept.svg&badge=badge_settings.svg&action=show](http://www.gotanotherway.com/apps/picol_generator/1.1.5/common/include/generator.php?size=500&img=accept.svg&badge=badge_settings.svg&action=show)
+Example: tt>[generator.php?size=500&img=accept.svg&badge=badge_settings.svg&action=show](http://www.gotanotherway.com/apps/picol_generator/1.1.5/common/include/generator.php?size=500&img=accept.svg&badge=badge_settings.svg&action=show)</tt>
 
-
-## NOTE:
-
-You can remotely call the generator from my server by this address: http://apps.gotanotherway.com/picol_generator/1.1.5/common/include/generator.php
+You can remotely call the generator from my server by this address: http://www.gotanotherway.com/apps/picol_generator/1.1.5/common/include/generator.php
 
 ## Dependancies
 
