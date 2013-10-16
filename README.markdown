@@ -18,9 +18,9 @@ For more, see:
 
 So I decided to create an online generator that exploit the PHP GD library or equivalent.
 
-![Screenshot](http://apps.gotanotherway.com/picol_generator/1.1.5/PICOL%20generator_1.1.5-screenshot.png)
+![Screenshot](http://www.gotanotherway.com/apps/picol_generator/1.1.5/PICOL%20generator_1.1.5-screenshot.png)
 
-[Try the application](http://apps.gotanotherway.com/picol_generator/1.1.5/) for a demo.
+[Try the application](http://www.gotanotherway.com/apps/picol_generator/1.1.5/) for a demo.
 
 
 ## Local Server installation
