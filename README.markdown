@@ -1,5 +1,3 @@
-**Version: 1.2**
-
 # PICOL
 
 
@@ -31,11 +29,12 @@ If you want to install the application on your local server, follow indications 
 You can get very quickly conversions simply call the "generator.php" file and passing these variables:
 
  * **size**: `number, the size of the end png`
+ * **color**: `hex, the color you want to generate`
  * **img**: `the filename with the ".svg" of the image to convert`
  * **badge**: `the filename with the ".svg" of the badge to add`
  * **action**: `"show" will show the image on screen, "" (nothing) will force download`
 
-Example: <tt>[generator.php?size=500&img=accept.svg&badge=badge_settings.svg&action=show](http://picol.iod.io/generator/1.2/common/include/generator.php?size=500&img=accept.svg&badge=badge_settings.svg&action=show)</tt>
+Example: <tt>[generator.php?size=500&color=ff0000&img=accept.svg&badge=badge_settings.svg&action=show](http://picol.iod.io/generator/1.2/common/include/generator.php?size=500&color=ff0000&img=accept.svg&badge=badge_settings.svg&action=show)</tt>
 
 You can remotely call the generator from my server by this address: http://picol.iod.io/generator/1.2/common/include/generator.php
 
