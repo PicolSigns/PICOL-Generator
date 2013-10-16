@@ -1,4 +1,4 @@
-# PICOL
+![PICOL logo](http://picol.iod.io/picol_logo.png)
 
 
 [PICOL](http://picol.org/) is a a project to find a standard and reduced sign system for electronic communication.
