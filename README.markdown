@@ -2,9 +2,10 @@
 
 # PICOL
 
+
 [PICOL](http://picol.org/) is a a project to find a standard and reduced sign system for electronic communication.
 
-For more, see:
+For further informations, see:
 
  * http://picol.org/
  * http://blog.picol.org/
@@ -18,9 +19,7 @@ For more, see:
 
 So I decided to create an online generator that exploit the PHP GD library or equivalent.
 
-![Screenshot](http://www.gotanotherway.com/apps/picol_generator/1.1.5/PICOL%20generator_1.1.5-screenshot.png)
-
-[Try the application](http://www.gotanotherway.com/apps/picol_generator/1.1.5/) for a demo.
+[Try the application](http://picol.iod.io/generator/1.2/) for a demo.
 
 
 ## Local Server installation
@@ -36,9 +35,9 @@ You can get very quickly conversions simply call the "generator.php" file and pa
  * **badge**: `the filename with the ".svg" of the badge to add`
  * **action**: `"show" will show the image on screen, "" (nothing) will force download`
 
-Example: <tt>[generator.php?size=500&img=accept.svg&badge=badge_settings.svg&action=show](http://www.gotanotherway.com/apps/picol_generator/1.1.5/common/include/generator.php?size=500&img=accept.svg&badge=badge_settings.svg&action=show)</tt>
+Example: <tt>[generator.php?size=500&img=accept.svg&badge=badge_settings.svg&action=show](http://picol.iod.io/generator/1.2/common/include/generator.php?size=500&img=accept.svg&badge=badge_settings.svg&action=show)</tt>
 
-You can remotely call the generator from my server by this address: http://www.gotanotherway.com/apps/picol_generator/1.1.5/common/include/generator.php
+You can remotely call the generator from my server by this address: http://picol.iod.io/generator/1.2/common/include/generator.php
 
 ## Dependancies
 
