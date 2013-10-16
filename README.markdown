@@ -17,7 +17,7 @@ For further informations, see:
 
 So I decided to create an online generator that exploit the PHP GD library or equivalent.
 
-[Try the application](http://picol.iod.io/generator/1.2/) for a demo.
+[Try the application](http://picol.org/icon_generator.php) for a demo.
 
 
 ## Local Server installation
