@@ -1,4 +1,4 @@
-![PICOL logo](http://picol.iod.io/picol_logo.png)
+![PICOL logo](http://picol.org/img/header.png)
 
 
 [PICOL](http://picol.org/) is a a project to find a standard and reduced sign system for electronic communication.
@@ -17,7 +17,7 @@ For further informations, see:
 
 So I decided to create an online generator that exploit the PHP GD library or equivalent.
 
-[Try the application](http://picol.org/icon_generator.php) for a demo.
+[Try the application](http://picol.org/picol_icon_generator.php) for a demo.
 
 
 ## Local Server installation
