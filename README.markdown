@@ -37,7 +37,7 @@ You can get very quickly conversions simply call the "generator.php" file and pa
 | `action` | <code>text (""&#124;show)</code> | "" (nothing) will force download, "show" will show the image on screen |
 
 
-Example: <tt>[generator.php?size=500&color=ff0000&img=accept.svg&badge=badge_settings.svg&action=show](http://picol.iod.io/generator/1.2/common/include/generator.php?size=500&color=ff0000&img=accept.svg&badge=badge_settings.svg&action=show)</tt>
+Example: <tt>[generator.php?size=500&color=ff0000&img=accept.svg&badge=badge_settings.svg&action=show](http://tools.lonja.de/lab/icongenerator/common/include/generator.php?size=500&color=ff0000&img=accept.svg&badge=badge_settings.svg&action=show)</tt>
 
 ## Dependancies
 
