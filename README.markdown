@@ -39,8 +39,6 @@ You can get very quickly conversions simply call the "generator.php" file and pa
 
 Example: <tt>[generator.php?size=500&color=ff0000&img=accept.svg&badge=badge_settings.svg&action=show](http://picol.iod.io/generator/1.2/common/include/generator.php?size=500&color=ff0000&img=accept.svg&badge=badge_settings.svg&action=show)</tt>
 
-**Note:** You can remotely call the generator from my server by this address: http://picol.iod.io/generator/1.2/common/include/generator.php
-
 ## Dependancies
 
 **Need ImageMagick to works!**
