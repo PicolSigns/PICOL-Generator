@@ -16,62 +16,43 @@
    enable-background="new 0 0 32 32"
    xml:space="preserve"
    id="svg2"
-   >
-
-<metadata><rdf:RDF>
-
-   <cc:Work rdf:about="">
-   <dc:format>image/svg+xml</dc:format>
-   <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-   <dc:title>PICOL Icon</dc:title>
-   <dc:date>2009-10-08</dc:date>
-   <dc:creator><cc:Agent><dc:title>Melih Bilgil</dc:title></cc:Agent></dc:creator>
-   <dc:rights><cc:Agent><dc:title>Creative Commons BY-SA</dc:title></cc:Agent></dc:rights>
-   <dc:publisher><cc:Agent><dc:title>PICOL - Pictorial Communication Language</dc:title></cc:Agent></dc:publisher>
-   <dc:identifier>http://blog.picol.org</dc:identifier>
-   <dc:source>http://blog.picol.org</dc:source>
-   <dc:language>en</dc:language>
-   <dc:subject>
-     <rdf:Bag>
-       <rdf:li>PICOL</rdf:li>
-       <rdf:li>icon</rdf:li>
-       <rdf:li>icons</rdf:li>
-       <rdf:li>sign</rdf:li>
-       <rdf:li>GUI</rdf:li>
-       <rdf:li>vector</rdf:li>
-       <rdf:li>interface</rdf:li>
-     </rdf:Bag>
-   </dc:subject>
-   <dc:description>This is one icon out of all PICOL icons</dc:description>
-   <dc:contributor>
-       <cc:Agent><dc:title>Melih Bilgil (www.lonja.de), Christopher Adjei (www.boffer.net)</dc:title></cc:Agent></dc:contributor>
-   <cc:license rdf:resource="http://creativecommons.org/licenses/by-sa/3.0/" /></cc:Work>
-   <cc:License rdf:about="http://creativecommons.org/licenses/by-sa/3.0/">
-       <cc:permits rdf:resource="http://creativecommons.org/ns#Reproduction" />
-       <cc:permits rdf:resource="http://creativecommons.org/ns#Distribution" />
-       <cc:requires rdf:resource="http://creativecommons.org/ns#Notice" />
-       <cc:requires rdf:resource="http://creativecommons.org/ns#Attribution" />
-       <cc:permits rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
-       <cc:requires rdf:resource="http://creativecommons.org/ns#ShareAlike" /></cc:License>
-
-   </rdf:RDF>
-</metadata>
-
-<g id="background">
-	<rect fill="none" width="32" height="32"/>
-</g>
-<g id="tree">
-	<rect x="14" y="16" width="4" height="16"/>
-	<circle cx="8" cy="12" r="4"/>
-	<circle cx="10" cy="6" r="4"/>
-	<circle cx="16" cy="4" r="4"/>
-	<circle cx="22" cy="6" r="4"/>
-	<path d="M28,12.039c-0.021,2.208-1.826,3.981-4.035,3.961c-2.211-0.022-3.984-1.831-3.964-4.038
-		C20.023,9.754,21.828,7.981,24.036,8C26.246,8.022,28.02,9.83,28,12.039z"/>
-	<path d="M22.801,18.855c-1.577,1.547-4.106,1.523-5.655-0.053c-1.548-1.578-1.524-4.111,0.053-5.657
-		c1.579-1.546,4.108-1.525,5.656,0.052C24.402,14.775,24.379,17.307,22.801,18.855z"/>
-	<path d="M15.936,17.499c-3.589-0.028-6.468-2.512-6.438-5.549c0.038-3.039,2.973-5.479,6.562-5.45
-		c3.591,0.032,6.473,2.512,6.438,5.548C22.461,15.087,19.527,17.525,15.936,17.499z"/>
-	<circle cx="12" cy="16" r="4"/>
-</g>
-</svg>
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="tree.svg"><defs
+     id="defs3770" /><sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="640"
+     inkscape:window-height="480"
+     id="namedview3768"
+     showgrid="false"
+     inkscape:zoom="7.375"
+     inkscape:cx="16"
+     inkscape:cy="16"
+     inkscape:window-x="53"
+     inkscape:window-y="24"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg2" /><metadata
+     id="metadata3744"><rdf:RDF><cc:Work
+         rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title>PICOL Icon</dc:title><dc:date>2009-10-08</dc:date><dc:creator><cc:Agent><dc:title>Melih Bilgil</dc:title></cc:Agent></dc:creator><dc:rights><cc:Agent><dc:title>Creative Commons BY-SA</dc:title></cc:Agent></dc:rights><dc:publisher><cc:Agent><dc:title>PICOL - Pictorial Communication Language</dc:title></cc:Agent></dc:publisher><dc:identifier>http://blog.picol.org</dc:identifier><dc:source>http://blog.picol.org</dc:source><dc:language>en</dc:language><dc:subject><rdf:Bag><rdf:li>PICOL</rdf:li><rdf:li>icon</rdf:li><rdf:li>icons</rdf:li><rdf:li>sign</rdf:li><rdf:li>GUI</rdf:li><rdf:li>vector</rdf:li><rdf:li>interface</rdf:li></rdf:Bag></dc:subject><dc:description>This is one icon out of all PICOL icons</dc:description><dc:contributor><cc:Agent><dc:title>Melih Bilgil (www.lonja.de), Christopher Adjei (www.boffer.net)</dc:title></cc:Agent></dc:contributor><cc:license
+           rdf:resource="http://creativecommons.org/licenses/by-sa/3.0/" /></cc:Work><cc:License
+         rdf:about="http://creativecommons.org/licenses/by-sa/3.0/"><cc:permits
+           rdf:resource="http://creativecommons.org/ns#Reproduction" /><cc:permits
+           rdf:resource="http://creativecommons.org/ns#Distribution" /><cc:requires
+           rdf:resource="http://creativecommons.org/ns#Notice" /><cc:requires
+           rdf:resource="http://creativecommons.org/ns#Attribution" /><cc:permits
+           rdf:resource="http://creativecommons.org/ns#DerivativeWorks" /><cc:requires
+           rdf:resource="http://creativecommons.org/ns#ShareAlike" /></cc:License></rdf:RDF></metadata><g
+     id="background"><rect
+       fill="none"
+       width="32"
+       height="32"
+       id="rect3747" /></g><path
+     d="M 16 0 C 14.252129 9.3696902e-16 12.794363 1.1251767 12.25 2.6875 C 11.611596 2.2562027 10.828427 2 10 2 C 7.790861 2 6 3.790861 6 6 C 6 6.8284271 6.2562027 7.6115959 6.6875 8.25 C 5.1251767 8.7943634 4 10.252129 4 12 C 4 14.209139 5.790861 16 8 16 C 8 18.209139 9.790861 20 12 20 C 12.72993 20 13.410912 19.779016 14 19.4375 L 14 32 L 18 32 L 18 19.4375 C 19.519386 20.324617 21.496031 20.135175 22.8125 18.84375 C 23.609662 18.061743 23.998441 17.034393 24 16 C 26.194568 16.002878 27.9791 14.228697 28 12.03125 C 28.015938 10.270953 26.887798 8.8001766 25.3125 8.25 C 25.743797 7.6115959 26 6.8284271 26 6 C 26 3.790861 24.209139 2 22 2 C 21.171573 2 20.388404 2.2562027 19.75 2.6875 C 19.205637 1.1251767 17.747871 -5.4541602e-16 16 0 z "
+     id="rect3750" /></svg>

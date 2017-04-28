@@ -2,7 +2,7 @@
 // Place an "hole" in the img
 function image_mask(&$src, &$mask) {
 	imagesavealpha($src, true);
-	imagealphablending($src, false);	
+	imagealphablending($src, false);
 	// scan image pixels
 	for ($x = 0; $x < imagesx($src); $x++) {
 		for ($y = 0; $y < imagesy($src); $y++) {
@@ -20,7 +20,7 @@ if ($_GET["size"] && trim($_GET["size"]) !== ""){
 	ob_start();
 			// Change this path if you want to generate only from PNG
 			$main_dir = "../media/svg/";
-	
+
 	if ($_GET["img"] == "document_page_width.svg" || $_GET["img"] == "document_page_width.png"){
 		//From root
 		$img_directory = $main_dir;
@@ -29,7 +29,7 @@ if ($_GET["size"] && trim($_GET["size"]) !== ""){
 		$img_directory = $main_dir . "icons";
 	}
 	$badge_directory = $main_dir . "badges";
-	
+
 	$color = $_GET["color"];
 	if($color == "000" || $color == "000000"){
 		$color_name = "";
@@ -42,7 +42,7 @@ if ($_GET["size"] && trim($_GET["size"]) !== ""){
 			$_GET["img"] = str_replace(".png", ".svg", $_GET["img"]);
 			$_GET["badge"] = str_replace(".png", ".svg", $_GET["badge"]);
 			$size = $_GET["size"];
-			
+
 			// Get the first image
 			$first = new Imagick();
 			$first -> setBackgroundColor(new ImagickPixel('transparent'));
@@ -79,14 +79,14 @@ if ($_GET["size"] && trim($_GET["size"]) !== ""){
 				$second -> removeImage();
 				$second -> setResolution($size * $x_ratio, $size* $y_ratio);
 				$second -> readImage($badge_directory . "/" . trim($_GET["badge"]));
-			 
+
 			// Second image is put on top of the first
 			$first -> compositeImage($cancel, imagick::COMPOSITE_DSTOUT, 0, 0);
 			$first -> compositeImage($second, imagick::COMPOSITE_OVER, 0, 0);
 			$first -> colorizeImage("#" . $color, 1, true);
 			$first -> setImageFormat("png32");
 			$img_c = $first;
-			
+
 			$name = str_replace(".svg", "", $_GET["img"]);
 			$name_badge = str_replace(".svg", "_" . $_GET["size"] . $color_name . ".png", str_replace("badge", "", $_GET["badge"]));
 			$file_name = $name . $name_badge;
@@ -102,7 +102,7 @@ if ($_GET["size"] && trim($_GET["size"]) !== ""){
 			// Comment this line if you want generator from PNG
 			$_GET["img"] = str_replace(".png", ".svg", $_GET["img"]);
 			$size = $_GET["size"];
-			
+
 			$first = new Imagick();
 			$first -> setBackgroundColor(new ImagickPixel('transparent'));
 			$first -> readImage($img_directory . "/" . trim($_GET["img"]));
@@ -112,8 +112,13 @@ if ($_GET["size"] && trim($_GET["size"]) !== ""){
 				$first -> removeImage();
 				$first -> setResolution($size * $x_ratio, $size* $y_ratio);
 				$first -> readImage($img_directory . "/" . trim($_GET["img"]));
+<<<<<<< Updated upstream
 				$first -> colorizeImage("#" . $color, 1, true));
 			
+=======
+				$first -> colorizeImage("#" . $color, 1, true);
+
+>>>>>>> Stashed changes
 			$first -> setImageFormat("png32");
 			$img_c = $first;
 			$file_name = str_replace(".svg", "_" . $_GET["size"] . $color_name . ".png", $_GET["img"]);
