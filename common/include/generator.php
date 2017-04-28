@@ -112,7 +112,7 @@ if ($_GET["size"] && trim($_GET["size"]) !== ""){
 				$first -> removeImage();
 				$first -> setResolution($size * $x_ratio, $size* $y_ratio);
 				$first -> readImage($img_directory . "/" . trim($_GET["img"]));
-				$first -> colorizeImage("#" . $color, 1);
+				$first -> colorizeImage("#" . $color, 1, true));
 			
 			$first -> setImageFormat("png32");
 			$img_c = $first;
