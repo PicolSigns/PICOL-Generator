@@ -83,7 +83,7 @@ if ($_GET["size"] && trim($_GET["size"]) !== ""){
 			// Second image is put on top of the first
 			$first -> compositeImage($cancel, imagick::COMPOSITE_DSTOUT, 0, 0);
 			$first -> compositeImage($second, imagick::COMPOSITE_OVER, 0, 0);
-			$first -> colorizeImage("#" . $color, 1);
+			$first -> colorizeImage("#" . $color, 1, true);
 			$first -> setImageFormat("png32");
 			$img_c = $first;
 			
