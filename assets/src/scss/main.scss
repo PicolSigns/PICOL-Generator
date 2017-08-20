@@ -1,0 +1,258 @@
+
+@import "colours";
+@import "elements";
+@import "anythingslider";
+
+
+#loader {
+  height: 100%;
+  position: fixed;
+  width: 100%;
+  z-index: 10000;
+}
+
+#slider_content {
+  height: 495px;
+  left: 50%;
+  margin-left: -350px;
+  position: absolute;
+  width: 700px;
+}
+
+#slider {
+  padding-left: 0 !important;
+
+  fieldset {
+    background-color: $light-white;
+    border-bottom: 0 none !important;
+    height: 95.1% !important;
+    width: auto !important;
+  }
+}
+
+#operation_txt {
+  float: right;
+  font-style: italic;
+  font-weight: normal;
+  padding: 5px;
+  text-align: right;
+}
+
+#picol_generator_frm th {
+  border-top: 1px solid $black;
+  font-weight: normal;
+}
+
+#icon_selector td, #size_selector td, #badges_selector td {
+  &.selected {
+    background-color: $white;
+    border: 2px solid $black;
+  }
+
+  &.no_selectable {
+    color: $white;
+
+    &:hover {
+      background-color: transparent;
+      border: 1px solid transparent;
+      cursor: default;
+    }
+  }
+}
+
+#icon_selector td, #size_selector td, #badges_selector td, #generated td {
+  &:hove, &.hover {
+    background: {
+      color: $pearl;
+      image: radial-gradient(center center, ellipse closest-side, $white, $pearl);
+    }
+    border: 1px solid $black;
+    cursor: pointer;
+  }
+}
+
+#icon_selector {
+  width: 100%;
+
+  td {
+    border: transparent 1px solid;
+    height: 100;
+    padding: 5px;
+
+
+    img, #size_selector td img, #badges_selector td img {
+      margin-bottom: 10;
+    }
+  }
+}
+
+#badge {
+  background-color: $white;
+  border: $white-light 1px solid;
+  margin-top: 30;
+  overflow: auto;
+  position: relative;
+}
+
+#badges_selector {
+  td {
+    border: 1px solid transparent;
+    height: 100;
+    padding: 5px;
+  }
+}
+
+#size_selector {
+  td {
+    border: 1px solid transparent;
+    height: auto;
+    padding: 15px 0;
+  }
+}
+
+#icon_selector_container {
+  background-color: $white;
+  border: $white-light 1px solid;
+  height: 378px;
+  overflow: auto;
+  position: relative;
+  width: 596px;
+}
+
+#generated_container {
+  background-color: $white;
+  border: $white-light 1px solid;
+  clear: both;
+  height: 375px;
+  margin-top: 30;
+  overflow-x: auto;
+  position: relative;
+}
+
+#generated td, #history td {
+  &.nothing {
+    background: url("../media/img/cancel_light_128.png") no-repeat scroll center center $white;
+
+    &:hover {
+      border: 1px solid transparent !important;
+    }
+  }
+}
+
+#generated {
+  height: 100%;
+  width: 100%;
+
+  td {
+    background-image: radial-gradient(circle closest-side, $super-light-grey, $white 95%);
+    border: transparent 1px solid;
+
+    &:hover {
+      border: 1px solid $black !important;
+    }
+
+  }
+}
+
+#history_content {
+  background: url("../media/img/cancel_light_128.png") no-repeat scroll center center $white;
+  border: 1px solid $grey;
+  height: 330;
+  overflow-y: auto;
+  position: relative;
+  width: 100%;
+}
+
+#history {
+  width: 100%;
+
+  tr {
+    &:hover {
+      background-color: $pearl;
+    }
+
+    &.history td {
+      &:first-child {
+        border-right: $grey 1px solid;
+        text-align: center;
+      }
+
+      &:last-child {
+        text-align: left;
+      }
+
+      td {
+        text-align: center;
+
+        img {
+          width: 16px;
+        }
+      }
+    }
+
+    td {
+      padding: 5px;
+      text-transform: none;
+    }
+  }
+}
+
+#download_btn {
+  background: url("../media/img/download_accept_32.png") no-repeat scroll left center transparent;
+  color: $grey;
+  display: none;
+  float: right;
+  font-weight: normal;
+  margin-bottom: 5px;
+  margin-top: 10;
+  padding: 10 0 10 36px;
+  text-align: right;
+
+  a {
+    color: $black;
+    font-weight: bold;
+    padding: 14px 9px 9px;
+  }
+}
+
+.ui-button {
+  background: none;
+  background-color: $super-light-grey;
+  border: $grey 1px solid;
+  border-bottom: 0 none;
+  border-radius: 0;
+  float: right;
+  margin-right: -8px;
+  margin-top: 1px;
+}
+
+#colorpicker_container {
+  border: 1px solid $white-light;
+  height: 260;
+  margin-top: 10;
+  overflow: auto;
+  padding: 10;
+  position: relative;
+  text-align: center;
+  width: 567px;
+}
+
+#output {
+  background: $black;
+  color: $white;
+  float: right;
+  font-family: monospace;
+  padding: 2px 4px;
+}
+
+#values {
+  margin-top: 10;
+
+  th {
+    padding: 5px 5px 5px 0;
+  }
+
+  td {
+    padding: 5px 30 5px 5px;
+  }
+}

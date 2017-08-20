@@ -26,3 +26,10 @@ linters:
         enabled: true
         style: space # or 'new_line'
         allow_single_line_padding: true
+    IdSelector:
+        enabled: false
+    SelectorFormat:
+        enabled: true
+        convention: '[a-zA-Z0-9\-\_]+' # or 'strict_BEM', or 'hyphenated_BEM', or 'snake_case', or 'camel_case', or a regex pattern
+    SingleLinePerSelector:
+        enabled: false

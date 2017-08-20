@@ -6,28 +6,8 @@ module.exports = function(grunt) {
 	    requireResolution: true
 	});
 
-    grunt.initConfig({
-        pkg: grunt.file.readJSON("package.json"),
-		exec: {
-            php2html: {
-                cmd: "php main.php"
-            }
-        },
-		htmlmin: {
-	      dist: {
-	        options: {
-	          	removeComments: true,
-	          	collapseWhitespace: true
-	        },
-	        files: [{
-				"expand": true,
-				"cwd": "src/",
-				"src": ["**/*.html"],
-				"dest": "build/",
-				"ext": ".html"
-	        }]
-	      }
-	    },
+	grunt.initConfig({
+		pkg: grunt.file.readJSON("package.json"),
 
 		sass: {
 			dist: {

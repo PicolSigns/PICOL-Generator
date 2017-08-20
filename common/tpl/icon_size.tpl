@@ -11,6 +11,7 @@
 						$ss += $ss;
 						$available_sizes[$ss] = true;
 					}
+					$local_path = "";
 					/*
 					// Run this if you want generate from PNG
 					// Check the available size in the relative directories

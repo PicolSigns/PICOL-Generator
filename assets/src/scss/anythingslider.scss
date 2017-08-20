@@ -1,0 +1,192 @@
+// AnythingSlider v1.4.1+ Default (base) theme
+//
+// By Chris Coyier: http://css-tricks.com
+// with major improvements by Doug Neiner: http://pixelgraphics.us/
+// based on work by Remy Sharp: http://jqueryfordesigners.com/
+
+.anythingSlider {
+  margin: 0 auto;
+  padding: 0 45px 28px;
+  position: relative;
+
+  .thumbNav {
+    margin: 0;
+    padding-top: 0;
+
+    a {
+      &,
+      &.cur {
+        // background: $light-grey;
+        background-color: $very-very-light-grey;
+        color: $black !important;
+        padding: 5px 5px 0;
+        text-decoration: none;
+      }
+    }
+
+    li {
+      display: inline;
+
+      a {
+        // -moz-border-radius: 0 0 5px 5px;
+        // -webkit-border-radius: 0 0 5px 5px;
+        // background-image: url(../images/cellshade.png);
+        // background-repeat: repeat-x;
+        // border-radius: 0 0 5px 5px;
+        background-color: transparent;
+        color: $black !important;
+        display: inline-block;
+        font: 11px/18px;
+        font-weight: bold;
+        height: 18px;
+        margin: 0 5px 0 0;
+        outline: 0;
+        padding: 2px 8px;
+        text-align: center;
+        text-decoration: none !important;
+
+        &:hover {
+          background-image: none;
+          text-decoration: underline !important;
+        }
+      }
+    }
+  }
+
+  // anythingSlider viewport window
+  .anythingWindow {
+    // border-bottom: 3px solid $light-grey;
+    // border-top: 3px solid $light-grey;
+    border: 0 none;
+    border-bottom: $grey 1px solid;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+  }
+
+  .start-stop {
+    background: {
+      color: $green;
+      image: url("../images/cellshade.png");
+      position: center top;
+      repeat: repeat-x;
+    }
+    border-radius: 0 0 5px 5px;
+    color: $white;
+    float: right;
+    outline: 0;
+    padding: 2px 5px;
+    text: {
+      align: center;
+      decoration: none;
+    }
+    width: 40px;
+    z-index: 100;
+
+    &:hover,
+    &.hover { background-image: none; }
+
+    &.playing { background-color: $red; }
+
+    &:hover,
+    &.hover { color: $very-light-grey; }
+  }
+
+  // Active State
+  &.activeSlider {
+    // .anythingWindow { border-color: #7C9127; }
+
+    .thumbNav {
+      a {
+        &,
+        &.cur {
+          // background-color: #7C9127;
+          // font-size: 0.9em;
+        }
+      }
+    }
+  }
+
+  // Navigation Arrows
+  .arrow {
+    display: block;
+    position: absolute;
+    top: 50%;
+
+    a {
+      display: block;
+      height: 120px;
+      margin: -60px 0 0;
+      outline: 0;
+      text-align: center;
+      text-indent: -9999px;
+      width: 45px;
+    }
+  }
+
+  .forward {
+    right: 0;
+
+    a {
+      background-position: 0 -40px;
+
+      &:hover,
+      &.hover { background-position: 0 -240px; }
+    }
+  }
+
+  .back {
+    left: 0;
+
+    a {
+      background-position: -88px -40px;
+
+      &:hover,
+      &.hover { background-position: -88px -240px; }
+    }
+  }
+
+  // Navigation Links
+  .anythingControls { outline: 0; }
+
+  // slider autoplay right-to-left, reverse order of nav links to look better
+  .rtl .thumbNav {
+    float: left;
+
+    a { float: right; } // reverse order of nav links
+  }  // move nav link group to left
+  // .anythingSlider.rtl .start-stop { float: right; } */ /* move start/stop button - in case you want to switch sides
+
+  // Autoplay Start/Stop button
+
+
+  &,
+  .anythingWindow,
+  .thumbNav a,
+  .arrow a,
+  .start-stop {
+    transition-duration: 0;
+  }
+}
+
+// anythingSlider base UL
+ul {
+  .anythingBase {
+    background: transparent;
+    left: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 0;
+
+    .panel {
+      background: transparent;
+      display: block;
+      float: left;
+      margin: 0;
+      padding: 0;
+    }
+  }
+}
