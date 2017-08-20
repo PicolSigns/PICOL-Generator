@@ -39,7 +39,7 @@ You can get very quickly conversions simply call the "generator.php" file and pa
 
 Example: <tt>[generator.php?size=500&color=ff0000&img=accept.svg&badge=badge_settings.svg&action=show](http://tools.lonja.de/lab/icongenerator/common/include/generator.php?size=500&color=ff0000&img=accept.svg&badge=badge_settings.svg&action=show)</tt>
 
-## Dependancies
+## Dependencies
 
 **Need ImageMagick to works!**
 
