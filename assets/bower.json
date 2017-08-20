@@ -1,0 +1,32 @@
+{
+  "name": "PICOL Generator",
+  "description": "PICOL Icon generator",
+  "main": "",
+  "authors": [
+    "Alessandro Gubitosi <gubi.ale@iod.io>"
+  ],
+  "license": "GPL-3.0",
+  "homepage": "https://github.com/PicolSigns/PICOL-Generator/",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^3.1.1",
+    "reset-css": "^2.2.0",
+    "bootstrap": "^3.3.7",
+    "animate.css": "^3.5.2",
+    "animatewithsass": "^3.2.2",
+    "anythingslider": "^1.9.6",
+    "svg.js": "^2.6.3",
+    "colorpicker": "^1.2.13",
+    "jquery.scrollTo": "^2.1.2"
+  },
+  "keywords": [
+    "PICOL",
+    "Icons"
+  ]
+}

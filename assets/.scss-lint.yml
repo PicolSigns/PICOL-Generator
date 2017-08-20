@@ -1,0 +1,28 @@
+
+scss_files: "src/scss/**/*.scss"
+
+linters:
+    BorderZero:
+        enabled: false
+    Indentation:
+        severity: warning
+        width: 2
+    NameFormat:
+        enabled: false
+    NestingDepth:
+        enabled: true
+        max_depth: 9
+    SelectorDepth:
+        enabled: true
+        max_depth: 9
+    StringQuotes:
+        enabled: true
+        style: double_quotes
+    ImportantRule:
+        enabled: false
+    DeclarationOrder:
+        enabled: false
+    SpaceBeforeBrace:
+        enabled: true
+        style: space # or 'new_line'
+        allow_single_line_padding: true
