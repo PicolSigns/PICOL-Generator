@@ -1,5 +1,9 @@
 /* jshint esversion: 6 */
-// import menu from "../../src/json/menu.json";
+
+
+import IconSize from "./_icon_size.es6";
+
+var icon_size = new IconSize();
 
 class Generator {
 	/**
@@ -9,42 +13,48 @@ class Generator {
 		this.pages = {};
 		this.scripts = {};
 		this.sliders = {
+			// "Project": {
+			// 	"id": "project",
+			// 	"title": "PROJECT NAME",
+			// 	"main_file": "",
+			// 	"script_file": ""
+			// },
 			"Size": {
 				"id": "icon_size",
 				"title": "CHOOSE ICON SIZE",
 				"main_file": "icon_size.tpl",
 				"script_file": ""
 			},
-			"Color": {
-				"id": "color",
-				"title": "COLOR",
-				"main_file": "colorpicker.tpl",
-				"script_file": ""
-			},
-			"Icons": {
-				"id": "icons",
-				"title": "ICONS",
-				"main_file": "icons.tpl",
-				"script_file": "icons.js"
-			},
-			"Badges": {
-				"id": "badges",
-				"title": "BADGEs",
-				"main_file": "badge.tpl",
-				"script_file": ""
-			},
-			"Single download": {
-				"id": "single_file",
-				"title": "DOWNLOAD SINGLE FILE",
-				"main_file": "download_single.tpl",
-				"script_file": ""
-			},
-			"Multiple download": {
-				"id": "multiple_file",
-				"title": "DOWNLOAD MULTIPLE FILE",
-				"main_file": "download_multiple.tpl",
-				"script_file": "download_multiple.js"
-			}
+			// "Color": {
+			// 	"id": "color",
+			// 	"title": "COLOUR",
+			// 	"main_file": "colorpicker.tpl",
+			// 	"script_file": ""
+			// },
+			// "Icons": {
+			// 	"id": "icons",
+			// 	"title": "ICONS",
+			// 	"main_file": "icons.tpl",
+			// 	"script_file": "icons.js"
+			// },
+			// "Badges": {
+			// 	"id": "badges",
+			// 	"title": "BADGES",
+			// 	"main_file": "badge.tpl",
+			// 	"script_file": ""
+			// },
+			// "Single download": {
+			// 	"id": "single_file",
+			// 	"title": "DOWNLOAD SINGLE FILE",
+			// 	"main_file": "download_single.tpl",
+			// 	"script_file": ""
+			// },
+			// "Multiple download": {
+			// 	"id": "multiple_file",
+			// 	"title": "DOWNLOAD PACKED FILES",
+			// 	"main_file": "download_multiple.tpl",
+			// 	"script_file": "download_multiple.js"
+			// }
 		};
 		this.checkall = true;
 		this.j = 0;
@@ -54,66 +64,72 @@ class Generator {
 
 	build_sliders() {
 		let i = 0;
-		// new_dir = $("#new_dir").val(),
 		$.each(this.sliders, (item, value) => {
 			i++;
 			this.pages[i] = item;
 			this.scripts[i] = value.script_file;
-			console.log(item, value);
 			$("#slider").append(
 				$("<li>").append(
-					// $("<fieldset>", {"id": value.id}).append(
-					// 	$("<legend>").text(value.title)
-					// )
+					$("<fieldset>", {"id": value.id, "class": "selector"}).append(
+						$("<legend>").text(value.title)
+					)
 				)
 			);
-			$.get("common/include/funcs/_ajax/executor.php", {file: value.main_file}, function(data){
-				$("#" + value.id).append(data);
-			});
+			// $.ajax({
+			// 	url: "common/include/funcs/_ajax/executor.php",
+			// 	data: {
+			// 		file: value.main_file
+			// 	},
+			// 	dataType: "text",
+			// 	success: (data) => {
+			// 		$("#" + value.id).append($(data));
+			// 	}
+			// });
+			$("#" + value.id).append(icon_size.build());
 		});
-		// $("#slider").anythingSlider({
-		// 	navigationFormatter: (i) => { // add thumbnails as navigation links
-		// 		return this.pages[i];
-		// 	},
-		// 	autoPlay: false,
-		// 	startPanel: 1,
-		// 	buildArrows: false,
-		// 	buildStartStop: false,
-		// 	expand: true,
-		// 	hashTags: false,
-		// 	resizeContents: true,
-		// 	infinteSlides: false,
-		// 	animationTime: 450,
-		// 	easing: "easeOutCubic",
-		// 	onSlideComplete: (slider) => {
-		// 		if(slider.currentPage > 3 && $("#selected_imgs").val() === ""){
-		// 			if(slider.currentPage < 7 || $("#history").html() === ""){
-		// 				$("#slider").anythingSlider(3);
-		// 			}
-		// 		}
-		// 		if(slider.currentPage == 6){
-		// 			this.refresh_history();
-		// 		}
-		// 		if(slider.currentPage !== 3){
-		// 			$(document).unbind("keydown");
-		// 		} else {
-		// 			$("#filter").focus();
-		// 		}
-		// 		if(this.scripts[slider.currentPage] !== "" && this.scripts[slider.currentPage] !== undefined){
-		// 			$.get("common/js/include/" + this.scripts[slider.currentPage], () => {}, "script");
-		// 		}
-		// 	},
-		// 	onSlideBegin: (slider) => {
-		// 		if(slider.currentPage !== 3 && $("#selected_imgs").val() === ""){
-		// 			$("#generator_interface .forward > a").animate({"backgroundPosition": "-188px -40px"}, 1000);
-		// 		} else {
-		// 			$("#generator_interface .forward > a").animate({"backgroundPosition": "0 -40px"}, 1000);
-		// 		}
-		// 		if(slider.currentPage !== 6){
-		// 			this.refresh_history();
-		// 		}
-		// 	}
-		// });
+		$("#slider").anythingSlider({
+			navigationFormatter: (i) => { // add thumbnails as navigation links
+				return this.pages[i];
+			},
+			autoPlay: false,
+			startPanel: 1,
+			buildArrows: false,
+			buildStartStop: false,
+			expand: true,
+			hashTags: false,
+			resizeContents: true,
+			infinteSlides: false,
+			animationTime: 450,
+			easing: "easeOutCubic",
+			onSlideComplete: (slider) => {
+				if(slider.currentPage > 3 && $("#selected_imgs").val() === ""){
+					if(slider.currentPage < 7 || $("#history").html() === ""){
+						$("#slider").anythingSlider(3);
+					}
+				}
+				if(slider.currentPage == 6){
+					this.refresh_history();
+				}
+				if(slider.currentPage !== 3){
+					$(document).unbind("keydown");
+				} else {
+					$("#filter").focus();
+				}
+				if(this.scripts[slider.currentPage] !== "" && this.scripts[slider.currentPage] !== undefined){
+					$.get("common/js/include/" + this.scripts[slider.currentPage], () => {}, "script");
+				}
+			},
+			onSlideBegin: (slider) => {
+				if(slider.currentPage !== 3 && $("#selected_imgs").val() === ""){
+					$("#generator_interface .forward > a").animate({"backgroundPosition": "-188px -40px"}, 1000);
+				} else {
+					$("#generator_interface .forward > a").animate({"backgroundPosition": "0 -40px"}, 1000);
+				}
+				if(slider.currentPage !== 6){
+					this.refresh_history();
+				}
+			}
+		});
 	}
 
 	select_unselect_img(file_name, single, selector, selected_input, allow_removing) {
@@ -210,10 +226,10 @@ class Generator {
 			results_content = results_content.replace("<tr></tr>", "");
 			$("#slider").find("#generated").html(results_content);
 			$("#generated div").delay(300).fadeIn(150);
-			$.get("common/include/ajax_read_history.php", {"dir": new_dir},
-			function(data){
-				$("#slider").find("#history").html(data);
-			});
+			// $.get("common/include/ajax_read_history.php", {"dir": new_dir},
+			// function(data){
+			// 	$("#slider").find("#history").html(data);
+			// });
 		});
 		$("#loader").fadeOut();
 		$("#loader").css({cursor: "default !important"});
@@ -278,6 +294,9 @@ class Generator {
 				});
 				$("#icon_selector").append(table);
 			}, "json");
+
+			$("#loader").fadeOut(900);
+			$("#generator_interface").delay(300).fadeIn(900);
 		});
 	}
 }

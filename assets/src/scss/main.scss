@@ -27,6 +27,18 @@
     border-bottom: 0 none !important;
     height: 95.1% !important;
     width: auto !important;
+
+    table {
+      height: 100%;
+      padding: 5px;
+      width: 100%;
+
+      .stage {
+        background-color: $white;
+        border: $white-light 1px solid;
+        width: 100%;
+      }
+    }
   }
 }
 

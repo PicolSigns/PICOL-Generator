@@ -14,7 +14,7 @@ function _interopRequireDefault(obj) {
 var generator = new _generator2.default();
 generator.run();
 
-},{"../../src/js/generator.es6":2}],2:[function(require,module,exports){
+},{"../../src/js/generator.es6":3}],2:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -26,7 +26,89 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /* jshint esversion: 6 */
-// import menu from "../../src/json/menu.json";
+
+var IconSize = function () {
+	/**
+  * Class constructor
+  */
+	function IconSize() {
+		_classCallCheck(this, IconSize);
+
+		this.available_sizes = function () {
+			var a = [],
+			    i = 8;
+			while (i <= 128) {
+				i += i;
+				a.push({
+					size: i,
+					available: true
+				});
+			}
+			a.push({
+				size: "custom",
+				available: true
+			});
+			return a;
+		}();
+	}
+
+	_createClass(IconSize, [{
+		key: "build",
+		value: function build() {
+			console.log(this.available_sizes);
+			var s = 0,
+			    selected = "",
+			    img = "",
+			    img_size = 0;
+			return $("<table>").append($("<tr>").append($("<td>").append($("<input>", { "type": "hidden", "id": "selected_size", "name": "selected_size" }).val("32")).append($("<input>", { "type": "hidden", "id": "selected_imgs", "name": "selected_imgs" }).val("")).append($("<table>", { "id": "size_selector", "class": "stage" }).append($.map(this.available_sizes, function (v) {
+				s++;
+				if (v.available && typeof v.size == "number") {
+					selected = v.size == 32 ? "selected" : "";
+					img_size = v.size <= 64 ? v.size : v.size / 1.2;
+				} else {
+					selected = "no_selectable";
+					img = "cancel.png";
+					img_size = "";
+				}
+				console.log(v, selected, img_size);
+				return $("<td>", {
+					"valign": "middle",
+					"onclick": "select_unselect_img('" + v.size + "', true, 'size_selector', 'selected_size', false); setTimeout('$(\'#slider\').data(\'AnythingSlider\').goForward()', 300);",
+					"id": "_" + v.size,
+					"title": v.size + "px",
+					// "valign": "bottom",
+					"align": "center",
+					"class": selected
+				}).append($("<img>", {
+					"src": "../../../api/generator.php?size=" + img_size + "&img=document_page_width.svg&badge=&action=show"
+				})).append($("<br />")).append(v.size + "px");
+			})))));
+		}
+	}]);
+
+	return IconSize;
+}();
+
+exports.default = IconSize;
+
+},{}],3:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* jshint esversion: 6 */
+
+var _icon_size = require("./_icon_size.es6");
+
+var _icon_size2 = _interopRequireDefault(_icon_size);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var icon_size = new _icon_size2.default();
 
 var Generator = function () {
 	/**
@@ -38,42 +120,48 @@ var Generator = function () {
 		this.pages = {};
 		this.scripts = {};
 		this.sliders = {
+			// "Project": {
+			// 	"id": "project",
+			// 	"title": "PROJECT NAME",
+			// 	"main_file": "",
+			// 	"script_file": ""
+			// },
 			"Size": {
 				"id": "icon_size",
 				"title": "CHOOSE ICON SIZE",
 				"main_file": "icon_size.tpl",
 				"script_file": ""
-			},
-			"Color": {
-				"id": "color",
-				"title": "COLOR",
-				"main_file": "colorpicker.tpl",
-				"script_file": ""
-			},
-			"Icons": {
-				"id": "icons",
-				"title": "ICONS",
-				"main_file": "icons.tpl",
-				"script_file": "icons.js"
-			},
-			"Badges": {
-				"id": "badges",
-				"title": "BADGEs",
-				"main_file": "badge.tpl",
-				"script_file": ""
-			},
-			"Single download": {
-				"id": "single_file",
-				"title": "DOWNLOAD SINGLE FILE",
-				"main_file": "download_single.tpl",
-				"script_file": ""
-			},
-			"Multiple download": {
-				"id": "multiple_file",
-				"title": "DOWNLOAD MULTIPLE FILE",
-				"main_file": "download_multiple.tpl",
-				"script_file": "download_multiple.js"
 			}
+			// "Color": {
+			// 	"id": "color",
+			// 	"title": "COLOUR",
+			// 	"main_file": "colorpicker.tpl",
+			// 	"script_file": ""
+			// },
+			// "Icons": {
+			// 	"id": "icons",
+			// 	"title": "ICONS",
+			// 	"main_file": "icons.tpl",
+			// 	"script_file": "icons.js"
+			// },
+			// "Badges": {
+			// 	"id": "badges",
+			// 	"title": "BADGES",
+			// 	"main_file": "badge.tpl",
+			// 	"script_file": ""
+			// },
+			// "Single download": {
+			// 	"id": "single_file",
+			// 	"title": "DOWNLOAD SINGLE FILE",
+			// 	"main_file": "download_single.tpl",
+			// 	"script_file": ""
+			// },
+			// "Multiple download": {
+			// 	"id": "multiple_file",
+			// 	"title": "DOWNLOAD PACKED FILES",
+			// 	"main_file": "download_multiple.tpl",
+			// 	"script_file": "download_multiple.js"
+			// }
 		};
 		this.checkall = true;
 		this.j = 0;
@@ -94,64 +182,67 @@ var Generator = function () {
 			var _this = this;
 
 			var i = 0;
-			// new_dir = $("#new_dir").val(),
 			$.each(this.sliders, function (item, value) {
 				i++;
 				_this.pages[i] = item;
 				_this.scripts[i] = value.script_file;
-				console.log(item, value);
-				$("#slider").append($("<li>").append()
-				// $("<fieldset>", {"id": value.id}).append(
-				// 	$("<legend>").text(value.title)
-				// )
-				);
-				$.get("common/include/funcs/_ajax/executor.php", { file: value.main_file }, function (data) {
-					$("#" + value.id).append(data);
-				});
+				$("#slider").append($("<li>").append($("<fieldset>", { "id": value.id, "class": "selector" }).append($("<legend>").text(value.title))));
+				// $.ajax({
+				// 	url: "common/include/funcs/_ajax/executor.php",
+				// 	data: {
+				// 		file: value.main_file
+				// 	},
+				// 	dataType: "text",
+				// 	success: (data) => {
+				// 		$("#" + value.id).append($(data));
+				// 	}
+				// });
+				$("#" + value.id).append(icon_size.build());
 			});
-			// $("#slider").anythingSlider({
-			// 	navigationFormatter: (i) => { // add thumbnails as navigation links
-			// 		return this.pages[i];
-			// 	},
-			// 	autoPlay: false,
-			// 	startPanel: 1,
-			// 	buildArrows: false,
-			// 	buildStartStop: false,
-			// 	expand: true,
-			// 	hashTags: false,
-			// 	resizeContents: true,
-			// 	infinteSlides: false,
-			// 	animationTime: 450,
-			// 	easing: "easeOutCubic",
-			// 	onSlideComplete: (slider) => {
-			// 		if(slider.currentPage > 3 && $("#selected_imgs").val() === ""){
-			// 			if(slider.currentPage < 7 || $("#history").html() === ""){
-			// 				$("#slider").anythingSlider(3);
-			// 			}
-			// 		}
-			// 		if(slider.currentPage == 6){
-			// 			this.refresh_history();
-			// 		}
-			// 		if(slider.currentPage !== 3){
-			// 			$(document).unbind("keydown");
-			// 		} else {
-			// 			$("#filter").focus();
-			// 		}
-			// 		if(this.scripts[slider.currentPage] !== "" && this.scripts[slider.currentPage] !== undefined){
-			// 			$.get("common/js/include/" + this.scripts[slider.currentPage], () => {}, "script");
-			// 		}
-			// 	},
-			// 	onSlideBegin: (slider) => {
-			// 		if(slider.currentPage !== 3 && $("#selected_imgs").val() === ""){
-			// 			$("#generator_interface .forward > a").animate({"backgroundPosition": "-188px -40px"}, 1000);
-			// 		} else {
-			// 			$("#generator_interface .forward > a").animate({"backgroundPosition": "0 -40px"}, 1000);
-			// 		}
-			// 		if(slider.currentPage !== 6){
-			// 			this.refresh_history();
-			// 		}
-			// 	}
-			// });
+			$("#slider").anythingSlider({
+				navigationFormatter: function navigationFormatter(i) {
+					// add thumbnails as navigation links
+					return _this.pages[i];
+				},
+				autoPlay: false,
+				startPanel: 1,
+				buildArrows: false,
+				buildStartStop: false,
+				expand: true,
+				hashTags: false,
+				resizeContents: true,
+				infinteSlides: false,
+				animationTime: 450,
+				easing: "easeOutCubic",
+				onSlideComplete: function onSlideComplete(slider) {
+					if (slider.currentPage > 3 && $("#selected_imgs").val() === "") {
+						if (slider.currentPage < 7 || $("#history").html() === "") {
+							$("#slider").anythingSlider(3);
+						}
+					}
+					if (slider.currentPage == 6) {
+						_this.refresh_history();
+					}
+					if (slider.currentPage !== 3) {
+						$(document).unbind("keydown");
+					} else {
+						$("#filter").focus();
+					}
+					if (_this.scripts[slider.currentPage] !== "" && _this.scripts[slider.currentPage] !== undefined) {
+						$.get("common/js/include/" + _this.scripts[slider.currentPage], function () {}, "script");
+					}
+				},
+				onSlideBegin: function onSlideBegin(slider) {
+					if (slider.currentPage !== 3 && $("#selected_imgs").val() === "") {
+						$("#generator_interface .forward > a").animate({ "backgroundPosition": "-188px -40px" }, 1000);
+					} else {
+						$("#generator_interface .forward > a").animate({ "backgroundPosition": "0 -40px" }, 1000);
+					}
+					if (slider.currentPage !== 6) {
+						_this.refresh_history();
+					}
+				}
+			});
 		}
 	}, {
 		key: "select_unselect_img",
@@ -255,9 +346,10 @@ var Generator = function () {
 				results_content = results_content.replace("<tr></tr>", "");
 				$("#slider").find("#generated").html(results_content);
 				$("#generated div").delay(300).fadeIn(150);
-				$.get("common/include/ajax_read_history.php", { "dir": new_dir }, function (data) {
-					$("#slider").find("#history").html(data);
-				});
+				// $.get("common/include/ajax_read_history.php", {"dir": new_dir},
+				// function(data){
+				// 	$("#slider").find("#history").html(data);
+				// });
 			});
 			$("#loader").fadeOut();
 			$("#loader").css({ cursor: "default !important" });
@@ -326,6 +418,9 @@ var Generator = function () {
 					});
 					$("#icon_selector").append(table);
 				}, "json");
+
+				$("#loader").fadeOut(900);
+				$("#generator_interface").delay(300).fadeIn(900);
 			});
 		}
 	}]);
@@ -335,4 +430,4 @@ var Generator = function () {
 
 exports.default = Generator;
 
-},{}]},{},[1]);
+},{"./_icon_size.es6":2}]},{},[1]);

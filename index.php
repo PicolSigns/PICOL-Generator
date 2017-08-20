@@ -41,33 +41,32 @@ if ($_SERVER["REQUEST_URI"] !== "/apps/picol_generator/1.2/"){
 		<meta name="Description" content="Create, configure and export your own PICOL incons set." />
 		<meta name="Keywords" content="PICOL PIctorial COmmunication Language icon generator svg png" />
 
-        <!-- jQuery & jQuery UI -->
-		<script type="text/javascript" src="<?php print BOWER_URI; ?>jquery/dist/jquery.min.js"></script>
-		<script type="text/javascript" src="<?php print BOWER_URI; ?>jquery-ui/jquery-ui.min.js"></script>
 		<!-- <link type="text/css" href="common/js/jquery/jquery-ui-1.8.23.custom/css/smoothness/jquery-ui-1.8.23.custom.css" rel="stylesheet" media="screen" /> -->
-		<script type="text/javascript" src="<?php print BOWER_URI; ?>jquery.scrollTo/jquery.scrollTo.min.js"></script>
 		<!-- jquery AnythingSlider -->
 		<!-- <link type="text/css" href="<?php print BOWER_URI; ?>/picol_anythingslider.css" rel="stylesheet" media="screen" /> -->
-		<script type="text/javascript" src="<?php print BOWER_URI; ?>anythingslider/js/jquery.anythingslider.min.js"></script>
 
 		<link rel="stylesheet" href="<?php print CSS_URI; ?>main.min.css" type="text/css" media="screen" />
-		<script type="text/javascript" src="<?php print JS_URI; ?>main.min.js"></script>
-		<script type="text/javascript">
-		$(document).ready(function() {
-			$("#loader").fadeOut(900);
-			$("#generator_interface").delay(300).fadeIn(900);
-		});
-		</script>
 	</head>
 	<body>
 		<div id="loader"></div>
 		<div id="generator_interface">
-			<?php
-			require_once(TEMPLATE_DIR . "generator_interface.tpl");
-			?>
+            <input type="hidden" id="new_dir" value="" />
+            <input type="hidden" id="images" value="" />
+            <div id="slider_content">
+            	<ul id="slider"></ul>
+            </div>
 		</div>
 		<br />
 		<br />
-		<!-- Insert here your contents -->
+        <!-- Insert here your contents -->
+        <!-- ... -->
+        <!--  -->
+
+        <!-- jQuery & jQuery UI -->
+        <script type="text/javascript" src="<?php print BOWER_URI; ?>jquery/dist/jquery.min.js"></script>
+        <script type="text/javascript" src="<?php print BOWER_URI; ?>jquery-ui/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="<?php print BOWER_URI; ?>jquery.scrollTo/jquery.scrollTo.min.js"></script>
+        <script type="text/javascript" src="<?php print BOWER_URI; ?>anythingslider/js/jquery.anythingslider.min.js"></script>
+        <script type="text/javascript" src="<?php print JS_URI; ?>main.js"></script>
 	</body>
 </html>
