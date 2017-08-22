@@ -7,7 +7,8 @@ header("Content-Type: text/plain;");
  *
  * @author  Alessandro Gubitosi <gubi.ale@iod.io>
  * @version 1.0.0
- * @uses    yaml_parse_file http://php.net/manual/en/book.yaml.php
+ * @uses    libRSVG https://wiki.gnome.org/action/show/Projects/LibRsvg
+ * @uses    convert https://www.imagemagick.org/script/convert.php
  */
 class PICOL_Generator {
 	static $req;
@@ -91,8 +92,10 @@ class PICOL_Generator {
     /**
      * Generate the image
      * @uses rsvg-convert
-     * @see https://wiki.gnome.org/action/show/Projects/LibRsvg
-     * @see https://en.wikipedia.org/wiki/Librsvg
+     * @see  https://wiki.gnome.org/action/show/Projects/LibRsvg
+     * @see  https://en.wikipedia.org/wiki/Librsvg
+     * @uses convert
+     * @see  https://www.imagemagick.org/script/convert.php
      *
      * @param  string                           $path                           The path of the image
      * @param  string                           $img                            The subject image
@@ -129,6 +132,9 @@ class PICOL_Generator {
 
     /**
      * Generate the requested image
+     * @uses convert
+     * @see  https://www.imagemagick.org/script/convert.php
+     *
      * @return mixed                                                            Render the generated image or promt for download
      */
     private static function generate_picol() {
@@ -155,7 +161,7 @@ class PICOL_Generator {
              */
             $merge_command = "convert -density 5000 {$badge} {$img} {$mask} -composite {$output_img} && {$after}";
         } else {
-            // Wait: this file was already generated!
+            // This file was already generated!
             // So we just need to copy to another position
             $merge_command = "cp {$img} {$output_img} && {$after}";
         }
@@ -173,7 +179,6 @@ class PICOL_Generator {
         }
     	header("Content-Type: image/png");
     	readfile(self::$output);
-    	ob_end_flush ();
     }
 
 	public static function run($request) {
@@ -184,6 +189,7 @@ class PICOL_Generator {
         if(self::$req->img !== "") {
             self::generate_picol();
         }
+    	ob_end_flush ();
 	}
 }
 
