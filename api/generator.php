@@ -1,135 +1,192 @@
 <?php
-// Place an "hole" in the img
-function image_mask(&$src, &$mask) {
-	imagesavealpha($src, true);
-	imagealphablending($src, false);
-	// scan image pixels
-	for ($x = 0; $x < imagesx($src); $x++) {
-		for ($y = 0; $y < imagesy($src); $y++) {
-			$mask_pix = imagecolorat($mask,$x,$y);
-			$mask_pix_color = imagecolorsforindex($mask, $mask_pix);
-			if ($mask_pix_color['alpha'] < 127) {
-				$src_pix = imagecolorat($src,$x,$y);
-				$src_pix_array = imagecolorsforindex($src, $src_pix);
-				imagesetpixel($src, $x, $y, imagecolorallocatealpha($src, $src_pix_array['red'], $src_pix_array['green'], $src_pix_array['blue'], 127 - $mask_pix_color['alpha']));
-			}
-		}
+header("Content-Type: text/plain;");
+
+
+/**
+ * Class Generator
+ *
+ * @author  Alessandro Gubitosi <gubi.ale@iod.io>
+ * @version 1.0.0
+ * @uses    yaml_parse_file http://php.net/manual/en/book.yaml.php
+ */
+class PICOL_Generator {
+	static $req;
+	static $roots;
+    static $ext = ".svg";
+    static $output;
+
+    /**
+     * Convert a regular Hexadecimal colour (6 characters) to its shorthand (3 characters)
+     * @param  string                           $colour                         The hex colour
+     * @return string                                                           The shorthand hex colour
+     */
+    private static function reg_hex2shorthand($colour) {
+        return preg_replace('/([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])/i', "$1$3$5", $colour);
+    }
+
+    /**
+     * Convert a shorthand Hexadecimal colour (3 characters) to its regular value (6 characters)
+     * @param  string                           $colour                         The hex colour
+     * @return string                                                           The shorthand hex colour
+     */
+    private static function shorthand2reg_hex($colour) {
+        return preg_replace('/([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])/i', "$1$1$2$2$3$3", $colour);
+    }
+
+    /* ---------------------------------------------------------------------- */
+
+    /**
+     * Set root paths
+     * @return array                                                            An array with all needed root paths
+     */
+    private static function get_root_paths() {
+        $main_dir = "media/svg/";
+        $roots = [
+            "root"   => $main_dir,
+            "img"   => $main_dir . ((self::$req->img == "document_page_width" . self::$ext) ? "" : "icons/"),
+            "badge" => $main_dir . "badges/",
+            "tmp" => [
+                "root"  => "tmp/",
+                "img"   => "tmp/img/",
+                "badge" => "tmp/badges/",
+                "mask"  => "tmp/masks/"
+            ]
+        ];
+
+        return $roots;
+    }
+
+    /**
+     * Parse the request
+     * @param  array                            $request                        The request array
+     * @return object                                                           An object with all needed collected params
+     */
+	public static function parse_request($request) {
+		$req = new stdClass();
+		$req->size = ((isset($request["size"]) && strlen($request["colour"]) >= 2) ? trim(preg_replace('/[^\d]+/', "", $request["size"])) : 16);
+		$req->colour = ((isset($request["colour"]) && strlen($request["colour"]) >= 3) ? trim(substr(preg_replace('/[^0-9a-fA-F]+/iu', "", $request["colour"]), 0, 6)) : "000");
+        if(strlen($req->colour) == 6) {
+            $req->colour = self::reg_hex2shorthand($req->colour);
+        }
+		$req->img = ((isset($request["img"]) && strlen($request["img"]) >= 3) ? trim(preg_replace('/[^\w\d\_]+/', "", str_replace([".png", ".svg"], "", $request["img"]))) . self::$ext : "document_page_width");
+		$req->badge = (isset($request["badge"]) ? "badge_" . trim(preg_replace('/[^\w\d\_]+/', "", str_replace(["badge_", ".png", ".svg"], "", $request["badge"]))) . self::$ext : null);
+		$req->show = ((isset($request["action"]) && $request["action"] == "show") ? true : false);
+		return $req;
+	}
+
+    /**
+     * Change the temporary file name with the following structure:
+     * `picol_image`_`size`_`colour`.ext
+     * @example document_text_300_f0f.png
+     *
+     * @param  string                           $file                           The bad file name
+     * @param  boolean                          $add_badge                      In true add the badge to the name
+     * @return string                                                           The conventional PICOL Icon name
+     */
+    private static function convert_name($file, $add_badge = false) {
+        $badge = (($add_badge) ? str_replace(["badge_", ".svg"], "_", self::$req->badge) : "_");
+        return str_replace(self::$ext, $badge . self::$req->size . "_" . self::$req->colour . ".png", $file);
+    }
+
+    /**
+     * Generate the image
+     * @uses rsvg-convert
+     * @see https://wiki.gnome.org/action/show/Projects/LibRsvg
+     * @see https://en.wikipedia.org/wiki/Librsvg
+     *
+     * @param  string                           $path                           The path of the image
+     * @param  string                           $img                            The subject image
+     * @return string                                                           The image generation command
+     */
+    private static function generate_image_cmd($path, $img, $tmp_path) {
+        $tmp_p = explode("/", $tmp_path);
+        if(count($tmp_p) == 1) {
+            $tmp = self::$roots[$tmp_p[0]];
+        } else {
+            $tmp = self::$roots[$tmp_p[0]][$tmp_p[1]];
+        }
+
+        // Prevent file overwriting
+        if(!file_exists($tmp . self::convert_name($img))) {
+            $command = "rsvg-convert -a";
+            $sizes = "-w " . self::$req->size . " -h " . self::$req->size;
+            $source = $path . $img;
+            $output = $tmp . self::convert_name($img);
+            if($tmp_path !== "tmp/mask") {
+                $colourize = "&& convert -fuzz 100% " . $tmp . self::convert_name($img) . " -fill '#" . self::shorthand2reg_hex(self::$req->colour) . "' -opaque '#000' " . $tmp . self::convert_name($img);
+            } else {
+                $colourize = "";
+            }
+            $after = "echo '" . $tmp . self::convert_name($img) . "'";
+            $generate_image_cmd = "\"$({$command} {$sizes} {$source} > {$output} {$colourize} && {$after})\"";
+        } else {
+            $generate_image_cmd = $tmp . self::convert_name($img);
+        }
+        // print $generate_image_cmd;
+        // exit();
+        return $generate_image_cmd;
+    }
+
+    /**
+     * Generate the requested image
+     * @return mixed                                                            Render the generated image or promt for download
+     */
+    private static function generate_picol() {
+        /**
+         * Get the image
+         */
+        $img = self::generate_image_cmd(self::$roots["img"], self::$req->img, "tmp/img");
+        $output_img = self::$roots["tmp"]["root"] . self::convert_name(self::$req->img, !is_null(self::$req->badge));
+        $after = "echo 'done'";
+
+        if(!is_null(self::$req->badge)) {
+            /**
+             * Mask the image for the badge overlay
+             */
+			$mask = self::generate_image_cmd(self::$roots["root"], "mask" . self::$ext, "tmp/mask");
+
+            /**
+             * Generate the badge
+             */
+			$badge = self::generate_image_cmd(self::$roots["badge"], self::$req->badge, "tmp/badge");
+
+            /**
+             * Generate the command to execute on the Server
+             */
+            $merge_command = "convert -density 5000 {$badge} {$img} {$mask} -composite {$output_img} && {$after}";
+        } else {
+            // Wait: this file was already generated!
+            // So we just need to copy to another position
+            $merge_command = "cp {$img} {$output_img} && {$after}";
+        }
+        $composite = (trim(shell_exec($merge_command)) == "done") ? true : false;
+        if($composite) {
+            self::$output = $output_img;
+            self::output();
+        }
+    }
+
+    private static function output() {
+        if(!self::$req->show) {
+            $info = pathinfo(self::$output);
+            header("Content-Disposition: Attachment; filename=" . $info["filename"] . "." . $info["extension"]);
+        }
+    	header("Content-Type: image/png");
+    	readfile(self::$output);
+    	ob_end_flush ();
+    }
+
+	public static function run($request) {
+        ob_start();
+        self::$req = self::parse_request($request);
+        self::$roots = self::get_root_paths();
+
+        if(self::$req->img !== "") {
+            self::generate_picol();
+        }
 	}
 }
-if ($_GET["size"] && trim($_GET["size"]) !== ""){
-	ob_start();
-			// Change this path if you want to generate only from PNG
-			$main_dir = "../media/svg/";
 
-	if ($_GET["img"] == "document_page_width.svg" || $_GET["img"] == "document_page_width.png"){
-		//From root
-		$img_directory = $main_dir;
-	} else {
-		//From root
-		$img_directory = $main_dir . "icons";
-	}
-	$badge_directory = $main_dir . "badges";
+PICOL_Generator::run($_GET);
 
-	$color = $_GET["color"];
-	if($color == "000" || $color == "000000"){
-		$color_name = "";
-	} else {
-		$color_name = "_" . $color;
-	}
-	if ($_GET["img"] && trim($_GET["img"]) !== ""){
-		// If the user want the badge
-		if (isset($_GET["badge"]) && trim($_GET["badge"]) !== ""){
-			$_GET["img"] = str_replace(".png", ".svg", $_GET["img"]);
-			$_GET["badge"] = str_replace(".png", ".svg", $_GET["badge"]);
-			$size = $_GET["size"];
-
-			// Get the first image
-			$first = new Imagick();
-			$first -> setBackgroundColor(new ImagickPixel('transparent'));
-			$first -> readImage($img_directory . "/" . trim($_GET["img"]));
-				// Get the resolution
-				$res = $first -> getImageResolution();
-				$x_ratio = $res['x'] / $first -> getImageWidth();
-				$y_ratio = $res['y'] / $first -> getImageHeight();
-				$first -> removeImage();
-				// Set new resolution
-				$first -> setResolution($size * $x_ratio, $size* $y_ratio);
-				$first -> readImage($img_directory . "/" . trim($_GET["img"]));
-			// - - -
-			// Mask image (change to "mask.png" if you want generate from PNG)
-			$cancel = new Imagick();
-			$cancel -> setBackgroundColor(new ImagickPixel('transparent'));
-			$cancel -> readImage($main_dir . "mask.svg");
-				// Get the resolution
-				$res = $cancel -> getImageResolution();
-				$x_ratio = $res['x'] / $cancel -> getImageWidth();
-				$y_ratio = $res['y'] / $cancel -> getImageHeight();
-				$cancel -> removeImage();
-				// Set new resolution
-				$cancel -> setResolution($size * $x_ratio, $size* $y_ratio);
-				$cancel -> readImage($main_dir . "mask.svg");
-			// - - -
-			// Get the second image (badge)
-			$second = new Imagick();
-			$second -> setBackgroundColor(new ImagickPixel('transparent'));
-			$second -> readImage($badge_directory . "/" . trim($_GET["badge"]));
-				$res = $second -> getImageResolution();
-				$x_ratio = $res['x'] / $second -> getImageWidth();
-				$y_ratio = $res['y'] / $second -> getImageHeight();
-				$second -> removeImage();
-				$second -> setResolution($size * $x_ratio, $size* $y_ratio);
-				$second -> readImage($badge_directory . "/" . trim($_GET["badge"]));
-
-			// Second image is put on top of the first
-			$first -> compositeImage($cancel, imagick::COMPOSITE_DSTOUT, 0, 0);
-			$first -> compositeImage($second, imagick::COMPOSITE_OVER, 0, 0);
-			$first -> colorizeImage("#" . $color, 1, true);
-			$first -> setImageFormat("png32");
-			$img_c = $first;
-
-			$name = str_replace(".svg", "", $_GET["img"]);
-			$name_badge = str_replace(".svg", "_" . $_GET["size"] . $color_name . ".png", str_replace("badge", "", $_GET["badge"]));
-			$file_name = $name . $name_badge;
-				if (isset($_GET["new_dir"])){
-					if (!file_exists("../../generated/" . $_GET["new_dir"] . "/" . $_GET["size"])) {
-						mkdir("../../generated/" . $_GET["new_dir"] . "/" . $_GET["size"]);
-						chmod("../../generated/" . $_GET["new_dir"] . "/" . $_GET["size"], 0777);
-					}
-					$first -> writeImage("../../generated/" . $_GET["new_dir"] . "/" . $_GET["size"] . "/" . $file_name);
-				}
-		// If the user don't need a badge
-		} else {
-			// Comment this line if you want generator from PNG
-			$_GET["img"] = str_replace(".png", ".svg", $_GET["img"]);
-			$size = $_GET["size"];
-
-			$first = new Imagick();
-			$first -> setBackgroundColor(new ImagickPixel('transparent'));
-			$first -> readImage($img_directory . "/" . trim($_GET["img"]));
-				$res = $first -> getImageResolution();
-				$x_ratio = $res['x'] / $first -> getImageWidth();
-				$y_ratio = $res['y'] / $first -> getImageHeight();
-				$first -> removeImage();
-				$first -> setResolution($size * $x_ratio, $size* $y_ratio);
-				$first -> readImage($img_directory . "/" . trim($_GET["img"]));
-				$first -> colorizeImage("#" . $color, 1, true);
-			$first -> setImageFormat("png32");
-			$img_c = $first;
-			$file_name = str_replace(".svg", "_" . $_GET["size"] . $color_name . ".png", $_GET["img"]);
-				if (isset($_GET["new_dir"])){
-					if (!file_exists("../../generated/" . $_GET["new_dir"] . "/" . $_GET["size"])) {
-						mkdir("../../generated/" . $_GET["new_dir"] . "/" . $_GET["size"]);
-						chmod("../../generated/" . $_GET["new_dir"] . "/" . $_GET["size"], 0777);
-					}
-					$first -> writeImage("../../generated/" . $_GET["new_dir"] . "/" . $_GET["size"] . "/" . $file_name);
-				}
-		}
-	}
-	if (!isset($_GET["action"]) || trim($_GET["action"]) !== "show"){
-		header("Content-Disposition: Attachment; filename=" . $file_name);
-	}
-	header("Content-Type: image/png");
-	print $img_c;
-	ob_end_flush ();
-}
 ?>

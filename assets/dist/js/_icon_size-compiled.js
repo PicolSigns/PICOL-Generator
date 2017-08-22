@@ -47,7 +47,7 @@ var IconSize = function () {
 				s++;
 				if (v.available && typeof v.size == "number") {
 					selected = v.size == 32 ? "selected" : "";
-					img_size = v.size <= 64 ? v.size : v.size / 1.2;
+					img_size = v.size <= 64 ? v.size : parseInt(v.size / 1.2);
 				} else {
 					selected = "no_selectable";
 					img = "cancel.png";
@@ -62,9 +62,18 @@ var IconSize = function () {
 					// "valign": "bottom",
 					"align": "center",
 					"class": selected
-				}).append($("<img>", {
-					"src": "../../../api/generator.php?size=" + img_size + "&img=document_page_width.svg&badge=&action=show"
-				})).append($("<br />")).append(v.size + "px");
+				}).append(function () {
+					console.log(img_size);
+					if (img_size !== "") {
+						return $("<img>", {
+							"src": "../../../api/generator.php?size=" + img_size + "&colour=000&img=document_page_width&action=show"
+						});
+					} else {
+						return $("<input>", {
+							"type": "text"
+						});
+					}
+				}).append($("<br />")).append(v.size + "px");
 			})))));
 		}
 	}]);

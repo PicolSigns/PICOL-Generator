@@ -22,7 +22,7 @@ class Generator {
 			"Size": {
 				"id": "icon_size",
 				"title": "CHOOSE ICON SIZE",
-				"main_file": "icon_size.tpl",
+				// "main_file": "icon_size.tpl",
 				"script_file": ""
 			},
 			// "Color": {
@@ -218,7 +218,7 @@ class Generator {
 							results_content += "</tr><tr>";
 						}
 						var random = Math.random()*11;
-						results_content += "<td align=\"center\" title=\"Click to download image\" onclick=\"location.href='common/include/generator.php?size=" + size + "&color=" + color + "&img=" + selected[i] + ".png&badge=" + badge + "'\"><img src=\"common/include/generator.php?size=" + size + "&color=" + color + "&img=" + selected[i] + ".png&badge=" + badge + "&new_dir=" + new_dir + "&action=show&rand=" + random + "\" /></td>";
+						results_content += "<td align=\"center\" title=\"Click to download image\" onclick=\"location.href='common/include/generator.php?size=" + size + "&colour=" + color + "&img=" + selected[i] + "&badge=" + badge + "'\"><img src=\"common/include/generator.php?size=" + size + "&colour=" + color + "&img=" + selected[i] + "&badge=" + badge + "&new_dir=" + new_dir + "&action=show&rand=" + random + "\" /></td>";
 					}
 				}
 			}
