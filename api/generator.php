@@ -34,6 +34,19 @@ class PICOL_Generator {
         return preg_replace('/([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])/i', "$1$1$2$2$3$3", $colour);
     }
 
+    /**
+     * Convert an Hexadecimal colour to the corresponding RGBA value
+     * @param  string                           $hex                            The Hexadecimal colour
+     * @param  integer|float                    $alpha                          The alpha value
+     * @return string                                                           The rgba() value
+     */
+    private static function hex2rgba($hex, $alpha = 100) {
+        $hex = "#" . str_replace("#", "", ((strlen($hex) == 3) ? self::shorthand2reg_hex($hex) : $hex));
+        list($r, $g, $b) = sscanf($hex, "#%02x%02x%02x");
+        $alpha = number_format(($alpha < 0) ? 0 : (($alpha > 100) ? 100 : floatval($alpha)), 1, ".", "");
+        return "rgba({$r}, {$g}, {$b}, {$alpha})";
+    }
+
     /* ---------------------------------------------------------------------- */
 
     /**
@@ -64,12 +77,13 @@ class PICOL_Generator {
      */
 	public static function parse_request($request) {
 		$req = new stdClass();
-		$req->size = ((isset($request["size"]) && strlen($request["colour"]) >= 2) ? trim(preg_replace('/[^\d]+/', "", $request["size"])) : 16);
+		$req->size = ((isset($request["size"]) && strlen($request["size"]) >= 2) ? trim(preg_replace('/[^\d]+/', "", $request["size"])) : 16);
 		$req->colour = ((isset($request["colour"]) && strlen($request["colour"]) >= 3) ? trim(substr(preg_replace('/[^0-9a-fA-F]+/iu', "", $request["colour"]), 0, 6)) : "000");
         if(strlen($req->colour) == 6) {
             $req->colour = self::reg_hex2shorthand($req->colour);
         }
-		$req->img = ((isset($request["img"]) && strlen($request["img"]) >= 3) ? trim(preg_replace('/[^\w\d\_]+/', "", str_replace([".png", ".svg"], "", $request["img"]))) . self::$ext : "document_page_width");
+        $req->alpha = ((isset($request["alpha"]) && strlen($request["alpha"]) >= 1) ? trim(preg_replace('/[^\d\.\-]+/', "", $request["alpha"])) : 100);
+		$req->img = ((isset($request["img"]) && strlen($request["img"]) >= 3) ? trim(preg_replace('/[^\w\d\_]+/', "", str_replace([".png", ".svg"], "", $request["img"]))) . self::$ext : "document_page_width" . self::$ext);
 		$req->badge = (isset($request["badge"]) ? "badge_" . trim(preg_replace('/[^\w\d\_]+/', "", str_replace(["badge_", ".png", ".svg"], "", $request["badge"]))) . self::$ext : null);
 		$req->show = ((isset($request["action"]) && $request["action"] == "show") ? true : false);
 		return $req;
@@ -116,7 +130,7 @@ class PICOL_Generator {
             $source = $path . $img;
             $output = $tmp . self::convert_name($img);
             if($tmp_path !== "tmp/mask") {
-                $colourize = "&& convert -fuzz 100% " . $tmp . self::convert_name($img) . " -fill '#" . self::shorthand2reg_hex(self::$req->colour) . "' -opaque '#000' " . $tmp . self::convert_name($img);
+                $colourize = "&& convert -fuzz 100% " . $tmp . self::convert_name($img) . " -fill '" . self::hex2rgba(self::$req->colour, self::$req->alpha) . "' -opaque '#000' " . $tmp . self::convert_name($img);
             } else {
                 $colourize = "";
             }
