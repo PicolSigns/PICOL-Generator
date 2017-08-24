@@ -13,10 +13,10 @@
 
 #slider_content {
   height: 495px;
-  left: 50%;
-  margin-left: -350px;
-  position: absolute;
-  width: 700px;
+  // left: 50%;
+  // margin-left: -350px;
+  // position: absolute;
+  // width: 700px;
 }
 
 #slider {
@@ -119,6 +119,10 @@
     border: 1px solid transparent;
     height: auto;
     padding: 15px 0;
+
+    img {
+      margin-bottom: 2rem;
+    }
   }
 }
 

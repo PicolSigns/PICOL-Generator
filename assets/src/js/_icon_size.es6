@@ -15,7 +15,7 @@ class IconSize {
 				});
 			}
 			a.push({
-				size: "custom",
+				size: "_",
 				available: true
 			});
 			return a;
@@ -23,11 +23,11 @@ class IconSize {
 	}
 
 	build() {
-		console.log(this.available_sizes);
+		// console.log(this.available_sizes);
 		var s = 0;
 		let selected = "",
 			img = "",
-			img_size = 0;
+			img_size = 256;
 		return $("<table>").append(
 			$("<tr>").append(
 				$("<td>").append(
@@ -36,44 +36,72 @@ class IconSize {
 					$("<input>", {"type": "hidden", "id": "selected_imgs", "name": "selected_imgs"}).val("")
 				).append(
 					$("<table>", {"id": "size_selector", "class": "stage"}).append(
-						$.map(this.available_sizes, (v) => {
-							s++;
-							if(v.available && typeof v.size == "number"){
-								selected = (v.size == 32) ? "selected" : "";
-								img_size = (v.size <= 64) ? v.size : parseInt(v.size/1.2);
-							} else {
-								selected = "no_selectable";
-								img = "cancel.png";
-								img_size = "";
-							}
-							console.log(v, selected, img_size);
-							return $("<td>", {
-								"valign": "middle",
-								"onclick": "select_unselect_img('" + v.size + "', true, 'size_selector', 'selected_size', false); setTimeout('$(\'#slider\').data(\'AnythingSlider\').goForward()', 300);",
-								"id": "_" + v.size,
-								"title": v.size + "px",
-								// "valign": "bottom",
-								"align": "center",
-								"class": selected
-							}).append(
-								function() {
-									console.log(img_size);
-									if(img_size !== "") {
-										return $("<img>", {
-											"src": "../../../api/generator.php?size=" + img_size +  "&action=show"
-										});
-									} else {
-										return $("<input>", {
-											"type": "text"
-										});
-									}
+						$("<td>", {
+							"valign": "middle",
+							// "onclick": "select_unselect_img('" + v.size + "', true, 'size_selector', 'selected_size', false); setTimeout('$(\'#slider\').data(\'AnythingSlider\').goForward()', 300);",
+							// "id": "_" + v.size,
+							// "title": v.size + "px",
+							// "valign": "bottom",
+							"align": "center",
+							"class": selected
+						}).append(
+							function() {
+								// console.log(img_size);
+								if(img_size !== "") {
+									return $("<img>", {
+										"src": "../../../api/generator.php?size=" + img_size +  "&action=show",
+										"class": "img-responsive"
+									});
+								} else {
+									return $("<input>", {
+										"type": "text"
+									});
 								}
+							}
+						).append(
+							$("<div>", {"class": "input-group col-lg-3 col-md-3 col-sm-3 col-xs-8"}).append(
+								$("<select>", {"class": "form-control text-right"}).append(
+									$("<option>", {"value": "", "disabled": "disabled"}).text("Select size")
+								).append(
+									$.map(this.available_sizes, (v) => {
+										let option_text = (v.size !== "_") ? v.size : "Custom...";
+										s++;
+										return $("<option>", {
+											"selected": () => {
+												if(v.available && typeof v.size == "number"){
+													selected = (v.size == 32) ? "selected" : null;
+													img_size = (v.size <= 64) ? v.size : parseInt(v.size/1.2);
+												} else {
+													selected = null;
+													img = "cancel.png";
+													img_size = "";
+												}
+												return selected;
+											},
+											"value": v.size
+										}).text(option_text);
+									})
+								).on("change", function() {
+									if(this.value == "_") {
+										console.log($(this));
+										console.log($(this).closest("div"));
+										let $input = $("<input>", {
+											"type": "number",
+											"dir": "rtl",
+											"class": "form-control",
+											"placeholder": "Icon size ",
+											"min": 5,
+											"max": 1000
+										});
+										$(this).closest("div").prepend($input);
+										$(this).remove();
+										$input.focus();
+									}
+								})
 							).append(
-								$("<br />")
-							).append(
-								v.size + "px"
-							);
-						})
+								$("<span>", {"class": "input-group-addon"}).text("px")
+							)
+						)
 					)
 				)
 			)

@@ -1,9 +1,11 @@
 /* jshint esversion: 6 */
 
 
+import Project from "./_project.es6";
 import IconSize from "./_icon_size.es6";
 
-var icon_size = new IconSize();
+var project = new Project(),
+	icon_size = new IconSize();
 
 class Generator {
 	/**
@@ -13,12 +15,12 @@ class Generator {
 		this.pages = {};
 		this.scripts = {};
 		this.sliders = {
-			// "Project": {
-			// 	"id": "project",
-			// 	"title": "PROJECT NAME",
-			// 	"main_file": "",
-			// 	"script_file": ""
-			// },
+			"Project": {
+				"id": "project",
+				"title": "PROJECT NAME",
+				"main_file": "",
+				"script_file": ""
+			},
 			"Size": {
 				"id": "icon_size",
 				"title": "CHOOSE ICON SIZE",
@@ -85,6 +87,7 @@ class Generator {
 			// 		$("#" + value.id).append($(data));
 			// 	}
 			// });
+			$("#" + value.id).append(project.build());
 			$("#" + value.id).append(icon_size.build());
 		});
 		$("#slider").anythingSlider({

@@ -45,6 +45,7 @@ if ($_SERVER["REQUEST_URI"] !== "/apps/picol_generator/1.2/"){
 		<!-- jquery AnythingSlider -->
 		<!-- <link type="text/css" href="<?php print BOWER_URI; ?>/picol_anythingslider.css" rel="stylesheet" media="screen" /> -->
 
+		<link rel="stylesheet" href="<?php print BOWER_URI; ?>bootstrap/dist/css/bootstrap.min.css" type="text/css" media="screen" />
 		<link rel="stylesheet" href="<?php print CSS_URI; ?>main.min.css" type="text/css" media="screen" />
 	</head>
 	<body>
@@ -52,7 +53,7 @@ if ($_SERVER["REQUEST_URI"] !== "/apps/picol_generator/1.2/"){
 		<div id="generator_interface">
             <input type="hidden" id="new_dir" value="" />
             <input type="hidden" id="images" value="" />
-            <div id="slider_content">
+            <div id="slider_content" class="col-lg-6 col-md-6 col-sm-8 col-xs-12 col-lg-offset-3 col-md-offset-3 col-sm-offset-2">
             	<ul id="slider"></ul>
             </div>
 		</div>

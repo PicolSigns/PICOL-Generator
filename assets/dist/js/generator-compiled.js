@@ -6,6 +6,10 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* jshint esversion: 6 */
 
+var _project = require("./_project.es6");
+
+var _project2 = _interopRequireDefault(_project);
+
 var _icon_size = require("./_icon_size.es6");
 
 var _icon_size2 = _interopRequireDefault(_icon_size);
@@ -14,7 +18,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var icon_size = new _icon_size2.default();
+var project = new _project2.default(),
+    icon_size = new _icon_size2.default();
 
 var Generator = function () {
 	/**
@@ -26,12 +31,12 @@ var Generator = function () {
 		this.pages = {};
 		this.scripts = {};
 		this.sliders = {
-			// "Project": {
-			// 	"id": "project",
-			// 	"title": "PROJECT NAME",
-			// 	"main_file": "",
-			// 	"script_file": ""
-			// },
+			"Project": {
+				"id": "project",
+				"title": "PROJECT NAME",
+				"main_file": "",
+				"script_file": ""
+			},
 			"Size": {
 				"id": "icon_size",
 				"title": "CHOOSE ICON SIZE",
@@ -103,6 +108,7 @@ var Generator = function () {
 				// 		$("#" + value.id).append($(data));
 				// 	}
 				// });
+				$("#" + value.id).append(project.build());
 				$("#" + value.id).append(icon_size.build());
 			});
 			$("#slider").anythingSlider({
