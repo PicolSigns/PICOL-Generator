@@ -56,8 +56,8 @@ var IconSize = function () {
 		key: "build",
 		value: function build() {
 			console.log(this.available_sizes);
-			var s = 0,
-			    selected = "",
+			var s = 0;
+			var selected = "",
 			    img = "",
 			    img_size = 0;
 			return $("<table>").append($("<tr>").append($("<td>").append($("<input>", { "type": "hidden", "id": "selected_size", "name": "selected_size" }).val("32")).append($("<input>", { "type": "hidden", "id": "selected_imgs", "name": "selected_imgs" }).val("")).append($("<table>", { "id": "size_selector", "class": "stage" }).append($.map(this.available_sizes, function (v) {
@@ -83,7 +83,7 @@ var IconSize = function () {
 					console.log(img_size);
 					if (img_size !== "") {
 						return $("<img>", {
-							"src": "../../../api/generator.php?size=" + img_size + "&colour=000&img=document_page_width&action=show"
+							"src": "../../../api/generator.php?size=" + img_size + "&action=show"
 						});
 					} else {
 						return $("<input>", {

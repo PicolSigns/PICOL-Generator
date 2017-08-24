@@ -24,8 +24,8 @@ class IconSize {
 
 	build() {
 		console.log(this.available_sizes);
-		let s = 0,
-			selected = "",
+		var s = 0;
+		let selected = "",
 			img = "",
 			img_size = 0;
 		return $("<table>").append(
@@ -60,7 +60,7 @@ class IconSize {
 									console.log(img_size);
 									if(img_size !== "") {
 										return $("<img>", {
-											"src": "../../../api/generator.php?size=" + img_size +  "&colour=000&img=document_page_width&action=show"
+											"src": "../../../api/generator.php?size=" + img_size +  "&action=show"
 										});
 									} else {
 										return $("<input>", {
