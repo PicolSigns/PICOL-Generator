@@ -11,8 +11,8 @@ header("Content-Type: text/plain;");
  * @uses    convert https://www.imagemagick.org/script/convert.php
  */
 class PICOL_Generator {
-	static $req;
-	static $roots;
+    static $req;
+    static $roots;
     static $ext = ".svg";
     static $output;
 
