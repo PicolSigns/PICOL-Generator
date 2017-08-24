@@ -202,7 +202,7 @@ class PICOL_Generator {
      * @uses convert
      * @see  https://www.imagemagick.org/script/convert.php
      * @uses sRGB.icc colour profile
-     * @see  https://packages.ubuntu.com/trusty/icc-profiles-free
+     * @see  http://archive.ubuntu.com/ubuntu/pool/main/i/icc-profiles-free/
      *
      * @return mixed                                                            Render the generated image or promt for download
      */
