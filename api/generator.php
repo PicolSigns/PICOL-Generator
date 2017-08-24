@@ -37,15 +37,44 @@ class PICOL_Generator {
     /**
      * Convert an Hexadecimal colour to the corresponding RGBA value
      * @param  string                           $hex                            The Hexadecimal colour
-     * @param  integer|float                    $alpha                          The alpha value
      * @return string                                                           The rgba() value
      */
     private static function hex2rgba($hex, $alpha = 100) {
         $hex = "#" . str_replace("#", "", ((strlen($hex) == 3) ? self::shorthand2reg_hex($hex) : $hex));
         list($r, $g, $b) = sscanf($hex, "#%02x%02x%02x");
         $alpha = number_format(($alpha < 0) ? 0 : (($alpha > 100) ? 100 : floatval($alpha)), 1, ".", "");
-        return "rgba({$r}, {$g}, {$b}, {$alpha})";
+        return "rgb({$r}, {$g}, {$b}, {$alpha})";
     }
+
+    /**
+    * Remove a value in array
+    * @param  array                            $array                          The subject array
+    * @param  string|integer                   $value                          The value to remove
+    * @return array                                                            The array without the given value
+    */
+    private static function remove_array_value($array, $value) {
+        $array = array_unique($array);
+        $key = array_search($value, $array);
+        if(false !== $key) {
+            unset($array[$key]);
+        }
+        return $array;
+    }
+
+    /**
+     * Adjust the `alpha` input
+     * @param  integer|float                    $alpha                          The alpha input
+     * @return float                                                            The correct alpha setting
+     */
+    private static function adjust_alpha($alpha) {
+        $alpha = floatval($alpha);
+        $alpha = ($alpha > 10 && $alpha <= 100) ? $alpha / 100 : $alpha;
+        $alpha = ($alpha > 1 && $alpha <= 10) ? $alpha / 10 : $alpha;
+        $alpha = ($alpha > 1) ? 1 : $alpha;
+        $alpha = ($alpha <= 0) ? 0.1 : $alpha;
+        return ($alpha < 1) ? number_format($alpha, 1, ".", "") : $alpha;
+    }
+
 
     /* ---------------------------------------------------------------------- */
 
@@ -82,7 +111,7 @@ class PICOL_Generator {
         if(strlen($req->colour) == 6) {
             $req->colour = self::reg_hex2shorthand($req->colour);
         }
-        $req->alpha = ((isset($request["alpha"]) && strlen($request["alpha"]) >= 1) ? trim(preg_replace('/[^\d\.\-]+/', "", $request["alpha"])) : 100);
+        $req->alpha = self::adjust_alpha((isset($request["alpha"]) && strlen($request["alpha"]) >= 1) ? trim(preg_replace('/[^\d\.\-]+/', "", $request["alpha"])) : 100);
 		$req->img = ((isset($request["img"]) && strlen($request["img"]) >= 3) ? trim(preg_replace('/[^\w\d\_]+/', "", str_replace([".png", ".svg"], "", $request["img"]))) . self::$ext : "document_page_width" . self::$ext);
 		$req->badge = (isset($request["badge"]) ? "badge_" . trim(preg_replace('/[^\w\d\_]+/', "", str_replace(["badge_", ".png", ".svg"], "", $request["badge"]))) . self::$ext : null);
 		$req->show = ((isset($request["action"]) && $request["action"] == "show") ? true : false);
@@ -91,16 +120,44 @@ class PICOL_Generator {
 
     /**
      * Change the temporary file name with the following structure:
-     * `picol_image`_`size`_`colour`.ext
+     * `picol_image`_`size`_`colour`_`alpha`.ext
      * @example document_text_300_f0f.png
      *
      * @param  string                           $file                           The bad file name
-     * @param  boolean                          $add_badge                      In true add the badge to the name
+     * @param  boolean                          $add_badge                      If true add the badge to the name
+     * @param  boolean                          $add_colour                     If true add the colour to the name
+     * @param  boolean                          $add_alpha                      If true add the colour to the name
      * @return string                                                           The conventional PICOL Icon name
      */
-    private static function convert_name($file, $add_badge = false) {
-        $badge = (($add_badge) ? str_replace(["badge_", ".svg"], "_", self::$req->badge) : "_");
-        return str_replace(self::$ext, $badge . self::$req->size . "_" . self::$req->colour . ".png", $file);
+    private static function convert_name($file, $add_badge = false, $add_colour = true, $add_alpha = false) {
+        $info = pathinfo($file);
+        // Parse the badge input
+        $badge = str_replace(["badge_", ".svg"], "", self::$req->badge);
+        // Parse the colour input
+        $colour = self::$req->colour;
+        // Parse the alpha input
+        $alpha = preg_replace("/[\.]+/", "", "a" . self::$req->alpha);
+        $filename = explode("_", $info["filename"]);
+        $filename = self::remove_array_value($filename, $badge);
+        $filename = self::remove_array_value($filename, self::$req->size);
+        $filename = self::remove_array_value($filename, self::$req->colour);
+        $filename = self::remove_array_value($filename, self::$req->alpha);
+        // Add the badge
+        if($add_badge) {    $filename[] = $badge;   }
+        // The size is placed for anycase
+        $filename[] = self::$req->size;
+        // Add the colour
+        if($add_colour) {   $filename[] = $colour;  }
+        if($add_alpha) {    $filename[] = $alpha;   }
+
+        // Preserve the tmp file path
+        $dirname = ($info["dirname"] !== ".") ? $info["dirname"] . "/" : "";
+        return $dirname . implode("_", $filename) . ".png";
+    }
+
+    private static function execute_cmd($command) {
+        // print $command . "\n";
+        return ($command == "done" || trim(shell_exec($command)) == "done") ? true : false;
     }
 
     /**
@@ -123,24 +180,19 @@ class PICOL_Generator {
             $tmp = self::$roots[$tmp_p[0]][$tmp_p[1]];
         }
 
+        $filename = ($tmp_path !== "tmp/mask") ? self::convert_name($img, false, false) : self::convert_name($img, false, false);
+        $output_file = $tmp . $filename;
+
         // Prevent file overwriting
-        if(!file_exists($tmp . self::convert_name($img))) {
+        if(!file_exists($tmp . $filename)) {
             $command = "rsvg-convert -a";
             $sizes = "-w " . self::$req->size . " -h " . self::$req->size;
             $source = $path . $img;
-            $output = $tmp . self::convert_name($img);
-            if($tmp_path !== "tmp/mask") {
-                $colourize = "&& convert -fuzz 100% " . $tmp . self::convert_name($img) . " -fill '" . self::hex2rgba(self::$req->colour, self::$req->alpha) . "' -opaque '#000' " . $tmp . self::convert_name($img);
-            } else {
-                $colourize = "";
-            }
-            $after = "echo '" . $tmp . self::convert_name($img) . "'";
-            $generate_image_cmd = "\"$({$command} {$sizes} {$source} > {$output} {$colourize} && {$after})\"";
+            $after = "echo '" . $tmp . $filename . "'";
+            $generate_image_cmd = "\"$({$command} {$sizes} {$source} > {$output_file} && {$after})\"";
         } else {
-            $generate_image_cmd = $tmp . self::convert_name($img);
+            $generate_image_cmd = $tmp . $filename;
         }
-        // print $generate_image_cmd;
-        // exit();
         return $generate_image_cmd;
     }
 
@@ -152,36 +204,53 @@ class PICOL_Generator {
      * @return mixed                                                            Render the generated image or promt for download
      */
     private static function generate_picol() {
+        $output_img = self::$roots["tmp"]["root"] . self::convert_name(self::$req->img, !is_null(self::$req->badge), false);
+        $after = "echo 'done'";
+        $alpha = (self::$req->alpha == 1) ? 1 : self::$req->alpha;
+        $final_img = self::convert_name($output_img, true, true, ($alpha !== 1));
+
         /**
          * Get the image
          */
         $img = self::generate_image_cmd(self::$roots["img"], self::$req->img, "tmp/img");
-        $output_img = self::$roots["tmp"]["root"] . self::convert_name(self::$req->img, !is_null(self::$req->badge));
-        $after = "echo 'done'";
 
-        if(!is_null(self::$req->badge)) {
-            /**
-             * Mask the image for the badge overlay
-             */
-			$mask = self::generate_image_cmd(self::$roots["root"], "mask" . self::$ext, "tmp/mask");
+        // Prevent file recreation
+        if(!file_exists($final_img)) {
+            if(!is_null(self::$req->badge)) {
+                /**
+                 * Mask the image for the badge overlay
+                 */
+    			$mask = self::generate_image_cmd(self::$roots["root"], "mask" . self::$ext, "tmp/mask");
 
-            /**
-             * Generate the badge
-             */
-			$badge = self::generate_image_cmd(self::$roots["badge"], self::$req->badge, "tmp/badge");
+                /**
+                 * Generate the badge
+                 */
+    			$badge = self::generate_image_cmd(self::$roots["badge"], self::$req->badge, "tmp/badge");
 
-            /**
-             * Generate the command to execute on the Server
-             */
-            $merge_command = "convert -density 5000 {$badge} {$img} {$mask} -composite {$output_img} && {$after}";
+                /**
+                 * Generate the command to execute on the Server
+                 */
+                if(!file_exists($output_img)) {
+                    $merge_command = "convert -density 5000 {$badge} {$img} {$mask} -composite {$output_img} && {$after}";
+                } else {
+                    $merge_command = "done";
+                }
+            } else {
+                // This file was already generated!
+                // So we just need to copy to another position
+                $merge_command = "cp {$img} {$output_img} && {$after}";
+            }
+            $colourize_command = "convert {$output_img} -fuzz 99% -alpha on -alpha on -channel rgba -fill '" . self::hex2rgba(self::$req->colour, self::$req->alpha) . "' -opaque black -alpha on -channel a -evaluate multiply {$alpha} +channel -profile sRGB.icc {$final_img} && {$after}";
+            // Merge
+            if(self::execute_cmd($merge_command)) {
+                // Colourize
+                if(self::execute_cmd($colourize_command)) {
+                    self::$output = $final_img;
+                    self::output();
+                }
+            }
         } else {
-            // This file was already generated!
-            // So we just need to copy to another position
-            $merge_command = "cp {$img} {$output_img} && {$after}";
-        }
-        $composite = (trim(shell_exec($merge_command)) == "done") ? true : false;
-        if($composite) {
-            self::$output = $output_img;
+            self::$output = $final_img;
             self::output();
         }
     }
