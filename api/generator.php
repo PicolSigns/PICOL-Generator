@@ -277,7 +277,7 @@ class PICOL_Generator {
     	readfile(self::$output);
     }
 
-	public static function run($request) {
+    public static function run($request) {
         ob_start();
         self::$req = self::parse_request($request);
         self::$roots = self::get_root_paths();
@@ -286,7 +286,7 @@ class PICOL_Generator {
             self::generate_picol();
         }
     	ob_end_flush ();
-	}
+    }
 }
 
 PICOL_Generator::run($_GET);
