@@ -64,6 +64,7 @@ class PICOL_Generator {
     /**
      * Adjust the `alpha` input
      * @param  integer|float                    $alpha                          The alpha input
+     * @param  integer|float                    $alpha                          The alpha value
      * @return float                                                            The correct alpha setting
      */
     private static function adjust_alpha($alpha) {
