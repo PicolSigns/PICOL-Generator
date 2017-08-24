@@ -43,7 +43,7 @@ class PICOL_Generator {
         $hex = "#" . str_replace("#", "", ((strlen($hex) == 3) ? self::shorthand2reg_hex($hex) : $hex));
         list($r, $g, $b) = sscanf($hex, "#%02x%02x%02x");
         $alpha = number_format(($alpha < 0) ? 0 : (($alpha > 100) ? 100 : floatval($alpha)), 1, ".", "");
-        return "rgb({$r}, {$g}, {$b}, {$alpha})";
+        return "rgba({$r}, {$g}, {$b}, {$alpha})";
     }
 
     /**
