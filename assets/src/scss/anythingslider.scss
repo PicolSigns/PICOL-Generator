@@ -13,17 +13,6 @@
     margin: 0;
     padding-top: 0;
 
-    a {
-      &,
-      &.cur {
-        // background: $light-grey;
-        background-color: $very-very-light-grey;
-        color: $black !important;
-        padding: 5px 5px 0;
-        text-decoration: none;
-      }
-    }
-
     li {
       display: inline;
 
@@ -32,16 +21,18 @@
         // -webkit-border-radius: 0 0 5px 5px;
         // background-image: url(../images/cellshade.png);
         // background-repeat: repeat-x;
-        // border-radius: 0 0 5px 5px;
-        background-color: transparent;
+        background-color: transparent !important;
+        background-image: none;
+        border-radius: 0;
         color: $black !important;
         display: inline-block;
         font: 11px/18px;
+        font-family: Verdana,UbuntuBeta,Ubuntu,"Bitstream Vera Sans","DejaVu Sans",Tahoma,sans-serif;
         font-weight: bold;
-        height: 18px;
+        height: 100%;
         margin: 0 5px 0 0;
         outline: 0;
-        padding: 2px 8px;
+        padding: 2px 8px !important;
         text-align: center;
         text-decoration: none !important;
 
@@ -49,13 +40,21 @@
           background-image: none;
           text-decoration: underline !important;
         }
+
+        &.cur {
+          background: $very-very-light-grey;
+          background-color: $very-very-light-grey !important;
+          color: $black !important;
+          // padding: 0 5px !important;
+          text-decoration: none !important;
+        }
       }
     }
   }
 
   // anythingSlider viewport window
   .anythingWindow {
-    // border-bottom: 3px solid $light-grey;
+    border-bottom: #ccc 1px solid !important;
     // border-top: 3px solid $light-grey;
     border: 0 none;
     border-bottom: $grey 1px solid;

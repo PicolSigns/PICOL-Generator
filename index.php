@@ -46,6 +46,7 @@ if ($_SERVER["REQUEST_URI"] !== "/apps/picol_generator/1.2/"){
 		<!-- <link type="text/css" href="<?php print BOWER_URI; ?>/picol_anythingslider.css" rel="stylesheet" media="screen" /> -->
 
 		<link rel="stylesheet" href="<?php print BOWER_URI; ?>bootstrap/dist/css/bootstrap.min.css" type="text/css" media="screen" />
+        <link rel="stylesheet" href="<?php print BOWER_URI; ?>anythingslider/css/anythingslider.css" />
 		<link rel="stylesheet" href="<?php print CSS_URI; ?>main.min.css" type="text/css" media="screen" />
 	</head>
 	<body>
