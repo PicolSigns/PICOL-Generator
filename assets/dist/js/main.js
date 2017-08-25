@@ -147,15 +147,19 @@ var Project = function () {
 		key: "build",
 		value: function build() {
 			console.log("ok");
-			return $("<table>").append($("<tr>").append($("<td>").append($("<table>", { "id": "project_selector", "class": "stage" }).append($("<td>", {
-				// "valign": "middle",
+			return $("<table>").append($("<tr>").append($("<td>").append($("<table>", { "class": "stage" }).append($("<td>", {
+				"valign": "middle",
 				// "onclick": "select_unselect_img('" + v.size + "', true, 'size_selector', 'selected_size', false); setTimeout('$(\'#slider\').data(\'AnythingSlider\').goForward()', 300);",
 				// "id": "_" + v.size,
 				// "title": v.size + "px",
 				// "valign": "bottom",
-				// "align": "center",
+				"align": "center"
 				// "class": "selected"
-			}).append()))));
+			}).append($("<div>", { "class": "input-group col-lg-3 col-md-3 col-sm-3 col-xs-8" }).append($("<input>", {
+				"type": "text",
+				"class": "form-control",
+				"placeholder": "Project name"
+			})))))));
 		}
 	}]);
 
@@ -199,15 +203,15 @@ var Generator = function () {
 		this.scripts = {};
 		this.sliders = {
 			"Project": {
-				"id": "project",
-				"title": "PROJECT NAME",
-				"main_file": "",
+				"id": "project_selector",
+				"title": "PROJECT",
+				"class": "Project",
 				"script_file": ""
 			},
 			"Size": {
-				"id": "icon_size",
+				"id": "icon_size_selector",
 				"title": "CHOOSE ICON SIZE",
-				// "main_file": "icon_size.tpl",
+				"class": "IconSize",
 				"script_file": ""
 			}
 			// "Color": {
@@ -264,7 +268,15 @@ var Generator = function () {
 				i++;
 				_this.pages[i] = item;
 				_this.scripts[i] = value.script_file;
-				$("#slider").append($("<li>").append($("<fieldset>", { "id": value.id, "class": "selector" }).append($("<legend>").text(value.title))));
+				$("#slider").append($("<li>").append($("<fieldset>", { "id": value.id, "class": "selector" }).append($("<legend>").text(value.title)).append(function () {
+					switch (value.class) {
+						case "Project":
+							return project.build();break;
+						case "IconSize":
+							return icon_size.build();break;
+					}
+					// item_class = new value.class();
+				})));
 				// $.ajax({
 				// 	url: "common/include/funcs/_ajax/executor.php",
 				// 	data: {
@@ -275,8 +287,8 @@ var Generator = function () {
 				// 		$("#" + value.id).append($(data));
 				// 	}
 				// });
-				$("#" + value.id).append(project.build());
-				$("#" + value.id).append(icon_size.build());
+				// $("#" + value.id).append(project.build());
+				// $("#" + value.id).append(icon_size.build());
 			});
 			$("#slider").anythingSlider({
 				navigationFormatter: function navigationFormatter(i) {
@@ -294,32 +306,32 @@ var Generator = function () {
 				animationTime: 450,
 				easing: "easeOutCubic",
 				onSlideComplete: function onSlideComplete(slider) {
-					if (slider.currentPage > 3 && $("#selected_imgs").val() === "") {
-						if (slider.currentPage < 7 || $("#history").html() === "") {
-							$("#slider").anythingSlider(3);
-						}
-					}
-					if (slider.currentPage == 6) {
-						_this.refresh_history();
-					}
-					if (slider.currentPage !== 3) {
-						$(document).unbind("keydown");
-					} else {
-						$("#filter").focus();
-					}
-					if (_this.scripts[slider.currentPage] !== "" && _this.scripts[slider.currentPage] !== undefined) {
-						$.get("common/js/include/" + _this.scripts[slider.currentPage], function () {}, "script");
-					}
+					// if(slider.currentPage > 3 && $("#selected_imgs").val() === ""){
+					// 	if(slider.currentPage < 7 || $("#history").html() === ""){
+					// 		$("#slider").anythingSlider(3);
+					// 	}
+					// }
+					// if(slider.currentPage == 6){
+					// 	this.refresh_history();
+					// }
+					// if(slider.currentPage !== 3){
+					// 	$(document).unbind("keydown");
+					// } else {
+					// 	$("#filter").focus();
+					// }
+					// if(this.scripts[slider.currentPage] !== "" && this.scripts[slider.currentPage] !== undefined){
+					// 	$.get("common/js/include/" + this.scripts[slider.currentPage], () => {}, "script");
+					// }
 				},
 				onSlideBegin: function onSlideBegin(slider) {
-					if (slider.currentPage !== 3 && $("#selected_imgs").val() === "") {
-						$("#generator_interface .forward > a").animate({ "backgroundPosition": "-188px -40px" }, 1000);
-					} else {
-						$("#generator_interface .forward > a").animate({ "backgroundPosition": "0 -40px" }, 1000);
-					}
-					if (slider.currentPage !== 6) {
-						_this.refresh_history();
-					}
+					// if(slider.currentPage !== 3 && $("#selected_imgs").val() === ""){
+					// 	$("#generator_interface .forward > a").animate({"backgroundPosition": "-188px -40px"}, 1000);
+					// } else {
+					// 	$("#generator_interface .forward > a").animate({"backgroundPosition": "0 -40px"}, 1000);
+					// }
+					// if(slider.currentPage !== 6){
+					// 	this.refresh_history();
+					// }
 				}
 			});
 		}
