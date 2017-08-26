@@ -47,6 +47,7 @@ if ($_SERVER["REQUEST_URI"] !== "/apps/picol_generator/1.2/"){
 
 		<link rel="stylesheet" href="<?php print BOWER_URI; ?>bootstrap/dist/css/bootstrap.min.css" type="text/css" media="screen" />
         <link rel="stylesheet" href="<?php print BOWER_URI; ?>anythingslider/css/anythingslider.css" />
+        <link rel="stylesheet" href="<?php print BOWER_URI; ?>bootstrap-toggle/css/bootstrap2-toggle.min.css" />
 		<link rel="stylesheet" href="<?php print CSS_URI; ?>main.min.css" type="text/css" media="screen" />
 	</head>
 	<body>
@@ -69,6 +70,7 @@ if ($_SERVER["REQUEST_URI"] !== "/apps/picol_generator/1.2/"){
         <script type="text/javascript" src="<?php print BOWER_URI; ?>jquery-ui/jquery-ui.min.js"></script>
         <script type="text/javascript" src="<?php print BOWER_URI; ?>jquery.scrollTo/jquery.scrollTo.min.js"></script>
         <script type="text/javascript" src="<?php print BOWER_URI; ?>anythingslider/js/jquery.anythingslider.min.js"></script>
+        <script type="text/javascript" src="<?php print BOWER_URI; ?>bootstrap-toggle/js/bootstrap2-toggle.min.js"></script>
         <script type="text/javascript" src="<?php print JS_URI; ?>main.js"></script>
 	</body>
 </html>

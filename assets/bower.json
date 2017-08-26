@@ -17,13 +17,15 @@
   "dependencies": {
     "jquery": "^3.1.1",
     "reset-css": "^2.2.0",
-    "bootstrap": "^3.3.7",
     "animate.css": "^3.5.2",
     "animatewithsass": "^3.2.2",
     "anythingslider": "^1.9.6",
     "svg.js": "^2.6.3",
     "colorpicker": "^1.2.13",
-    "jquery.scrollTo": "^2.1.2"
+    "jquery.scrollTo": "^2.1.2",
+    "materialize": "^0.100.1",
+    "bootstrap": "^3.3.7",
+    "bootstrap-toggle": "^2.2.2"
   },
   "keywords": [
     "PICOL",

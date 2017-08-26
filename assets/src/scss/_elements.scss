@@ -14,21 +14,7 @@ body {
   padding: 0;
 }
 
-fieldset {
-  background-color: $black;
-  border-bottom: 3px solid $black;
-  border-left: medium none;
-  border-right: medium none;
-  padding: 10px;
-}
 
-legend {
-  color: $black;
-  font-family: Verdana,UbuntuBeta,Ubuntu,"Bitstream Vera Sans","DejaVu Sans",Tahoma,sans-serif;
-  font-size: 2em;
-  font-weight: normal;
-  padding: 5px;
-}
 
 ul {
   &.selector_menu {
@@ -179,4 +165,10 @@ span {
     margin-top: 5px;
     text-transform: none;
   }
+}
+
+.vcenter {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
 }

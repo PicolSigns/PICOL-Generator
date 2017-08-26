@@ -80,7 +80,10 @@ var IconSize = function () {
 						"type": "text"
 					});
 				}
-			}).append($("<div>", { "class": "input-group col-lg-3 col-md-3 col-sm-3 col-xs-8" }).append($("<select>", { "class": "form-control text-right" }).append($("<option>", { "value": "", "disabled": "disabled" }).text("Select size")).append($.map(this.available_sizes, function (v) {
+			}).append($("<div>", { "class": "input-group col-lg-3 col-md-3 col-sm-3 col-xs-8" }).append($("<select>", {
+				"tabindex": "-1",
+				"class": "form-control text-right"
+			}).append($("<option>", { "value": "", "disabled": "disabled" }).text("Select size")).append($.map(this.available_sizes, function (v) {
 				var option_text = v.size !== "_" ? v.size : "Custom...";
 				s++;
 				return $("<option>", {
@@ -99,11 +102,12 @@ var IconSize = function () {
 				}).text(option_text);
 			})).on("change", function () {
 				if (this.value == "_") {
-					console.log($(this));
-					console.log($(this).closest("div"));
+					// console.log($(this));
+					// console.log($(this).closest("div"));
 					var $input = $("<input>", {
 						"type": "number",
 						"dir": "rtl",
+						"tabindex": "-1",
 						"class": "form-control",
 						"placeholder": "Icon size ",
 						"min": 5,
@@ -146,20 +150,27 @@ var Project = function () {
 	_createClass(Project, [{
 		key: "build",
 		value: function build() {
-			console.log("ok");
-			return $("<table>").append($("<tr>").append($("<td>").append($("<table>", { "class": "stage" }).append($("<td>", {
-				"valign": "middle",
-				// "onclick": "select_unselect_img('" + v.size + "', true, 'size_selector', 'selected_size', false); setTimeout('$(\'#slider\').data(\'AnythingSlider\').goForward()', 300);",
-				// "id": "_" + v.size,
-				// "title": v.size + "px",
-				// "valign": "bottom",
-				"align": "center"
-				// "class": "selected"
-			}).append($("<div>", { "class": "input-group col-lg-3 col-md-3 col-sm-3 col-xs-8" }).append($("<input>", {
-				"type": "text",
-				"class": "form-control",
-				"placeholder": "Project name"
-			})))))));
+			return $("<div>", { "class": "stage-container" }).append($("<div>", { "class": "stage" }).append($("<header>").append($("<img>", {
+				"class": "logo",
+				"src": "http://picol.org/img/header.png"
+			})).append($("<div>", { "class": "project-input" }).append(function () {
+				return $("<input>", {
+					"type": "text",
+					"id": "project_name_input",
+					"tabindex": "-1",
+					"class": "form-control",
+					"placeholder": "Project name"
+				});
+			}))).append($("<div>", { "class": "content" }).append($("<div>", { "class": "row" }).append($("<div>", { "class": "col-lg-6 col-md-5 col-sm-5 col-xs-8 text-left vcenter" }).append($("<h6>").text("Local storage")).append($("<small>", { "class": "help-block" }).html("Use the browser local memory to store your history and settings.<br />Thi is not required "))).append($("<div>", { "class": "col-lg-3 col-md-3 col-sm-3 col-xs-8 text-right vcenter" }).append($("<input>", {
+				"type": "checkbox",
+				"tabindex": "-1",
+				"id": "use_localstorage_btn",
+				"checked": "checked"
+			})))).append($("<div>", { "class": "spacer-50" })).append($("<div>", { "class": "row" }).append($("<button>", {
+				"class": "btn btn-primary",
+				"tabindex": "-1",
+				"id": "save_settings_btn"
+			}).text("Continue")))));
 		}
 	}]);
 
@@ -277,6 +288,12 @@ var Generator = function () {
 					}
 					// item_class = new value.class();
 				})));
+				$("#use_localstorage_btn").bootstrapToggle({
+					// on: "Use",
+					// off: "Do not use",
+					width: 100,
+					height: 30
+				});
 				// $.ajax({
 				// 	url: "common/include/funcs/_ajax/executor.php",
 				// 	data: {

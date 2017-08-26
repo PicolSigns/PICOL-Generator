@@ -63,7 +63,10 @@ var IconSize = function () {
 						"type": "text"
 					});
 				}
-			}).append($("<div>", { "class": "input-group col-lg-3 col-md-3 col-sm-3 col-xs-8" }).append($("<select>", { "class": "form-control text-right" }).append($("<option>", { "value": "", "disabled": "disabled" }).text("Select size")).append($.map(this.available_sizes, function (v) {
+			}).append($("<div>", { "class": "input-group col-lg-3 col-md-3 col-sm-3 col-xs-8" }).append($("<select>", {
+				"tabindex": "-1",
+				"class": "form-control text-right"
+			}).append($("<option>", { "value": "", "disabled": "disabled" }).text("Select size")).append($.map(this.available_sizes, function (v) {
 				var option_text = v.size !== "_" ? v.size : "Custom...";
 				s++;
 				return $("<option>", {
@@ -82,11 +85,12 @@ var IconSize = function () {
 				}).text(option_text);
 			})).on("change", function () {
 				if (this.value == "_") {
-					console.log($(this));
-					console.log($(this).closest("div"));
+					// console.log($(this));
+					// console.log($(this).closest("div"));
 					var $input = $("<input>", {
 						"type": "number",
 						"dir": "rtl",
+						"tabindex": "-1",
 						"class": "form-control",
 						"placeholder": "Icon size ",
 						"min": 5,

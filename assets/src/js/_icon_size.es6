@@ -60,7 +60,10 @@ class IconSize {
 							}
 						).append(
 							$("<div>", {"class": "input-group col-lg-3 col-md-3 col-sm-3 col-xs-8"}).append(
-								$("<select>", {"class": "form-control text-right"}).append(
+								$("<select>", {
+									"tabindex": "-1",
+									"class": "form-control text-right"
+								}).append(
 									$("<option>", {"value": "", "disabled": "disabled"}).text("Select size")
 								).append(
 									$.map(this.available_sizes, (v) => {
@@ -83,11 +86,12 @@ class IconSize {
 									})
 								).on("change", function() {
 									if(this.value == "_") {
-										console.log($(this));
-										console.log($(this).closest("div"));
+										// console.log($(this));
+										// console.log($(this).closest("div"));
 										let $input = $("<input>", {
 											"type": "number",
 											"dir": "rtl",
+											"tabindex": "-1",
 											"class": "form-control",
 											"placeholder": "Icon size ",
 											"min": 5,
