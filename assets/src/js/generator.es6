@@ -85,12 +85,12 @@ class Generator {
 					)
 				)
 			);
-			$("#use_localstorage_btn").bootstrapToggle({
-				// on: "Use",
-				// off: "Do not use",
-				width: 100,
-				height: 30
-			});
+			// $("#use_localstorage_btn").bootstrapToggle({
+			// 	// on: "Use",
+			// 	// off: "Do not use",
+			// 	width: 100,
+			// 	height: 30
+			// });
 			// $.ajax({
 			// 	url: "common/include/funcs/_ajax/executor.php",
 			// 	data: {

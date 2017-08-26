@@ -23,9 +23,7 @@
     "svg.js": "^2.6.3",
     "colorpicker": "^1.2.13",
     "jquery.scrollTo": "^2.1.2",
-    "materialize": "^0.100.1",
-    "bootstrap": "^3.3.7",
-    "bootstrap-toggle": "^2.2.2"
+    "materialize": "^0.100.1"
   },
   "keywords": [
     "PICOL",
