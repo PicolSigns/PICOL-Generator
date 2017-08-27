@@ -147,7 +147,18 @@
   }
 
   // Navigation Links
-  .anythingControls { outline: 0; }
+  .anythingControls {
+    float: left;
+    outline: 0;
+  }
+
+  #project_title {
+    display: block;
+    float: right;
+    font-family: Verdana,UbuntuBeta,Ubuntu,"Bitstream Vera Sans","DejaVu Sans",Tahoma,sans-serif;
+    height: 22px;
+    text-transform: uppercase;
+  }
 
   // slider autoplay right-to-left, reverse order of nav links to look better
   .rtl .thumbNav {

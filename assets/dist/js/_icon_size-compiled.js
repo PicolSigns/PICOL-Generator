@@ -43,6 +43,10 @@ var IconSize = function () {
 	}, {
 		key: "load_project",
 		value: function load_project(project) {
+			console.log(project);
+			if (project.name.trim().length > 0) {
+				$("#project_title").html("").append($("<span>", { "class": "grey-text" }).text("Current project: ")).append(project.name);
+			}
 			$("#project_name_input").val(project.name).removeClass("invalid");
 			$(".thumbNav").fadeIn();
 			// this.set_storage(project_name);
@@ -57,7 +61,7 @@ var IconSize = function () {
 			var _selected = "",
 			    img = "",
 			    img_size = 256;
-			return $("<div>", { "class": "stage-container" }).append($("<div>", { "class": "stage icon_size" }).append($("<input>", { "type": "hidden", "id": "selected_size", "name": "selected_size" }).val("32")).append($("<input>", { "type": "hidden", "id": "selected_imgs", "name": "selected_imgs" }).val("")).append($("<div>", { "class": "content valign center" }).append($("<div>", {
+			return $("<div>", { "class": "stage-container" }).append($("<div>", { "class": "stage icon_size" }).append($("<input>", { "type": "hidden", "id": "selected_size", "name": "selected_size" }).val("")).append($("<input>", { "type": "hidden", "id": "selected_imgs", "name": "selected_imgs" }).val("")).append($("<div>", { "class": "content valign center" }).append($("<div>", {
 				"class": "card z-depth-0"
 			}).append(function () {
 				// console.log(img_size);
@@ -75,13 +79,13 @@ var IconSize = function () {
 				"tabindex": "-1",
 				"class": "text-right browser-default",
 				"id": "size_selector"
-			}).append($("<option>", { "value": "", "disabled": "disabled" }).text("Select size")).append($.map(this.available_sizes, function (v) {
+			}).append($("<option>", { "value": "", "disabled": "disabled", "selected": "selected" }).text("Select size...")).append($.map(this.available_sizes, function (v) {
 				var option_text = v.size !== "_" ? v.size + "px" : "Custom...";
 				s++;
 				return $("<option>", {
 					"selected": function selected() {
 						if (v.available && typeof v.size == "number") {
-							_selected = v.size == 32 ? "selected" : null;
+							_selected = v.size == "" ? "selected" : null;
 							img_size = v.size <= 64 ? v.size : parseInt(v.size / 1.2);
 						} else {
 							_selected = null;
@@ -108,6 +112,9 @@ var IconSize = function () {
 					$(this).closest("div").prepend($input);
 					$(this).remove();
 					$input.focus();
+				} else {
+					console.log("ok");
+					$("#slider").anythingSlider(3);
 				}
 			})
 			// ).append(

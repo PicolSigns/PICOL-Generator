@@ -119,11 +119,13 @@
                   }
 
                   .title {
-                    display: inline;
+                    display: inline-block;
+                    float: left;
                     margin-right: 5px;
                     max-width: 100px;
                     overflow: hidden;
                     text-overflow: ellipsis;
+                    white-space: nowrap;
                   }
 
                   .secondary-content {

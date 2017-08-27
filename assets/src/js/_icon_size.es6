@@ -29,6 +29,10 @@ class IconSize {
 	}
 
 	load_project(project) {
+		console.log(project);
+		if(project.name.trim().length > 0) {
+			$("#project_title").html("").append($("<span>", {"class": "grey-text"}).text("Current project: ")).append(project.name);
+		}
 		$("#project_name_input").val(project.name).removeClass("invalid");
 		$(".thumbNav").fadeIn();
 		// this.set_storage(project_name);
@@ -44,7 +48,7 @@ class IconSize {
 			img_size = 256;
 		return $("<div>", {"class": "stage-container"}).append(
 			$("<div>", {"class": "stage icon_size"}).append(
-				$("<input>", {"type": "hidden", "id": "selected_size", "name": "selected_size"}).val("32")
+				$("<input>", {"type": "hidden", "id": "selected_size", "name": "selected_size"}).val("")
 			).append(
 				$("<input>", {"type": "hidden", "id": "selected_imgs", "name": "selected_imgs"}).val("")
 			).append(
@@ -73,7 +77,7 @@ class IconSize {
 									"class": "text-right browser-default",
 									"id": "size_selector"
 								}).append(
-									$("<option>", {"value": "", "disabled": "disabled"}).text("Select size")
+									$("<option>", {"value": "", "disabled": "disabled", "selected": "selected"}).text("Select size...")
 								).append(
 									$.map(this.available_sizes, (v) => {
 										let option_text = (v.size !== "_") ? v.size + "px" : "Custom...";
@@ -81,7 +85,7 @@ class IconSize {
 										return $("<option>", {
 											"selected": () => {
 												if(v.available && typeof v.size == "number"){
-													selected = (v.size == 32) ? "selected" : null;
+													selected = (v.size == "") ? "selected" : null;
 													img_size = (v.size <= 64) ? v.size : parseInt(v.size/1.2);
 												} else {
 													selected = null;
@@ -109,6 +113,9 @@ class IconSize {
 										$(this).closest("div").prepend($input);
 										$(this).remove();
 										$input.focus();
+									} else {
+										console.log("ok");
+										$("#slider").anythingSlider(3);
 									}
 								})
 							// ).append(

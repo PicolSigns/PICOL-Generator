@@ -60,6 +60,10 @@ var IconSize = function () {
 	}, {
 		key: "load_project",
 		value: function load_project(project) {
+			console.log(project);
+			if (project.name.trim().length > 0) {
+				$("#project_title").html("").append($("<span>", { "class": "grey-text" }).text("Current project: ")).append(project.name);
+			}
 			$("#project_name_input").val(project.name).removeClass("invalid");
 			$(".thumbNav").fadeIn();
 			// this.set_storage(project_name);
@@ -74,7 +78,7 @@ var IconSize = function () {
 			var _selected = "",
 			    img = "",
 			    img_size = 256;
-			return $("<div>", { "class": "stage-container" }).append($("<div>", { "class": "stage icon_size" }).append($("<input>", { "type": "hidden", "id": "selected_size", "name": "selected_size" }).val("32")).append($("<input>", { "type": "hidden", "id": "selected_imgs", "name": "selected_imgs" }).val("")).append($("<div>", { "class": "content valign center" }).append($("<div>", {
+			return $("<div>", { "class": "stage-container" }).append($("<div>", { "class": "stage icon_size" }).append($("<input>", { "type": "hidden", "id": "selected_size", "name": "selected_size" }).val("")).append($("<input>", { "type": "hidden", "id": "selected_imgs", "name": "selected_imgs" }).val("")).append($("<div>", { "class": "content valign center" }).append($("<div>", {
 				"class": "card z-depth-0"
 			}).append(function () {
 				// console.log(img_size);
@@ -92,13 +96,13 @@ var IconSize = function () {
 				"tabindex": "-1",
 				"class": "text-right browser-default",
 				"id": "size_selector"
-			}).append($("<option>", { "value": "", "disabled": "disabled" }).text("Select size")).append($.map(this.available_sizes, function (v) {
+			}).append($("<option>", { "value": "", "disabled": "disabled", "selected": "selected" }).text("Select size...")).append($.map(this.available_sizes, function (v) {
 				var option_text = v.size !== "_" ? v.size + "px" : "Custom...";
 				s++;
 				return $("<option>", {
 					"selected": function selected() {
 						if (v.available && typeof v.size == "number") {
-							_selected = v.size == 32 ? "selected" : null;
+							_selected = v.size == "" ? "selected" : null;
 							img_size = v.size <= 64 ? v.size : parseInt(v.size / 1.2);
 						} else {
 							_selected = null;
@@ -125,6 +129,9 @@ var IconSize = function () {
 					$(this).closest("div").prepend($input);
 					$(this).remove();
 					$input.focus();
+				} else {
+					console.log("ok");
+					$("#slider").anythingSlider(3);
 				}
 			})
 			// ).append(
@@ -222,7 +229,7 @@ var Project = function () {
 				});
 			}));
 
-			return $("<div>", { "class": "stage-container" }).append($("<div>", { "class": "stage project" }).append($("<header>", { "class": "center-align" }).append($("<img>", {
+			return $("<div>", { "class": "stage project" }).append($("<header>", { "class": "center-align" }).append($("<img>", {
 				"class": "logo",
 				"src": "assets/media/img/picol_logo.png"
 			}))).append($("<div>", { "class": "content" }).append($("<div>", { "class": "card z-depth-0" }).append(function () {
@@ -234,7 +241,7 @@ var Project = function () {
 					// We display a 2 columns layout
 					return $("<div>", { "class": "card-content" }).append($("<div>", { "class": "row separated-columns" }).append($("<div>", { "class": "col l6 m6 s6" }).append($old_projects)).append($("<div>", { "class": "col l6 m6 s6" }).append($new_project))).append($card_action);
 				}
-			}))));
+			})));
 		}
 	}]);
 
@@ -295,16 +302,16 @@ var Generator = function () {
 			},
 			"Size": {
 				"id": "icon_size_selector",
-				"title": "CHOOSE ICON SIZE",
+				"title": "ICON SIZE",
 				"class": "IconSize",
 				"script_file": ""
+			},
+			"Colour": {
+				"id": "colour",
+				"title": "COLOUR",
+				"class": "Colour",
+				"script_file": ""
 			}
-			// "Color": {
-			// 	"id": "color",
-			// 	"title": "COLOUR",
-			// 	"main_file": "colorpicker.tpl",
-			// 	"script_file": ""
-			// },
 			// "Icons": {
 			// 	"id": "icons",
 			// 	"title": "ICONS",
@@ -348,9 +355,28 @@ var Generator = function () {
 
 	}, {
 		key: "get_storage",
-		value: function get_storage() {}
-		// console.log(STORAGE);
-
+		value: function get_storage() {
+			// console.log(STORAGE);
+		}
+	}, {
+		key: "get_base_data",
+		value: function get_base_data(project_name) {
+			var b = {},
+			    storage_data = {
+				project: {
+					name: project_name,
+					date: new Date(),
+					// Collect browser information
+					browser: function () {
+						$.each(navigator, function (k, v) {
+							b[k] = v;
+						});
+						return b;
+					}()
+				}
+			};
+			return storage_data;
+		}
 
 		/**
    * Set the localStorage for this session
@@ -359,24 +385,11 @@ var Generator = function () {
 	}, {
 		key: "set_storage",
 		value: function set_storage(project_name) {
-			var b = {},
-			    storage_data = {
-				project: {
-					name: project_name,
-					date: new Date(),
-					browser: b
-				}
-			};
-
 			if (STORAGE === undefined) {
-				// Collect browser information
-				$.each(navigator, function (k, v) {
-					b[k] = v;
-				});
 				// Set the local storage
-				storage.set("picol_generator", [storage_data]);
+				storage.set("picol_generator", [this.get_base_data(project_name)]);
 			} else {
-				STORAGE.push(storage_data);
+				STORAGE.push(this.get_base_data(project_name));
 				storage.set("picol_generator", STORAGE);
 			}
 		}
@@ -395,7 +408,7 @@ var Generator = function () {
 				i++;
 				_this.pages[i] = item;
 				_this.scripts[i] = value.script_file;
-				$("#slider").append($("<li>").append($("<fieldset>", { "id": value.id, "class": "selector" }).append($("<legend>").text(value.title)).append(function () {
+				$("#slider").append($("<li>").append($("<fieldset>", { "id": value.id, "class": "selector" }).append($("<legend>").text(value.title)).append($("<div>", { "class": "stage-container" }).append(function () {
 					// Call single panels classes
 					switch (value.class) {
 						case "Project":
@@ -404,7 +417,7 @@ var Generator = function () {
 							return icon_size.build();break;
 					}
 					// item_class = new value.class();
-				})));
+				}))));
 				// $.ajax({
 				// 	url: "common/include/funcs/_ajax/executor.php",
 				// 	data: {
@@ -437,6 +450,9 @@ var Generator = function () {
 				onInitialized: function onInitialized() {
 					// Hide panels menu
 					$(".thumbNav").hide();
+					if ($("#project_title").length === 0) {
+						$("<div>", { "id": "project_title" }).insertAfter(".anythingControls");
+					}
 
 					$("#save_settings_btn").on("click", function () {
 						var project_name = $("#project_name_input").val().trim(),
@@ -449,12 +465,12 @@ var Generator = function () {
 							$("#project_name_input").addClass("invalid").focus();
 							$(".thumbNav").fadeOut();
 						} else {
-							icon_size.load_project(storage_data.project);
-							// $("#project_name_input").removeClass("invalid");
-							// $(".thumbNav").fadeIn();
-							//
-							// this.set_storage(project_name);
-							// $("#slider").anythingSlider(2);
+							// Save data to local storage
+							if (use_local_storage) {
+								_this.set_storage(project_name);
+							}
+							// Load the next slide
+							icon_size.load_project(_this.get_base_data(project_name).project);
 						}
 					});
 				}

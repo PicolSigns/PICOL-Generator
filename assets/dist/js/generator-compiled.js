@@ -49,16 +49,16 @@ var Generator = function () {
 			},
 			"Size": {
 				"id": "icon_size_selector",
-				"title": "CHOOSE ICON SIZE",
+				"title": "ICON SIZE",
 				"class": "IconSize",
 				"script_file": ""
+			},
+			"Colour": {
+				"id": "colour",
+				"title": "COLOUR",
+				"class": "Colour",
+				"script_file": ""
 			}
-			// "Color": {
-			// 	"id": "color",
-			// 	"title": "COLOUR",
-			// 	"main_file": "colorpicker.tpl",
-			// 	"script_file": ""
-			// },
 			// "Icons": {
 			// 	"id": "icons",
 			// 	"title": "ICONS",
@@ -102,9 +102,28 @@ var Generator = function () {
 
 	}, {
 		key: "get_storage",
-		value: function get_storage() {}
-		// console.log(STORAGE);
-
+		value: function get_storage() {
+			// console.log(STORAGE);
+		}
+	}, {
+		key: "get_base_data",
+		value: function get_base_data(project_name) {
+			var b = {},
+			    storage_data = {
+				project: {
+					name: project_name,
+					date: new Date(),
+					// Collect browser information
+					browser: function () {
+						$.each(navigator, function (k, v) {
+							b[k] = v;
+						});
+						return b;
+					}()
+				}
+			};
+			return storage_data;
+		}
 
 		/**
    * Set the localStorage for this session
@@ -113,24 +132,11 @@ var Generator = function () {
 	}, {
 		key: "set_storage",
 		value: function set_storage(project_name) {
-			var b = {},
-			    storage_data = {
-				project: {
-					name: project_name,
-					date: new Date(),
-					browser: b
-				}
-			};
-
 			if (STORAGE === undefined) {
-				// Collect browser information
-				$.each(navigator, function (k, v) {
-					b[k] = v;
-				});
 				// Set the local storage
-				storage.set("picol_generator", [storage_data]);
+				storage.set("picol_generator", [this.get_base_data(project_name)]);
 			} else {
-				STORAGE.push(storage_data);
+				STORAGE.push(this.get_base_data(project_name));
 				storage.set("picol_generator", STORAGE);
 			}
 		}
@@ -149,7 +155,7 @@ var Generator = function () {
 				i++;
 				_this.pages[i] = item;
 				_this.scripts[i] = value.script_file;
-				$("#slider").append($("<li>").append($("<fieldset>", { "id": value.id, "class": "selector" }).append($("<legend>").text(value.title)).append(function () {
+				$("#slider").append($("<li>").append($("<fieldset>", { "id": value.id, "class": "selector" }).append($("<legend>").text(value.title)).append($("<div>", { "class": "stage-container" }).append(function () {
 					// Call single panels classes
 					switch (value.class) {
 						case "Project":
@@ -158,7 +164,7 @@ var Generator = function () {
 							return icon_size.build();break;
 					}
 					// item_class = new value.class();
-				})));
+				}))));
 				// $.ajax({
 				// 	url: "common/include/funcs/_ajax/executor.php",
 				// 	data: {
@@ -191,6 +197,9 @@ var Generator = function () {
 				onInitialized: function onInitialized() {
 					// Hide panels menu
 					$(".thumbNav").hide();
+					if ($("#project_title").length === 0) {
+						$("<div>", { "id": "project_title" }).insertAfter(".anythingControls");
+					}
 
 					$("#save_settings_btn").on("click", function () {
 						var project_name = $("#project_name_input").val().trim(),
@@ -203,12 +212,12 @@ var Generator = function () {
 							$("#project_name_input").addClass("invalid").focus();
 							$(".thumbNav").fadeOut();
 						} else {
-							icon_size.load_project(storage_data.project);
-							// $("#project_name_input").removeClass("invalid");
-							// $(".thumbNav").fadeIn();
-							//
-							// this.set_storage(project_name);
-							// $("#slider").anythingSlider(2);
+							// Save data to local storage
+							if (use_local_storage) {
+								_this.set_storage(project_name);
+							}
+							// Load the next slide
+							icon_size.load_project(_this.get_base_data(project_name).project);
 						}
 					});
 				}

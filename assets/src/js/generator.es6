@@ -31,16 +31,16 @@ class Generator {
 			},
 			"Size": {
 				"id": "icon_size_selector",
-				"title": "CHOOSE ICON SIZE",
+				"title": "ICON SIZE",
 				"class": "IconSize",
 				"script_file": ""
 			},
-			// "Color": {
-			// 	"id": "color",
-			// 	"title": "COLOUR",
-			// 	"main_file": "colorpicker.tpl",
-			// 	"script_file": ""
-			// },
+			"Colour": {
+				"id": "colour",
+				"title": "COLOUR",
+				"class": "Colour",
+				"script_file": ""
+			},
 			// "Icons": {
 			// 	"id": "icons",
 			// 	"title": "ICONS",
@@ -78,26 +78,31 @@ class Generator {
 		// console.log(STORAGE);
 	}
 
-	/**
-	 * Set the localStorage for this session
-	 */
-	set_storage(project_name) {
+	get_base_data(project_name) {
 		let b = {},
 			storage_data = {
 				project: {
 					name: project_name,
 					date: new Date(),
-					browser: b
+					// Collect browser information
+					browser: function() {
+						$.each(navigator, (k, v) => { b[k] = v; });
+						return b;
+					}()
 				}
 			};
+		return storage_data;
+	}
 
+	/**
+	 * Set the localStorage for this session
+	 */
+	set_storage(project_name) {
 		if(STORAGE === undefined) {
-			// Collect browser information
-			$.each(navigator, (k, v) => { b[k] = v; });
 			// Set the local storage
-			storage.set("picol_generator", [storage_data]);
+			storage.set("picol_generator", [this.get_base_data(project_name)]);
 		} else {
-			STORAGE.push(storage_data);
+			STORAGE.push(this.get_base_data(project_name));
 			storage.set("picol_generator", STORAGE);
 		}
 	}
@@ -116,14 +121,16 @@ class Generator {
 					$("<fieldset>", {"id": value.id, "class": "selector"}).append(
 						$("<legend>").text(value.title)
 					).append(
-						function() {
-							// Call single panels classes
-							switch(value.class) {
-								case "Project"	: 	return project.build();			break;
-								case "IconSize"	:	return icon_size.build();		break;
+						$("<div>", {"class": "stage-container"}).append(
+							function() {
+								// Call single panels classes
+								switch(value.class) {
+									case "Project"	: 	return project.build();			break;
+									case "IconSize"	:	return icon_size.build();		break;
+								}
+								// item_class = new value.class();
 							}
-							// item_class = new value.class();
-						}
+						)
 					)
 				)
 			);
@@ -158,6 +165,9 @@ class Generator {
 			onInitialized: () => {
 				// Hide panels menu
 				$(".thumbNav").hide();
+				if($("#project_title").length === 0) {
+					$("<div>", {"id": "project_title"}).insertAfter(".anythingControls");
+				}
 
 				$("#save_settings_btn").on("click", () => {
 					let project_name = $("#project_name_input").val().trim(),
@@ -170,12 +180,12 @@ class Generator {
 						$("#project_name_input").addClass("invalid").focus();
 						$(".thumbNav").fadeOut();
 					} else {
-						icon_size.load_project(storage_data.project);
-						// $("#project_name_input").removeClass("invalid");
-						// $(".thumbNav").fadeIn();
-						//
-						// this.set_storage(project_name);
-						// $("#slider").anythingSlider(2);
+						// Save data to local storage
+						if(use_local_storage) {
+							this.set_storage(project_name);
+						}
+						// Load the next slide
+						icon_size.load_project(this.get_base_data(project_name).project);
 					}
 				});
 			},

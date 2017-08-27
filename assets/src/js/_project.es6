@@ -114,42 +114,40 @@ class Project {
 				)
 			);
 
-		return $("<div>", {"class": "stage-container"}).append(
-			$("<div>", {"class": "stage project"}).append(
-				$("<header>", {"class": "center-align"}).append(
-					$("<img>", {
-						"class": "logo",
-						"src": "assets/media/img/picol_logo.png"
-					})
-				)
-			).append(
-				$("<div>", {"class": "content"}).append(
-					$("<div>", {"class": "card z-depth-0"}).append(
-						function() {
-							if(STORAGE === undefined) {
-								// No storaged data
-								return $("<div>", {"class": "card-content"}).append(
-									$new_project.append(
-										$("<div>", {"class": "spacer-60"})
-									).append($card_action)
-								);
-							} else {
-								// There are storaged data
-								// We display a 2 columns layout
-								return $("<div>", {"class": "card-content"}).append(
-									$("<div>", {"class": "row separated-columns"}).append(
-										$("<div>", {"class": "col l6 m6 s6"}).append(
-											$old_projects
-										)
-									).append(
-										$("<div>", {"class": "col l6 m6 s6"}).append(
-											$new_project
-										)
+		return $("<div>", {"class": "stage project"}).append(
+			$("<header>", {"class": "center-align"}).append(
+				$("<img>", {
+					"class": "logo",
+					"src": "assets/media/img/picol_logo.png"
+				})
+			)
+		).append(
+			$("<div>", {"class": "content"}).append(
+				$("<div>", {"class": "card z-depth-0"}).append(
+					function() {
+						if(STORAGE === undefined) {
+							// No storaged data
+							return $("<div>", {"class": "card-content"}).append(
+								$new_project.append(
+									$("<div>", {"class": "spacer-60"})
+								).append($card_action)
+							);
+						} else {
+							// There are storaged data
+							// We display a 2 columns layout
+							return $("<div>", {"class": "card-content"}).append(
+								$("<div>", {"class": "row separated-columns"}).append(
+									$("<div>", {"class": "col l6 m6 s6"}).append(
+										$old_projects
 									)
-								).append($card_action);
-							}
+								).append(
+									$("<div>", {"class": "col l6 m6 s6"}).append(
+										$new_project
+									)
+								)
+							).append($card_action);
 						}
-					)
+					}
 				)
 			)
 		);
