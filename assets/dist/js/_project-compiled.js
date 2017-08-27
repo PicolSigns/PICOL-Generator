@@ -64,8 +64,7 @@ var Project = function () {
 			})))).append($("<div>", { "class": "col l4 m12 s12" }).append($("<div>", { "class": "switch right" }).append($("<label>").append("Off").append($("<input>", {
 				"type": "checkbox",
 				"tabindex": "-1",
-				"id": "use_localstorage_btn",
-				"checked": "checked"
+				"id": "use_localstorage_btn"
 			})).append($("<span>", { "class": "lever" })).append("On"))))),
 			    $old_projects = $("<div>").append($("<h6>").text("Saved projects")).append($("<ul>", { "class": "collection" }).append(function () {
 				return $.map(STORAGE, function (v) {

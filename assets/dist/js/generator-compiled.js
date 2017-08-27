@@ -151,10 +151,16 @@ var Generator = function () {
 			var _this = this;
 
 			var i = 0;
+
+			// Prepare local store data
+			$("body").prepend($("<span>", { "class": "hide", "id": "selected_badge" })).prepend($("<span>", { "class": "hide", "id": "selected_icons" })).prepend($("<span>", { "class": "hide", "id": "selected_colour" })).prepend($("<span>", { "class": "", "id": "selected_size" }));
+
 			$.each(this.sliders, function (item, value) {
 				i++;
 				_this.pages[i] = item;
 				_this.scripts[i] = value.script_file;
+
+				// Prepare slider
 				$("#slider").append($("<li>").append($("<fieldset>", { "id": value.id, "class": "selector" }).append($("<legend>").text(value.title)).append($("<div>", { "class": "stage-container" }).append(function () {
 					// Call single panels classes
 					switch (value.class) {
@@ -165,20 +171,8 @@ var Generator = function () {
 					}
 					// item_class = new value.class();
 				}))));
-				// $.ajax({
-				// 	url: "common/include/funcs/_ajax/executor.php",
-				// 	data: {
-				// 		file: value.main_file
-				// 	},
-				// 	dataType: "text",
-				// 	success: (data) => {
-				// 		$("#" + value.id).append($(data));
-				// 	}
-				// });
-				// $("#" + value.id).append(project.build());
-				// $("#" + value.id).append(icon_size.build());
 			});
-			// $("#size_selector").material_select();
+
 			$("#slider").anythingSlider({
 				navigationFormatter: function navigationFormatter(i) {
 					// add thumbnails as navigation links
@@ -192,6 +186,7 @@ var Generator = function () {
 				hashTags: false,
 				resizeContents: true,
 				infinteSlides: false,
+				enableKeyboard: true,
 				animationTime: 450,
 				easing: "easeOutCubic",
 				onInitialized: function onInitialized() {
@@ -220,35 +215,47 @@ var Generator = function () {
 							icon_size.load_project(_this.get_base_data(project_name).project);
 						}
 					});
+				},
+				onSlideComplete: function onSlideComplete(slider) {
+					var selected_size = $("#selected_size").text();
+					console.log(parseInt(selected_size));
+					if (slider.currentPage > 2 && (selected_size.trim().length === 0 || parseInt(selected_size) <= 0)) {
+						$("#slider").anythingSlider(2);
+					}
+
+					// 	// if(slider.currentPage > 3 && $("#selected_imgs").val() === ""){
+					// 	// 	if(slider.currentPage < 7 || $("#history").html() === ""){
+					// 	// 		$("#slider").anythingSlider(3);
+					// 	// 	}
+					// 	// }
+					// 	// if(slider.currentPage == 6){
+					// 	// 	this.refresh_history();
+					// 	// }
+					// 	// if(slider.currentPage !== 3){
+					// 	// 	$(document).unbind("keydown");
+					// 	// } else {
+					// 	// 	$("#filter").focus();
+					// 	// }
+					// 	// if(this.scripts[slider.currentPage] !== "" && this.scripts[slider.currentPage] !== undefined){
+					// 	// 	$.get("common/js/include/" + this.scripts[slider.currentPage], () => {}, "script");
+					// 	// }
+					// },
+					// onSlideBegin: (slider) => {
+					// 	// if(slider.currentPage !== 3 && $("#selected_imgs").val() === ""){
+					// 	// 	$("#generator_interface .forward > a").animate({"backgroundPosition": "-188px -40px"}, 1000);
+					// 	// } else {
+					// 	// 	$("#generator_interface .forward > a").animate({"backgroundPosition": "0 -40px"}, 1000);
+					// 	// }
+					// 	// if(slider.currentPage !== 6){
+					// 	// 	this.refresh_history();
+					// 	// }
 				}
-				// onSlideComplete: (slider) => {
-				// 	// if(slider.currentPage > 3 && $("#selected_imgs").val() === ""){
-				// 	// 	if(slider.currentPage < 7 || $("#history").html() === ""){
-				// 	// 		$("#slider").anythingSlider(3);
-				// 	// 	}
-				// 	// }
-				// 	// if(slider.currentPage == 6){
-				// 	// 	this.refresh_history();
-				// 	// }
-				// 	// if(slider.currentPage !== 3){
-				// 	// 	$(document).unbind("keydown");
-				// 	// } else {
-				// 	// 	$("#filter").focus();
-				// 	// }
-				// 	// if(this.scripts[slider.currentPage] !== "" && this.scripts[slider.currentPage] !== undefined){
-				// 	// 	$.get("common/js/include/" + this.scripts[slider.currentPage], () => {}, "script");
-				// 	// }
-				// },
-				// onSlideBegin: (slider) => {
-				// 	// if(slider.currentPage !== 3 && $("#selected_imgs").val() === ""){
-				// 	// 	$("#generator_interface .forward > a").animate({"backgroundPosition": "-188px -40px"}, 1000);
-				// 	// } else {
-				// 	// 	$("#generator_interface .forward > a").animate({"backgroundPosition": "0 -40px"}, 1000);
-				// 	// }
-				// 	// if(slider.currentPage !== 6){
-				// 	// 	this.refresh_history();
-				// 	// }
-				// }
+			});
+			$(document).keydown(function (e) {
+				if (e.keyCode == 9) {
+					//tab pressed
+					e.preventDefault(); // stops its action
+				}
 			});
 		}
 	}, {

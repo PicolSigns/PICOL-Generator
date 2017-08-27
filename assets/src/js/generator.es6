@@ -112,10 +112,24 @@ class Generator {
 	 */
 	build_sliders() {
 		let i = 0;
+
+		// Prepare local store data
+		$("body").prepend(
+			$("<span>", {"class": "hide", "id": "selected_badge"})
+		).prepend(
+			$("<span>", {"class": "hide", "id": "selected_icons"})
+		).prepend(
+			$("<span>", {"class": "hide", "id": "selected_colour"})
+		).prepend(
+			$("<span>", {"class": "", "id": "selected_size"})
+		);
+
 		$.each(this.sliders, (item, value) => {
 			i++;
 			this.pages[i] = item;
 			this.scripts[i] = value.script_file;
+
+			// Prepare slider
 			$("#slider").append(
 				$("<li>").append(
 					$("<fieldset>", {"id": value.id, "class": "selector"}).append(
@@ -134,20 +148,8 @@ class Generator {
 					)
 				)
 			);
-			// $.ajax({
-			// 	url: "common/include/funcs/_ajax/executor.php",
-			// 	data: {
-			// 		file: value.main_file
-			// 	},
-			// 	dataType: "text",
-			// 	success: (data) => {
-			// 		$("#" + value.id).append($(data));
-			// 	}
-			// });
-			// $("#" + value.id).append(project.build());
-			// $("#" + value.id).append(icon_size.build());
 		});
-		// $("#size_selector").material_select();
+
 		$("#slider").anythingSlider({
 			navigationFormatter: (i) => { // add thumbnails as navigation links
 				return this.pages[i];
@@ -160,6 +162,7 @@ class Generator {
 			hashTags: false,
 			resizeContents: true,
 			infinteSlides: false,
+			enableKeyboard: true,
 			animationTime: 450,
 			easing: "easeOutCubic",
 			onInitialized: () => {
@@ -189,7 +192,13 @@ class Generator {
 					}
 				});
 			},
-			// onSlideComplete: (slider) => {
+			onSlideComplete: (slider) => {
+				let selected_size = $("#selected_size").text();
+				console.log(parseInt(selected_size));
+				if(slider.currentPage > 2 && (selected_size.trim().length === 0 || parseInt(selected_size) <= 0)){
+					$("#slider").anythingSlider(2);
+				}
+
 			// 	// if(slider.currentPage > 3 && $("#selected_imgs").val() === ""){
 			// 	// 	if(slider.currentPage < 7 || $("#history").html() === ""){
 			// 	// 		$("#slider").anythingSlider(3);
@@ -216,7 +225,12 @@ class Generator {
 			// 	// if(slider.currentPage !== 6){
 			// 	// 	this.refresh_history();
 			// 	// }
-			// }
+			}
+		});
+		$(document).keydown((e) => {
+			if(e.keyCode == 9) {  //tab pressed
+				e.preventDefault(); // stops its action
+			}
 		});
 	}
 

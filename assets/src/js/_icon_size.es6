@@ -31,7 +31,11 @@ class IconSize {
 	load_project(project) {
 		console.log(project);
 		if(project.name.trim().length > 0) {
-			$(".stage-container").append($("#project_title").html("").append($("<span>", {"class": "grey-text"}).text("Current project: ")).append(project.name));
+			if($("#project_title").length === 0) {
+				$(".stage-container").append($("#project_title").append($("<span>", {"class": "grey-text"}).text("Current project: ")).append(project.name));
+			} else {
+				$("#project_title").html("").append($("<span>", {"class": "grey-text"}).text("Current project: ")).append(project.name);
+			}
 		}
 		$("#project_name_input").val(project.name).removeClass("invalid");
 		$(".thumbNav").fadeIn();
@@ -48,10 +52,6 @@ class IconSize {
 			img_size = 256;
 		return $("<div>", {"class": "stage-container"}).append(
 			$("<div>", {"class": "stage icon_size"}).append(
-				$("<input>", {"type": "hidden", "id": "selected_size", "name": "selected_size"}).val("")
-			).append(
-				$("<input>", {"type": "hidden", "id": "selected_imgs", "name": "selected_imgs"}).val("")
-			).append(
 				$("<div>", {"class": "content valign center"}).append(
 					$("<div>", {
 						"class": "card z-depth-0"
@@ -99,22 +99,27 @@ class IconSize {
 									})
 								).on("change", function() {
 									if(this.value == "_") {
-										// console.log($(this));
-										// console.log($(this).closest("div"));
 										let $input = $("<input>", {
 											"type": "number",
-											"dir": "rtl",
+											// "dir": "rtl",
 											"tabindex": "-1",
-											"class": "form-control",
+											"id": "size_input_selector",
 											"placeholder": "Icon size ",
 											"min": 5,
 											"max": 1000
+										}).on("keydown", (e) => {
+											if(e.keycode == 13 || e.which == 13) {
+												$("#selected_size").text($input.val());
+												$("#slider").anythingSlider(3);
+											}
 										});
+
+										$("#selected_size").text("");
 										$(this).closest("div").prepend($input);
 										$(this).remove();
 										$input.focus();
 									} else {
-										console.log("ok");
+										$("#selected_size").text(this.value);
 										$("#slider").anythingSlider(3);
 									}
 								})

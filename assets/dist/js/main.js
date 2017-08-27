@@ -62,7 +62,11 @@ var IconSize = function () {
 		value: function load_project(project) {
 			console.log(project);
 			if (project.name.trim().length > 0) {
-				$(".stage-container").append($("#project_title").html("").append($("<span>", { "class": "grey-text" }).text("Current project: ")).append(project.name));
+				if ($("#project_title").length === 0) {
+					$(".stage-container").append($("#project_title").append($("<span>", { "class": "grey-text" }).text("Current project: ")).append(project.name));
+				} else {
+					$("#project_title").html("").append($("<span>", { "class": "grey-text" }).text("Current project: ")).append(project.name);
+				}
 			}
 			$("#project_name_input").val(project.name).removeClass("invalid");
 			$(".thumbNav").fadeIn();
@@ -78,7 +82,7 @@ var IconSize = function () {
 			var _selected = "",
 			    img = "",
 			    img_size = 256;
-			return $("<div>", { "class": "stage-container" }).append($("<div>", { "class": "stage icon_size" }).append($("<input>", { "type": "hidden", "id": "selected_size", "name": "selected_size" }).val("")).append($("<input>", { "type": "hidden", "id": "selected_imgs", "name": "selected_imgs" }).val("")).append($("<div>", { "class": "content valign center" }).append($("<div>", {
+			return $("<div>", { "class": "stage-container" }).append($("<div>", { "class": "stage icon_size" }).append($("<div>", { "class": "content valign center" }).append($("<div>", {
 				"class": "card z-depth-0"
 			}).append(function () {
 				// console.log(img_size);
@@ -115,22 +119,27 @@ var IconSize = function () {
 				}).text(option_text);
 			})).on("change", function () {
 				if (this.value == "_") {
-					// console.log($(this));
-					// console.log($(this).closest("div"));
 					var $input = $("<input>", {
 						"type": "number",
-						"dir": "rtl",
+						// "dir": "rtl",
 						"tabindex": "-1",
-						"class": "form-control",
+						"id": "size_input_selector",
 						"placeholder": "Icon size ",
 						"min": 5,
 						"max": 1000
+					}).on("keydown", function (e) {
+						if (e.keycode == 13 || e.which == 13) {
+							$("#selected_size").text($input.val());
+							$("#slider").anythingSlider(3);
+						}
 					});
+
+					$("#selected_size").text("");
 					$(this).closest("div").prepend($input);
 					$(this).remove();
 					$input.focus();
 				} else {
-					console.log("ok");
+					$("#selected_size").text(this.value);
 					$("#slider").anythingSlider(3);
 				}
 			})
@@ -212,8 +221,7 @@ var Project = function () {
 			})))).append($("<div>", { "class": "col l4 m12 s12" }).append($("<div>", { "class": "switch right" }).append($("<label>").append("Off").append($("<input>", {
 				"type": "checkbox",
 				"tabindex": "-1",
-				"id": "use_localstorage_btn",
-				"checked": "checked"
+				"id": "use_localstorage_btn"
 			})).append($("<span>", { "class": "lever" })).append("On"))))),
 			    $old_projects = $("<div>").append($("<h6>").text("Saved projects")).append($("<ul>", { "class": "collection" }).append(function () {
 				return $.map(STORAGE, function (v) {
@@ -404,10 +412,16 @@ var Generator = function () {
 			var _this = this;
 
 			var i = 0;
+
+			// Prepare local store data
+			$("body").prepend($("<span>", { "class": "hide", "id": "selected_badge" })).prepend($("<span>", { "class": "hide", "id": "selected_icons" })).prepend($("<span>", { "class": "hide", "id": "selected_colour" })).prepend($("<span>", { "class": "", "id": "selected_size" }));
+
 			$.each(this.sliders, function (item, value) {
 				i++;
 				_this.pages[i] = item;
 				_this.scripts[i] = value.script_file;
+
+				// Prepare slider
 				$("#slider").append($("<li>").append($("<fieldset>", { "id": value.id, "class": "selector" }).append($("<legend>").text(value.title)).append($("<div>", { "class": "stage-container" }).append(function () {
 					// Call single panels classes
 					switch (value.class) {
@@ -418,20 +432,8 @@ var Generator = function () {
 					}
 					// item_class = new value.class();
 				}))));
-				// $.ajax({
-				// 	url: "common/include/funcs/_ajax/executor.php",
-				// 	data: {
-				// 		file: value.main_file
-				// 	},
-				// 	dataType: "text",
-				// 	success: (data) => {
-				// 		$("#" + value.id).append($(data));
-				// 	}
-				// });
-				// $("#" + value.id).append(project.build());
-				// $("#" + value.id).append(icon_size.build());
 			});
-			// $("#size_selector").material_select();
+
 			$("#slider").anythingSlider({
 				navigationFormatter: function navigationFormatter(i) {
 					// add thumbnails as navigation links
@@ -445,6 +447,7 @@ var Generator = function () {
 				hashTags: false,
 				resizeContents: true,
 				infinteSlides: false,
+				enableKeyboard: true,
 				animationTime: 450,
 				easing: "easeOutCubic",
 				onInitialized: function onInitialized() {
@@ -473,35 +476,47 @@ var Generator = function () {
 							icon_size.load_project(_this.get_base_data(project_name).project);
 						}
 					});
+				},
+				onSlideComplete: function onSlideComplete(slider) {
+					var selected_size = $("#selected_size").text();
+					console.log(parseInt(selected_size));
+					if (slider.currentPage > 2 && (selected_size.trim().length === 0 || parseInt(selected_size) <= 0)) {
+						$("#slider").anythingSlider(2);
+					}
+
+					// 	// if(slider.currentPage > 3 && $("#selected_imgs").val() === ""){
+					// 	// 	if(slider.currentPage < 7 || $("#history").html() === ""){
+					// 	// 		$("#slider").anythingSlider(3);
+					// 	// 	}
+					// 	// }
+					// 	// if(slider.currentPage == 6){
+					// 	// 	this.refresh_history();
+					// 	// }
+					// 	// if(slider.currentPage !== 3){
+					// 	// 	$(document).unbind("keydown");
+					// 	// } else {
+					// 	// 	$("#filter").focus();
+					// 	// }
+					// 	// if(this.scripts[slider.currentPage] !== "" && this.scripts[slider.currentPage] !== undefined){
+					// 	// 	$.get("common/js/include/" + this.scripts[slider.currentPage], () => {}, "script");
+					// 	// }
+					// },
+					// onSlideBegin: (slider) => {
+					// 	// if(slider.currentPage !== 3 && $("#selected_imgs").val() === ""){
+					// 	// 	$("#generator_interface .forward > a").animate({"backgroundPosition": "-188px -40px"}, 1000);
+					// 	// } else {
+					// 	// 	$("#generator_interface .forward > a").animate({"backgroundPosition": "0 -40px"}, 1000);
+					// 	// }
+					// 	// if(slider.currentPage !== 6){
+					// 	// 	this.refresh_history();
+					// 	// }
 				}
-				// onSlideComplete: (slider) => {
-				// 	// if(slider.currentPage > 3 && $("#selected_imgs").val() === ""){
-				// 	// 	if(slider.currentPage < 7 || $("#history").html() === ""){
-				// 	// 		$("#slider").anythingSlider(3);
-				// 	// 	}
-				// 	// }
-				// 	// if(slider.currentPage == 6){
-				// 	// 	this.refresh_history();
-				// 	// }
-				// 	// if(slider.currentPage !== 3){
-				// 	// 	$(document).unbind("keydown");
-				// 	// } else {
-				// 	// 	$("#filter").focus();
-				// 	// }
-				// 	// if(this.scripts[slider.currentPage] !== "" && this.scripts[slider.currentPage] !== undefined){
-				// 	// 	$.get("common/js/include/" + this.scripts[slider.currentPage], () => {}, "script");
-				// 	// }
-				// },
-				// onSlideBegin: (slider) => {
-				// 	// if(slider.currentPage !== 3 && $("#selected_imgs").val() === ""){
-				// 	// 	$("#generator_interface .forward > a").animate({"backgroundPosition": "-188px -40px"}, 1000);
-				// 	// } else {
-				// 	// 	$("#generator_interface .forward > a").animate({"backgroundPosition": "0 -40px"}, 1000);
-				// 	// }
-				// 	// if(slider.currentPage !== 6){
-				// 	// 	this.refresh_history();
-				// 	// }
-				// }
+			});
+			$(document).keydown(function (e) {
+				if (e.keyCode == 9) {
+					//tab pressed
+					e.preventDefault(); // stops its action
+				}
 			});
 		}
 	}, {

@@ -74,8 +74,7 @@ class Project {
 								$("<input>", {
 									"type": "checkbox",
 									"tabindex": "-1",
-									"id": "use_localstorage_btn",
-									"checked": "checked"
+									"id": "use_localstorage_btn"
 								})
 							).append(
 								$("<span>", {"class": "lever"})
