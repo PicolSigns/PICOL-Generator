@@ -27,7 +27,6 @@
     // }
 
     .panel {
-
       fieldset {
         background-color: $light-white;
         border: 0 none;
@@ -67,18 +66,6 @@
             vertical-align: middle;
             width: 100%;
 
-            .spacer-10 { margin-top: 10px; }
-            .spacer-20 { margin-top: 20px; }
-            .spacer-30 { margin-top: 30px; }
-            .spacer-40 { margin-top: 40px; }
-            .spacer-50 { margin-top: 50px; }
-            .spacer-60 { margin-top: 60px; }
-            .spacer-70 { margin-top: 70px; }
-            .spacer-80 { margin-top: 80px; }
-            .spacer-90 { margin-top: 90px; }
-            .spacer-100 { margin-top: 100px; }
-            .spacer-200 { margin-top: 200px; }
-
             header {
               // border-bottom: $grey 1px solid;
               display: block;
@@ -105,13 +92,53 @@
             }
 
             &.project {
+              .card-content {
+                h6 {
+                  margin-bottom: 2rem;
+                }
+
+                .separated-columns > .col:first-child::after {
+                  background: linear-gradient($white, $very-light-grey, $white);
+                  bottom: 20%;
+                  content: "";
+                  height: 70%;
+                  left: 50%;
+                  margin-left: 5px;
+                  position: absolute;
+                  width: 1px;
+                }
+
+                .collection {
+                  margin: 0;
+                  max-height: 170px;
+                  overflow-y: hidden;
+                  padding: 0;
+
+                  &:hover {
+                    overflow-y: auto;
+                  }
+
+                  .title {
+                    display: inline;
+                    margin-right: 5px;
+                    max-width: 100px;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                  }
+
+                  .secondary-content {
+                    font-size: 25px;
+                  }
+                }
+              }
+
               .card-action {
                 margin: 0;
                 padding: 0;
 
                 a {
-                  padding: 0;
                   margin: 5px 0;
+                  padding: 0;
 
                   &:hover {
                     text-decoration: none;
@@ -123,13 +150,6 @@
         }
       }
     }
-  }
-}
-
-
-.stage {
-  img {
-    margin-bottom: 2rem;
   }
 }
 

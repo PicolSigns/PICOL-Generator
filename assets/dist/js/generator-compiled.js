@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* jshint esversion: 6 */
+/* jshint -W027 */
 
 var _project = require("./_project.es6");
 
@@ -18,8 +19,17 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var project = new _project2.default(),
-    icon_size = new _icon_size2.default();
+var
+/**
+ * Load all storaged data as variable
+ * @return object 															The storaged data
+ */
+storage = Storages.initNamespaceStorage("ns_name").localStorage,
+    STORAGE = storage.get("picol_generator") !== undefined ? storage.get("picol_generator") : undefined,
+
+// Load classes
+project = new _project2.default(STORAGE),
+    icon_size = new _icon_size2.default(STORAGE);
 
 var Generator = function () {
 	/**
@@ -87,6 +97,48 @@ var Generator = function () {
 				}r[r.length] = a[i];
 			}return r;
 		}
+
+		/* ---------------------------------------------------------------------- */
+
+	}, {
+		key: "get_storage",
+		value: function get_storage() {}
+		// console.log(STORAGE);
+
+
+		/**
+   * Set the localStorage for this session
+   */
+
+	}, {
+		key: "set_storage",
+		value: function set_storage(project_name) {
+			var b = {},
+			    storage_data = {
+				project: {
+					name: project_name,
+					date: new Date(),
+					browser: b
+				}
+			};
+
+			if (STORAGE === undefined) {
+				// Collect browser information
+				$.each(navigator, function (k, v) {
+					b[k] = v;
+				});
+				// Set the local storage
+				storage.set("picol_generator", [storage_data]);
+			} else {
+				STORAGE.push(storage_data);
+				storage.set("picol_generator", STORAGE);
+			}
+		}
+
+		/**
+   * Build the sliders DOM object
+   */
+
 	}, {
 		key: "build_sliders",
 		value: function build_sliders() {
@@ -98,6 +150,7 @@ var Generator = function () {
 				_this.pages[i] = item;
 				_this.scripts[i] = value.script_file;
 				$("#slider").append($("<li>").append($("<fieldset>", { "id": value.id, "class": "selector" }).append($("<legend>").text(value.title)).append(function () {
+					// Call single panels classes
 					switch (value.class) {
 						case "Project":
 							return project.build();break;
@@ -106,12 +159,6 @@ var Generator = function () {
 					}
 					// item_class = new value.class();
 				})));
-				// $("#use_localstorage_btn").bootstrapToggle({
-				// 	// on: "Use",
-				// 	// off: "Do not use",
-				// 	width: 100,
-				// 	height: 30
-				// });
 				// $.ajax({
 				// 	url: "common/include/funcs/_ajax/executor.php",
 				// 	data: {
@@ -125,6 +172,7 @@ var Generator = function () {
 				// $("#" + value.id).append(project.build());
 				// $("#" + value.id).append(icon_size.build());
 			});
+			// $("#size_selector").material_select();
 			$("#slider").anythingSlider({
 				navigationFormatter: function navigationFormatter(i) {
 					// add thumbnails as navigation links
@@ -140,34 +188,58 @@ var Generator = function () {
 				infinteSlides: false,
 				animationTime: 450,
 				easing: "easeOutCubic",
-				onSlideComplete: function onSlideComplete(slider) {
-					// if(slider.currentPage > 3 && $("#selected_imgs").val() === ""){
-					// 	if(slider.currentPage < 7 || $("#history").html() === ""){
-					// 		$("#slider").anythingSlider(3);
-					// 	}
-					// }
-					// if(slider.currentPage == 6){
-					// 	this.refresh_history();
-					// }
-					// if(slider.currentPage !== 3){
-					// 	$(document).unbind("keydown");
-					// } else {
-					// 	$("#filter").focus();
-					// }
-					// if(this.scripts[slider.currentPage] !== "" && this.scripts[slider.currentPage] !== undefined){
-					// 	$.get("common/js/include/" + this.scripts[slider.currentPage], () => {}, "script");
-					// }
-				},
-				onSlideBegin: function onSlideBegin(slider) {
-					// if(slider.currentPage !== 3 && $("#selected_imgs").val() === ""){
-					// 	$("#generator_interface .forward > a").animate({"backgroundPosition": "-188px -40px"}, 1000);
-					// } else {
-					// 	$("#generator_interface .forward > a").animate({"backgroundPosition": "0 -40px"}, 1000);
-					// }
-					// if(slider.currentPage !== 6){
-					// 	this.refresh_history();
-					// }
+				onInitialized: function onInitialized() {
+					// Hide panels menu
+					$(".thumbNav").hide();
+
+					$("#save_settings_btn").on("click", function () {
+						var project_name = $("#project_name_input").val().trim(),
+						    use_local_storage = $("#use_localstorage_btn").is(":checked");
+
+						// Lock position if:
+						// * use_local_storage = true
+						// * project_name is empty
+						if (use_local_storage && project_name.length === 0) {
+							$("#project_name_input").addClass("invalid").focus();
+							$(".thumbNav").fadeOut();
+						} else {
+							icon_size.load_project(storage_data.project);
+							// $("#project_name_input").removeClass("invalid");
+							// $(".thumbNav").fadeIn();
+							//
+							// this.set_storage(project_name);
+							// $("#slider").anythingSlider(2);
+						}
+					});
 				}
+				// onSlideComplete: (slider) => {
+				// 	// if(slider.currentPage > 3 && $("#selected_imgs").val() === ""){
+				// 	// 	if(slider.currentPage < 7 || $("#history").html() === ""){
+				// 	// 		$("#slider").anythingSlider(3);
+				// 	// 	}
+				// 	// }
+				// 	// if(slider.currentPage == 6){
+				// 	// 	this.refresh_history();
+				// 	// }
+				// 	// if(slider.currentPage !== 3){
+				// 	// 	$(document).unbind("keydown");
+				// 	// } else {
+				// 	// 	$("#filter").focus();
+				// 	// }
+				// 	// if(this.scripts[slider.currentPage] !== "" && this.scripts[slider.currentPage] !== undefined){
+				// 	// 	$.get("common/js/include/" + this.scripts[slider.currentPage], () => {}, "script");
+				// 	// }
+				// },
+				// onSlideBegin: (slider) => {
+				// 	// if(slider.currentPage !== 3 && $("#selected_imgs").val() === ""){
+				// 	// 	$("#generator_interface .forward > a").animate({"backgroundPosition": "-188px -40px"}, 1000);
+				// 	// } else {
+				// 	// 	$("#generator_interface .forward > a").animate({"backgroundPosition": "0 -40px"}, 1000);
+				// 	// }
+				// 	// if(slider.currentPage !== 6){
+				// 	// 	this.refresh_history();
+				// 	// }
+				// }
 			});
 		}
 	}, {

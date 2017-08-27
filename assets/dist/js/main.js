@@ -27,6 +27,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /* jshint esversion: 6 */
 
+var storage = Storages.initNamespaceStorage("ns_name").localStorage;
+
 var IconSize = function () {
 	/**
   * Class constructor
@@ -53,6 +55,18 @@ var IconSize = function () {
 	}
 
 	_createClass(IconSize, [{
+		key: "set_storage",
+		value: function set_storage() {}
+	}, {
+		key: "load_project",
+		value: function load_project(project) {
+			$("#project_name_input").val(project.name).removeClass("invalid");
+			$(".thumbNav").fadeIn();
+			// this.set_storage(project_name);
+			$("#slider").anythingSlider(2);
+			console.log(project);
+		}
+	}, {
 		key: "build",
 		value: function build() {
 			// console.log(this.available_sizes);
@@ -60,31 +74,26 @@ var IconSize = function () {
 			var _selected = "",
 			    img = "",
 			    img_size = 256;
-			return $("<table>").append($("<tr>").append($("<td>").append($("<input>", { "type": "hidden", "id": "selected_size", "name": "selected_size" }).val("32")).append($("<input>", { "type": "hidden", "id": "selected_imgs", "name": "selected_imgs" }).val("")).append($("<table>", { "id": "size_selector", "class": "stage" }).append($("<td>", {
-				"valign": "middle",
-				// "onclick": "select_unselect_img('" + v.size + "', true, 'size_selector', 'selected_size', false); setTimeout('$(\'#slider\').data(\'AnythingSlider\').goForward()', 300);",
-				// "id": "_" + v.size,
-				// "title": v.size + "px",
-				// "valign": "bottom",
-				"align": "center",
-				"class": _selected
+			return $("<div>", { "class": "stage-container" }).append($("<div>", { "class": "stage icon_size" }).append($("<input>", { "type": "hidden", "id": "selected_size", "name": "selected_size" }).val("32")).append($("<input>", { "type": "hidden", "id": "selected_imgs", "name": "selected_imgs" }).val("")).append($("<div>", { "class": "content valign center" }).append($("<div>", {
+				"class": "card z-depth-0"
 			}).append(function () {
 				// console.log(img_size);
 				if (img_size !== "") {
 					return $("<img>", {
 						"src": "../../../api/generator.php?size=" + img_size + "&action=show",
-						"class": "img-responsive"
+						"class": "responsive-img"
 					});
 				} else {
 					return $("<input>", {
 						"type": "text"
 					});
 				}
-			}).append($("<div>", { "class": "input-group col-lg-3 col-md-3 col-sm-3 col-xs-8" }).append($("<select>", {
+			}).append($("<div>", { "class": "row spacer-30" }).append($("<div>", { "class": "col l4 m4 s4 offset-l4 offset-m4 offset-s4" }).append($("<select>", {
 				"tabindex": "-1",
-				"class": "form-control text-right"
+				"class": "text-right browser-default",
+				"id": "size_selector"
 			}).append($("<option>", { "value": "", "disabled": "disabled" }).text("Select size")).append($.map(this.available_sizes, function (v) {
-				var option_text = v.size !== "_" ? v.size : "Custom...";
+				var option_text = v.size !== "_" ? v.size + "px" : "Custom...";
 				s++;
 				return $("<option>", {
 					"selected": function selected() {
@@ -117,7 +126,10 @@ var IconSize = function () {
 					$(this).remove();
 					$input.focus();
 				}
-			})).append($("<span>", { "class": "input-group-addon" }).text("px")))))));
+			})
+			// ).append(
+			// 	$("<span>", {"class": "input-group-addon"}).text("px")
+			))))));
 		}
 	}]);
 
@@ -133,45 +145,96 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* jshint esversion: 6 */
+/* jshint -W107 */
+
+var _icon_size = require("./_icon_size.es6");
+
+var _icon_size2 = _interopRequireDefault(_icon_size);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-/* jshint esversion: 6 */
+var STORAGE, ICON_SIZE;
 
 var Project = function () {
 	/**
   * Class constructor
   */
-	function Project() {
+	function Project(storage) {
 		_classCallCheck(this, Project);
+
+		STORAGE = storage;
+		ICON_SIZE = new _icon_size2.default(storage);
+		// console.log(ICON_SIZE.load_project({}));
 	}
+
+	// load_project(project) {
+	// 	$("#project_name_input").val(project.name).removeClass("invalid");
+	// 	$(".thumbNav").fadeIn();
+	// 	// this.set_storage(project_name);
+	// 	$("#slider").anythingSlider(2);
+	// 	this.icon_size.load_project(project);
+	// }
 
 	_createClass(Project, [{
 		key: "build",
 		value: function build() {
-			return $("<div>", { "class": "stage-container" }).append($("<div>", { "class": "stage project" }).append($("<header>", { "class": "center-align" }).append($("<img>", {
-				"class": "logo",
-				"src": "assets/media/img/picol_logo.png"
-			})).append($("<div>", { "class": "project-input" }).append(function () {
-				return $("<input>", {
-					"type": "text",
-					"id": "project_name_input",
-					"tabindex": "-1",
-					"autofocus": "autofocus",
-					"placeholder": "Project name"
-				});
-			}))).append($("<div>", { "class": "content" }).append($("<div>", { "class": "card z-depth-0" }).append($("<div>", { "class": "card-content" }).append($("<div>", { "class": "col l8 m8 s6" }).append($("<h6>").text("Local storage")).append($("<p>").html("Use the browser local memory to store your history and settings.<br />Thi is not required "))).append($("<div>", { "class": "row" }).append($("<div>", { "class": "col l4 m4 s6" }).append($("<div>", { "class": "switch right" }).append($("<label>").append("Off").append($("<input>", {
-				"type": "checkbox",
-				"tabindex": "-1",
-				"id": "use_localstorage_btn",
-				"checked": "checked"
-			})).append($("<span>", { "class": "lever" })).append("On"))))).append($("<div>", { "class": "spacer-60" })).append($("<div>", { "class": "card-action" }).append($("<a>", {
+			var $card_action = $("<div>", { "class": "card-action" }).append($("<a>", {
 				"class": "btn-flat white right",
 				"href": "javascript:;",
 				"tabindex": "-1",
 				"id": "save_settings_btn"
-			}).text("Continue")))))));
+			}).text("Continue")),
+			    $new_project = $("<div>").append($("<div>", { "class": "row" }).append($("<div>", { "class": "col l8 m8 s6 offset-l2 offset-m2 offset-s3" }).append($("<div>", { "class": "project-input input-field" }).append($("<input>", {
+				"type": "text",
+				"id": "project_name_input",
+				"class": "validate",
+				"data-error": "No empty value",
+				"tabindex": "-1",
+				"autofocus": "autofocus",
+				"placeholder": "Project name"
+			}))))).append($("<div>", { "class": "row valign-wrapper" }).append($("<div>", { "class": "col l8 m8 s6" }).append($("<h6>").text("Local storage")).append($("<p>").html("Use the browser local memory to store your history and settings.").append($("<a>", {
+				"href": "javascript:;",
+				"data-position": "top",
+				"data-tooltip": "This is not required but allows you to find your icons once you come back to this page.<br />At the final step you can export the entire project, anyway."
+			}).append($("<i>", { "class": "picol_information" })).tooltip({
+				html: true,
+				delay: 0
+			})))).append($("<div>", { "class": "col l4 m4 s6" }).append($("<div>", { "class": "switch right" }).append($("<label>").append("Off").append($("<input>", {
+				"type": "checkbox",
+				"tabindex": "-1",
+				"id": "use_localstorage_btn",
+				"checked": "checked"
+			})).append($("<span>", { "class": "lever" })).append("On"))))),
+			    $old_projects = $("<div>").append($("<h6>").text("Saved projects")).append($("<ul>", { "class": "collection" }).append(function () {
+				return $.map(STORAGE, function (v) {
+					var cd = new Date(v.project.date),
+					    creation_date = cd.getFullYear() + "-" + cd.getMonth() + "-" + cd.getDate() + " " + cd.getHours() + ":" + (cd.getMinutes() < 10 ? "0" + cd.getMinutes() : cd.getMinutes());
+
+					return $("<li>", { "class": "collection-item dismissable" }).append($("<div>").append($("<div>", { "class": "title" }).append(v.project.name)).append($("<span>", { "class": "help-text" }).text("Created on " + creation_date)).append($("<a>", {
+						"href": "javascript:;",
+						"class": "secondary-content grey-text"
+					}).append($("<i>", { "class": "picol_controls_play" })).on("click", function () {
+						ICON_SIZE.load_project(v.project);
+					})));
+				});
+			}));
+
+			return $("<div>", { "class": "stage-container" }).append($("<div>", { "class": "stage project" }).append($("<header>", { "class": "center-align" }).append($("<img>", {
+				"class": "logo",
+				"src": "assets/media/img/picol_logo.png"
+			}))).append($("<div>", { "class": "content" }).append($("<div>", { "class": "card z-depth-0" }).append(function () {
+				if (STORAGE === undefined) {
+					// No storaged data
+					return $("<div>", { "class": "card-content" }).append($new_project.append($("<div>", { "class": "spacer-60" })).append($card_action));
+				} else {
+					// There are storaged data
+					// We display a 2 columns layout
+					return $("<div>", { "class": "card-content" }).append($("<div>", { "class": "row separated-columns" }).append($("<div>", { "class": "col l6 m6 s6" }).append($old_projects)).append($("<div>", { "class": "col l6 m6 s6" }).append($new_project))).append($card_action);
+				}
+			}))));
 		}
 	}]);
 
@@ -180,7 +243,7 @@ var Project = function () {
 
 exports.default = Project;
 
-},{}],4:[function(require,module,exports){
+},{"./_icon_size.es6":2}],4:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -188,6 +251,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* jshint esversion: 6 */
+/* jshint -W027 */
 
 var _project = require("./_project.es6");
 
@@ -201,8 +265,17 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var project = new _project2.default(),
-    icon_size = new _icon_size2.default();
+var
+/**
+ * Load all storaged data as variable
+ * @return object 															The storaged data
+ */
+storage = Storages.initNamespaceStorage("ns_name").localStorage,
+    STORAGE = storage.get("picol_generator") !== undefined ? storage.get("picol_generator") : undefined,
+
+// Load classes
+project = new _project2.default(STORAGE),
+    icon_size = new _icon_size2.default(STORAGE);
 
 var Generator = function () {
 	/**
@@ -270,6 +343,48 @@ var Generator = function () {
 				}r[r.length] = a[i];
 			}return r;
 		}
+
+		/* ---------------------------------------------------------------------- */
+
+	}, {
+		key: "get_storage",
+		value: function get_storage() {}
+		// console.log(STORAGE);
+
+
+		/**
+   * Set the localStorage for this session
+   */
+
+	}, {
+		key: "set_storage",
+		value: function set_storage(project_name) {
+			var b = {},
+			    storage_data = {
+				project: {
+					name: project_name,
+					date: new Date(),
+					browser: b
+				}
+			};
+
+			if (STORAGE === undefined) {
+				// Collect browser information
+				$.each(navigator, function (k, v) {
+					b[k] = v;
+				});
+				// Set the local storage
+				storage.set("picol_generator", [storage_data]);
+			} else {
+				STORAGE.push(storage_data);
+				storage.set("picol_generator", STORAGE);
+			}
+		}
+
+		/**
+   * Build the sliders DOM object
+   */
+
 	}, {
 		key: "build_sliders",
 		value: function build_sliders() {
@@ -281,6 +396,7 @@ var Generator = function () {
 				_this.pages[i] = item;
 				_this.scripts[i] = value.script_file;
 				$("#slider").append($("<li>").append($("<fieldset>", { "id": value.id, "class": "selector" }).append($("<legend>").text(value.title)).append(function () {
+					// Call single panels classes
 					switch (value.class) {
 						case "Project":
 							return project.build();break;
@@ -289,12 +405,6 @@ var Generator = function () {
 					}
 					// item_class = new value.class();
 				})));
-				// $("#use_localstorage_btn").bootstrapToggle({
-				// 	// on: "Use",
-				// 	// off: "Do not use",
-				// 	width: 100,
-				// 	height: 30
-				// });
 				// $.ajax({
 				// 	url: "common/include/funcs/_ajax/executor.php",
 				// 	data: {
@@ -308,6 +418,7 @@ var Generator = function () {
 				// $("#" + value.id).append(project.build());
 				// $("#" + value.id).append(icon_size.build());
 			});
+			// $("#size_selector").material_select();
 			$("#slider").anythingSlider({
 				navigationFormatter: function navigationFormatter(i) {
 					// add thumbnails as navigation links
@@ -323,34 +434,58 @@ var Generator = function () {
 				infinteSlides: false,
 				animationTime: 450,
 				easing: "easeOutCubic",
-				onSlideComplete: function onSlideComplete(slider) {
-					// if(slider.currentPage > 3 && $("#selected_imgs").val() === ""){
-					// 	if(slider.currentPage < 7 || $("#history").html() === ""){
-					// 		$("#slider").anythingSlider(3);
-					// 	}
-					// }
-					// if(slider.currentPage == 6){
-					// 	this.refresh_history();
-					// }
-					// if(slider.currentPage !== 3){
-					// 	$(document).unbind("keydown");
-					// } else {
-					// 	$("#filter").focus();
-					// }
-					// if(this.scripts[slider.currentPage] !== "" && this.scripts[slider.currentPage] !== undefined){
-					// 	$.get("common/js/include/" + this.scripts[slider.currentPage], () => {}, "script");
-					// }
-				},
-				onSlideBegin: function onSlideBegin(slider) {
-					// if(slider.currentPage !== 3 && $("#selected_imgs").val() === ""){
-					// 	$("#generator_interface .forward > a").animate({"backgroundPosition": "-188px -40px"}, 1000);
-					// } else {
-					// 	$("#generator_interface .forward > a").animate({"backgroundPosition": "0 -40px"}, 1000);
-					// }
-					// if(slider.currentPage !== 6){
-					// 	this.refresh_history();
-					// }
+				onInitialized: function onInitialized() {
+					// Hide panels menu
+					$(".thumbNav").hide();
+
+					$("#save_settings_btn").on("click", function () {
+						var project_name = $("#project_name_input").val().trim(),
+						    use_local_storage = $("#use_localstorage_btn").is(":checked");
+
+						// Lock position if:
+						// * use_local_storage = true
+						// * project_name is empty
+						if (use_local_storage && project_name.length === 0) {
+							$("#project_name_input").addClass("invalid").focus();
+							$(".thumbNav").fadeOut();
+						} else {
+							icon_size.load_project(storage_data.project);
+							// $("#project_name_input").removeClass("invalid");
+							// $(".thumbNav").fadeIn();
+							//
+							// this.set_storage(project_name);
+							// $("#slider").anythingSlider(2);
+						}
+					});
 				}
+				// onSlideComplete: (slider) => {
+				// 	// if(slider.currentPage > 3 && $("#selected_imgs").val() === ""){
+				// 	// 	if(slider.currentPage < 7 || $("#history").html() === ""){
+				// 	// 		$("#slider").anythingSlider(3);
+				// 	// 	}
+				// 	// }
+				// 	// if(slider.currentPage == 6){
+				// 	// 	this.refresh_history();
+				// 	// }
+				// 	// if(slider.currentPage !== 3){
+				// 	// 	$(document).unbind("keydown");
+				// 	// } else {
+				// 	// 	$("#filter").focus();
+				// 	// }
+				// 	// if(this.scripts[slider.currentPage] !== "" && this.scripts[slider.currentPage] !== undefined){
+				// 	// 	$.get("common/js/include/" + this.scripts[slider.currentPage], () => {}, "script");
+				// 	// }
+				// },
+				// onSlideBegin: (slider) => {
+				// 	// if(slider.currentPage !== 3 && $("#selected_imgs").val() === ""){
+				// 	// 	$("#generator_interface .forward > a").animate({"backgroundPosition": "-188px -40px"}, 1000);
+				// 	// } else {
+				// 	// 	$("#generator_interface .forward > a").animate({"backgroundPosition": "0 -40px"}, 1000);
+				// 	// }
+				// 	// if(slider.currentPage !== 6){
+				// 	// 	this.refresh_history();
+				// 	// }
+				// }
 			});
 		}
 	}, {

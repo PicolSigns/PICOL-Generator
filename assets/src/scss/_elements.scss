@@ -168,7 +168,25 @@ span {
 }
 
 .vcenter {
-    display: inline-block;
-    vertical-align: middle;
-    float: none;
+  display: inline-block;
+  float: none;
+  vertical-align: middle;
+}
+
+.spacer-10 { margin-top: 10px; }
+.spacer-20 { margin-top: 20px; }
+.spacer-30 { margin-top: 30px; }
+.spacer-40 { margin-top: 40px; }
+.spacer-50 { margin-top: 50px; }
+.spacer-60 { margin-top: 60px; }
+.spacer-70 { margin-top: 70px; }
+.spacer-80 { margin-top: 80px; }
+.spacer-90 { margin-top: 90px; }
+.spacer-100 { margin-top: 100px; }
+.spacer-200 { margin-top: 200px; }
+
+.help-text {
+  color: $grey;
+  font-size: .8em;
+  text-transform: none;
 }

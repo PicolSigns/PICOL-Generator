@@ -1,11 +1,19 @@
 /* jshint esversion: 6 */
-
+/* jshint -W027 */
 
 import Project from "./_project.es6";
 import IconSize from "./_icon_size.es6";
 
-var project = new Project(),
-	icon_size = new IconSize();
+var
+	/**
+	 * Load all storaged data as variable
+	 * @return object 															The storaged data
+	 */
+	storage = Storages.initNamespaceStorage("ns_name").localStorage,
+	STORAGE = (storage.get("picol_generator") !== undefined) ? storage.get("picol_generator") : undefined,
+	// Load classes
+	project = new Project(STORAGE),
+	icon_size = new IconSize(STORAGE);
 
 class Generator {
 	/**
@@ -64,6 +72,39 @@ class Generator {
 
 	array_unique(a) { let r = []; o: for(let i = 0, n = a.length; i < n; i++) { for(let x = 0, y = r.length; x < y; x++) { if(r[x] == a[i]) continue o; } r[r.length] = a[i]; } return r; }
 
+	/* ---------------------------------------------------------------------- */
+
+	get_storage() {
+		// console.log(STORAGE);
+	}
+
+	/**
+	 * Set the localStorage for this session
+	 */
+	set_storage(project_name) {
+		let b = {},
+			storage_data = {
+				project: {
+					name: project_name,
+					date: new Date(),
+					browser: b
+				}
+			};
+
+		if(STORAGE === undefined) {
+			// Collect browser information
+			$.each(navigator, (k, v) => { b[k] = v; });
+			// Set the local storage
+			storage.set("picol_generator", [storage_data]);
+		} else {
+			STORAGE.push(storage_data);
+			storage.set("picol_generator", STORAGE);
+		}
+	}
+
+	/**
+	 * Build the sliders DOM object
+	 */
 	build_sliders() {
 		let i = 0;
 		$.each(this.sliders, (item, value) => {
@@ -76,21 +117,16 @@ class Generator {
 						$("<legend>").text(value.title)
 					).append(
 						function() {
+							// Call single panels classes
 							switch(value.class) {
 								case "Project"	: 	return project.build();			break;
-								case "IconSize"	: 	return icon_size.build();		break;
+								case "IconSize"	:	return icon_size.build();		break;
 							}
 							// item_class = new value.class();
 						}
 					)
 				)
 			);
-			// $("#use_localstorage_btn").bootstrapToggle({
-			// 	// on: "Use",
-			// 	// off: "Do not use",
-			// 	width: 100,
-			// 	height: 30
-			// });
 			// $.ajax({
 			// 	url: "common/include/funcs/_ajax/executor.php",
 			// 	data: {
@@ -104,6 +140,7 @@ class Generator {
 			// $("#" + value.id).append(project.build());
 			// $("#" + value.id).append(icon_size.build());
 		});
+		// $("#size_selector").material_select();
 		$("#slider").anythingSlider({
 			navigationFormatter: (i) => { // add thumbnails as navigation links
 				return this.pages[i];
@@ -118,34 +155,58 @@ class Generator {
 			infinteSlides: false,
 			animationTime: 450,
 			easing: "easeOutCubic",
-			onSlideComplete: (slider) => {
-				// if(slider.currentPage > 3 && $("#selected_imgs").val() === ""){
-				// 	if(slider.currentPage < 7 || $("#history").html() === ""){
-				// 		$("#slider").anythingSlider(3);
-				// 	}
-				// }
-				// if(slider.currentPage == 6){
-				// 	this.refresh_history();
-				// }
-				// if(slider.currentPage !== 3){
-				// 	$(document).unbind("keydown");
-				// } else {
-				// 	$("#filter").focus();
-				// }
-				// if(this.scripts[slider.currentPage] !== "" && this.scripts[slider.currentPage] !== undefined){
-				// 	$.get("common/js/include/" + this.scripts[slider.currentPage], () => {}, "script");
-				// }
+			onInitialized: () => {
+				// Hide panels menu
+				$(".thumbNav").hide();
+
+				$("#save_settings_btn").on("click", () => {
+					let project_name = $("#project_name_input").val().trim(),
+						use_local_storage = $("#use_localstorage_btn").is(":checked");
+
+					// Lock position if:
+					// * use_local_storage = true
+					// * project_name is empty
+					if(use_local_storage && project_name.length === 0) {
+						$("#project_name_input").addClass("invalid").focus();
+						$(".thumbNav").fadeOut();
+					} else {
+						icon_size.load_project(storage_data.project);
+						// $("#project_name_input").removeClass("invalid");
+						// $(".thumbNav").fadeIn();
+						//
+						// this.set_storage(project_name);
+						// $("#slider").anythingSlider(2);
+					}
+				});
 			},
-			onSlideBegin: (slider) => {
-				// if(slider.currentPage !== 3 && $("#selected_imgs").val() === ""){
-				// 	$("#generator_interface .forward > a").animate({"backgroundPosition": "-188px -40px"}, 1000);
-				// } else {
-				// 	$("#generator_interface .forward > a").animate({"backgroundPosition": "0 -40px"}, 1000);
-				// }
-				// if(slider.currentPage !== 6){
-				// 	this.refresh_history();
-				// }
-			}
+			// onSlideComplete: (slider) => {
+			// 	// if(slider.currentPage > 3 && $("#selected_imgs").val() === ""){
+			// 	// 	if(slider.currentPage < 7 || $("#history").html() === ""){
+			// 	// 		$("#slider").anythingSlider(3);
+			// 	// 	}
+			// 	// }
+			// 	// if(slider.currentPage == 6){
+			// 	// 	this.refresh_history();
+			// 	// }
+			// 	// if(slider.currentPage !== 3){
+			// 	// 	$(document).unbind("keydown");
+			// 	// } else {
+			// 	// 	$("#filter").focus();
+			// 	// }
+			// 	// if(this.scripts[slider.currentPage] !== "" && this.scripts[slider.currentPage] !== undefined){
+			// 	// 	$.get("common/js/include/" + this.scripts[slider.currentPage], () => {}, "script");
+			// 	// }
+			// },
+			// onSlideBegin: (slider) => {
+			// 	// if(slider.currentPage !== 3 && $("#selected_imgs").val() === ""){
+			// 	// 	$("#generator_interface .forward > a").animate({"backgroundPosition": "-188px -40px"}, 1000);
+			// 	// } else {
+			// 	// 	$("#generator_interface .forward > a").animate({"backgroundPosition": "0 -40px"}, 1000);
+			// 	// }
+			// 	// if(slider.currentPage !== 6){
+			// 	// 	this.refresh_history();
+			// 	// }
+			// }
 		});
 	}
 

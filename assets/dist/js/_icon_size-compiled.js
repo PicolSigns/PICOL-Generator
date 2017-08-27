@@ -10,6 +10,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /* jshint esversion: 6 */
 
+var storage = Storages.initNamespaceStorage("ns_name").localStorage;
+
 var IconSize = function () {
 	/**
   * Class constructor
@@ -36,6 +38,18 @@ var IconSize = function () {
 	}
 
 	_createClass(IconSize, [{
+		key: "set_storage",
+		value: function set_storage() {}
+	}, {
+		key: "load_project",
+		value: function load_project(project) {
+			$("#project_name_input").val(project.name).removeClass("invalid");
+			$(".thumbNav").fadeIn();
+			// this.set_storage(project_name);
+			$("#slider").anythingSlider(2);
+			console.log(project);
+		}
+	}, {
 		key: "build",
 		value: function build() {
 			// console.log(this.available_sizes);
@@ -43,31 +57,26 @@ var IconSize = function () {
 			var _selected = "",
 			    img = "",
 			    img_size = 256;
-			return $("<table>").append($("<tr>").append($("<td>").append($("<input>", { "type": "hidden", "id": "selected_size", "name": "selected_size" }).val("32")).append($("<input>", { "type": "hidden", "id": "selected_imgs", "name": "selected_imgs" }).val("")).append($("<table>", { "id": "size_selector", "class": "stage" }).append($("<td>", {
-				"valign": "middle",
-				// "onclick": "select_unselect_img('" + v.size + "', true, 'size_selector', 'selected_size', false); setTimeout('$(\'#slider\').data(\'AnythingSlider\').goForward()', 300);",
-				// "id": "_" + v.size,
-				// "title": v.size + "px",
-				// "valign": "bottom",
-				"align": "center",
-				"class": _selected
+			return $("<div>", { "class": "stage-container" }).append($("<div>", { "class": "stage icon_size" }).append($("<input>", { "type": "hidden", "id": "selected_size", "name": "selected_size" }).val("32")).append($("<input>", { "type": "hidden", "id": "selected_imgs", "name": "selected_imgs" }).val("")).append($("<div>", { "class": "content valign center" }).append($("<div>", {
+				"class": "card z-depth-0"
 			}).append(function () {
 				// console.log(img_size);
 				if (img_size !== "") {
 					return $("<img>", {
 						"src": "../../../api/generator.php?size=" + img_size + "&action=show",
-						"class": "img-responsive"
+						"class": "responsive-img"
 					});
 				} else {
 					return $("<input>", {
 						"type": "text"
 					});
 				}
-			}).append($("<div>", { "class": "input-group col-lg-3 col-md-3 col-sm-3 col-xs-8" }).append($("<select>", {
+			}).append($("<div>", { "class": "row spacer-30" }).append($("<div>", { "class": "col l4 m4 s4 offset-l4 offset-m4 offset-s4" }).append($("<select>", {
 				"tabindex": "-1",
-				"class": "form-control text-right"
+				"class": "text-right browser-default",
+				"id": "size_selector"
 			}).append($("<option>", { "value": "", "disabled": "disabled" }).text("Select size")).append($.map(this.available_sizes, function (v) {
-				var option_text = v.size !== "_" ? v.size : "Custom...";
+				var option_text = v.size !== "_" ? v.size + "px" : "Custom...";
 				s++;
 				return $("<option>", {
 					"selected": function selected() {
@@ -100,7 +109,10 @@ var IconSize = function () {
 					$(this).remove();
 					$input.focus();
 				}
-			})).append($("<span>", { "class": "input-group-addon" }).text("px")))))));
+			})
+			// ).append(
+			// 	$("<span>", {"class": "input-group-addon"}).text("px")
+			))))));
 		}
 	}]);
 

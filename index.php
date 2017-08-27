@@ -46,6 +46,7 @@ if ($_SERVER["REQUEST_URI"] !== "/apps/picol_generator/1.2/"){
 		<!-- jquery AnythingSlider -->
 		<!-- <link type="text/css" href="<?php print BOWER_URI; ?>/picol_anythingslider.css" rel="stylesheet" media="screen" /> -->
 
+		<link rel="stylesheet" href="<?php print BOWER_URI; ?>picol-font/css/picol.css" type="text/css" media="screen" />
 		<link rel="stylesheet" href="<?php print BOWER_URI; ?>materialize/dist/css/materialize.min.css" type="text/css" media="screen" />
         <link rel="stylesheet" href="<?php print BOWER_URI; ?>anythingslider/css/anythingslider.css" />
 		<link rel="stylesheet" href="<?php print CSS_URI; ?>main.min.css" type="text/css" media="screen" />
@@ -67,6 +68,7 @@ if ($_SERVER["REQUEST_URI"] !== "/apps/picol_generator/1.2/"){
 
         <!-- jQuery & jQuery UI -->
         <script type="text/javascript" src="<?php print BOWER_URI; ?>jquery/dist/jquery.min.js"></script>
+        <script type="text/javascript" src="<?php print BOWER_URI; ?>js-storage/js.storage.min.js"></script>
         <script type="text/javascript" src="<?php print BOWER_URI; ?>jquery-ui/jquery-ui.min.js"></script>
         <script type="text/javascript" src="<?php print BOWER_URI; ?>materialize/dist/js/materialize.min.js"></script>
         <script type="text/javascript" src="<?php print BOWER_URI; ?>jquery.scrollTo/jquery.scrollTo.min.js"></script>
