@@ -35,7 +35,7 @@ class Project {
 			),
 			$new_project = $("<div>").append(
 				$("<div>", {"class": "row"}).append(
-					$("<div>", {"class": "col l8 m8 s6 offset-l2 offset-m2 offset-s3"}).append(
+					$("<div>", {"class": "col l10 m12 s12 offset-l1"}).append(
 						$("<div>", {"class": "project-input input-field"}).append(
 							$("<input>", {
 								"type": "text",
@@ -50,8 +50,8 @@ class Project {
 					)
 				)
 			).append(
-				$("<div>", {"class": "row valign-wrapper"}).append(
-					$("<div>", {"class": "col l8 m8 s6"}).append(
+				$("<div>", {"class": "row"}).append(
+					$("<div>", {"class": "col l8 m12 s12"}).append(
 						$("<h6>").text("Local storage")
 					).append(
 						$("<p>").html("Use the browser local memory to store your history and settings.").append(
@@ -68,7 +68,7 @@ class Project {
 						)
 					)
 				).append(
-					$("<div>", {"class": "col l4 m4 s6"}).append(
+					$("<div>", {"class": "col l4 m12 s12"}).append(
 						$("<div>", {"class": "switch right"}).append(
 							$("<label>").append("Off").append(
 								$("<input>", {
@@ -129,19 +129,19 @@ class Project {
 							// No storaged data
 							return $("<div>", {"class": "card-content"}).append(
 								$new_project.append(
-									$("<div>", {"class": "spacer-60"})
+									$("<div>", {"class": "spacer-60 hide-on-small-only"})
 								).append($card_action)
 							);
 						} else {
 							// There are storaged data
 							// We display a 2 columns layout
 							return $("<div>", {"class": "card-content"}).append(
-								$("<div>", {"class": "row separated-columns"}).append(
-									$("<div>", {"class": "col l6 m6 s6"}).append(
+								$("<div>", {"class": "row"}).append(
+									$("<div>", {"class": "col l6 m6 s12"}).append(
 										$old_projects
 									)
 								).append(
-									$("<div>", {"class": "col l6 m6 s6"}).append(
+									$("<div>", {"class": "col l6 m6 s12"}).append(
 										$new_project
 									)
 								)

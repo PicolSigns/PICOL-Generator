@@ -153,10 +153,11 @@
   }
 
   #project_title {
+    bottom: -20px;
     display: block;
     float: right;
-    font-family: Verdana,UbuntuBeta,Ubuntu,"Bitstream Vera Sans","DejaVu Sans",Tahoma,sans-serif;
     height: 22px;
+    position: relative;
     text-transform: uppercase;
   }
 

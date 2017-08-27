@@ -31,7 +31,7 @@ class IconSize {
 	load_project(project) {
 		console.log(project);
 		if(project.name.trim().length > 0) {
-			$("#project_title").html("").append($("<span>", {"class": "grey-text"}).text("Current project: ")).append(project.name);
+			$(".stage-container").append($("#project_title").html("").append($("<span>", {"class": "grey-text"}).text("Current project: ")).append(project.name));
 		}
 		$("#project_name_input").val(project.name).removeClass("invalid");
 		$(".thumbNav").fadeIn();
@@ -71,7 +71,7 @@ class IconSize {
 						}
 					).append(
 						$("<div>", {"class": "row spacer-30"}).append(
-							$("<div>", {"class": "col l4 m4 s4 offset-l4 offset-m4 offset-s4"}).append(
+							$("<div>", {"class": "col l4 m8 s10 offset-l4 offset-m2 offset-s1"}).append(
 								$("<select>", {
 									"tabindex": "-1",
 									"class": "text-right browser-default",

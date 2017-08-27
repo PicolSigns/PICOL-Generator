@@ -62,7 +62,7 @@ var IconSize = function () {
 		value: function load_project(project) {
 			console.log(project);
 			if (project.name.trim().length > 0) {
-				$("#project_title").html("").append($("<span>", { "class": "grey-text" }).text("Current project: ")).append(project.name);
+				$(".stage-container").append($("#project_title").html("").append($("<span>", { "class": "grey-text" }).text("Current project: ")).append(project.name));
 			}
 			$("#project_name_input").val(project.name).removeClass("invalid");
 			$(".thumbNav").fadeIn();
@@ -92,7 +92,7 @@ var IconSize = function () {
 						"type": "text"
 					});
 				}
-			}).append($("<div>", { "class": "row spacer-30" }).append($("<div>", { "class": "col l4 m4 s4 offset-l4 offset-m4 offset-s4" }).append($("<select>", {
+			}).append($("<div>", { "class": "row spacer-30" }).append($("<div>", { "class": "col l4 m8 s10 offset-l4 offset-m2 offset-s1" }).append($("<select>", {
 				"tabindex": "-1",
 				"class": "text-right browser-default",
 				"id": "size_selector"
@@ -194,7 +194,7 @@ var Project = function () {
 				"tabindex": "-1",
 				"id": "save_settings_btn"
 			}).text("Continue")),
-			    $new_project = $("<div>").append($("<div>", { "class": "row" }).append($("<div>", { "class": "col l8 m8 s6 offset-l2 offset-m2 offset-s3" }).append($("<div>", { "class": "project-input input-field" }).append($("<input>", {
+			    $new_project = $("<div>").append($("<div>", { "class": "row" }).append($("<div>", { "class": "col l10 m12 s12 offset-l1" }).append($("<div>", { "class": "project-input input-field" }).append($("<input>", {
 				"type": "text",
 				"id": "project_name_input",
 				"class": "validate",
@@ -202,14 +202,14 @@ var Project = function () {
 				"tabindex": "-1",
 				"autofocus": "autofocus",
 				"placeholder": "Project name"
-			}))))).append($("<div>", { "class": "row valign-wrapper" }).append($("<div>", { "class": "col l8 m8 s6" }).append($("<h6>").text("Local storage")).append($("<p>").html("Use the browser local memory to store your history and settings.").append($("<a>", {
+			}))))).append($("<div>", { "class": "row" }).append($("<div>", { "class": "col l8 m12 s12" }).append($("<h6>").text("Local storage")).append($("<p>").html("Use the browser local memory to store your history and settings.").append($("<a>", {
 				"href": "javascript:;",
 				"data-position": "top",
 				"data-tooltip": "This is not required but allows you to find your icons once you come back to this page.<br />At the final step you can export the entire project, anyway."
 			}).append($("<i>", { "class": "picol_information" })).tooltip({
 				html: true,
 				delay: 0
-			})))).append($("<div>", { "class": "col l4 m4 s6" }).append($("<div>", { "class": "switch right" }).append($("<label>").append("Off").append($("<input>", {
+			})))).append($("<div>", { "class": "col l4 m12 s12" }).append($("<div>", { "class": "switch right" }).append($("<label>").append("Off").append($("<input>", {
 				"type": "checkbox",
 				"tabindex": "-1",
 				"id": "use_localstorage_btn",
@@ -235,11 +235,11 @@ var Project = function () {
 			}))).append($("<div>", { "class": "content" }).append($("<div>", { "class": "card z-depth-0" }).append(function () {
 				if (STORAGE === undefined) {
 					// No storaged data
-					return $("<div>", { "class": "card-content" }).append($new_project.append($("<div>", { "class": "spacer-60" })).append($card_action));
+					return $("<div>", { "class": "card-content" }).append($new_project.append($("<div>", { "class": "spacer-60 hide-on-small-only" })).append($card_action));
 				} else {
 					// There are storaged data
 					// We display a 2 columns layout
-					return $("<div>", { "class": "card-content" }).append($("<div>", { "class": "row separated-columns" }).append($("<div>", { "class": "col l6 m6 s6" }).append($old_projects)).append($("<div>", { "class": "col l6 m6 s6" }).append($new_project))).append($card_action);
+					return $("<div>", { "class": "card-content" }).append($("<div>", { "class": "row" }).append($("<div>", { "class": "col l6 m6 s12" }).append($old_projects)).append($("<div>", { "class": "col l6 m6 s12" }).append($new_project))).append($card_action);
 				}
 			})));
 		}
